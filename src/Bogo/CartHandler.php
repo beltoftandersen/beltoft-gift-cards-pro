@@ -3,7 +3,6 @@
 namespace GiftCardsPro\Bogo;
 
 use GiftCardsPro\Support\Options;
-use GiftCardsPro\Bogo\BogoManager;
 use GiftCards\GiftCard\CodeGenerator;
 use GiftCards\GiftCard\Repository;
 use GiftCards\GiftCard\TransactionRepository;

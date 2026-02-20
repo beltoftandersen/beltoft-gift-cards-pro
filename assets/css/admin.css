@@ -47,20 +47,6 @@
 	width: 250px;
 }
 
-.wcgc-pro-feature-section {
-	margin: 20px 0;
-	padding: 16px;
-	background: #fff;
-	border: 1px solid #c3c4c7;
-	border-radius: 4px;
-}
-
-.wcgc-pro-feature-section h3 {
-	margin-top: 0;
-	padding-bottom: 8px;
-	border-bottom: 1px solid #eee;
-}
-
 /* ── Bulk Generation ────────────────────────── */
 .wcgc-pro-bulk-wrap {
 	margin-top: 16px;

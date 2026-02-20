@@ -34,6 +34,7 @@ class Installer {
 		if ( version_compare( $installed, WCGC_PRO_VER, '<' ) ) {
 			self::create_tables();
 			self::schedule_crons();
+			self::create_files();
 			update_option( 'wcgc_pro_version', WCGC_PRO_VER );
 		}
 	}

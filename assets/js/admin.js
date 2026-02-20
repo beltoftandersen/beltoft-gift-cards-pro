@@ -35,11 +35,11 @@
 				$('.progress-text').text(response.data.message);
 				setTimeout(function () { location.reload(); }, 2000);
 			} else {
-				$('.progress-text').text(response.data.message || 'Generation failed.');
+				$('.progress-text').text(response.data.message || wcgc_pro_params.i18n.generation_failed);
 			}
 		}).fail(function () {
 			$btn.prop('disabled', false);
-			$('.progress-text').text('Request failed.');
+			$('.progress-text').text(wcgc_pro_params.i18n.request_failed);
 		});
 	});
 
@@ -62,7 +62,7 @@
 		var $result = $('#wcgc-pro-import-result');
 
 		if (!$file.files.length) {
-			$result.text('Please select a CSV file.').show();
+			$result.text(wcgc_pro_params.i18n.select_csv).show();
 			return;
 		}
 
@@ -72,7 +72,7 @@
 		formData.append('csv_file', $file.files[0]);
 
 		$btn.prop('disabled', true);
-		$result.text('Importing...').show();
+		$result.text(wcgc_pro_params.i18n.importing).show();
 
 		$.ajax({
 			url: wcgc_pro_params.ajax_url,
@@ -85,12 +85,12 @@
 				if (response.success) {
 					$result.text(response.data.message);
 				} else {
-					$result.text(response.data.message || 'Import failed.');
+					$result.text(response.data.message || wcgc_pro_params.i18n.import_failed);
 				}
 			},
 			error: function () {
 				$btn.prop('disabled', false);
-				$result.text('Request failed.');
+				$result.text(wcgc_pro_params.i18n.request_failed);
 			}
 		});
 	});
@@ -125,7 +125,7 @@
 				location.reload();
 			} else {
 				/* translators: not used in PHP — JS alert only */
-				alert(response.data.message || 'Save failed.');
+				alert(response.data.message || wcgc_pro_params.i18n.save_failed);
 			}
 		}).fail(function () {
 			$btn.prop('disabled', false);
@@ -134,7 +134,7 @@
 
 	$(document).on('click', '.wcgc-pro-delete-bogo', function (e) {
 		e.preventDefault();
-		if (!confirm('Delete this rule?')) {
+		if (!confirm(wcgc_pro_params.i18n.confirm_delete_rule)) {
 			return;
 		}
 
@@ -151,11 +151,13 @@
 		});
 	});
 
-	/* ── Theme Picker (frontend) ─────────────── */
+	/* ── Report Frequency Toggle ─────────────── */
 
-	$(document).on('change', '.wcgc-pro-theme-option input[type="radio"]', function () {
-		$('.wcgc-pro-theme-option').removeClass('selected');
-		$(this).closest('.wcgc-pro-theme-option').addClass('selected');
+	$(document).on('change', '#wcgc-pro-report-frequency', function () {
+		var freq = $(this).val();
+		$('#wcgc-pro-report-day-of-week').closest('tr').toggle(freq === 'weekly');
+		$('#wcgc-pro-report-day-of-month').closest('tr').toggle(freq === 'monthly');
 	});
+	$('#wcgc-pro-report-frequency').trigger('change');
 
 })(jQuery);

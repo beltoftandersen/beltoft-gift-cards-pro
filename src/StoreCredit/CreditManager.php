@@ -2,7 +2,6 @@
 
 namespace GiftCardsPro\StoreCredit;
 
-use GiftCardsPro\Support\Options;
 use GiftCards\GiftCard\CodeGenerator;
 use GiftCards\GiftCard\Repository;
 use GiftCards\GiftCard\TransactionRepository;
@@ -10,15 +9,6 @@ use GiftCards\GiftCard\TransactionRepository;
 defined( 'ABSPATH' ) || exit;
 
 class CreditManager {
-
-	/**
-	 * Initialize.
-	 *
-	 * No hooks needed — called by OrderHandler.
-	 */
-	public static function init() {
-		// Intentionally empty. OrderHandler drives store-credit creation.
-	}
 
 	/**
 	 * Create a store-credit gift card for a customer.

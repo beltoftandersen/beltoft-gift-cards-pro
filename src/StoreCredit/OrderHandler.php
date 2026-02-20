@@ -3,7 +3,6 @@
 namespace GiftCardsPro\StoreCredit;
 
 use GiftCardsPro\Support\Options;
-use GiftCardsPro\StoreCredit\CreditManager;
 
 defined( 'ABSPATH' ) || exit;
 

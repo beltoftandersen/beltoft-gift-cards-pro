@@ -3,14 +3,11 @@
 namespace GiftCardsPro;
 
 use GiftCardsPro\Licensing\License;
-use GiftCardsPro\Licensing\Updater;
 use GiftCardsPro\Admin\SettingsPage;
 use GiftCardsPro\ScheduledDelivery\Scheduler;
 use GiftCardsPro\ScheduledDelivery\ProductFields as ScheduledProductFields;
-use GiftCardsPro\ScheduledDelivery\CartFields;
 use GiftCardsPro\EmailThemes\ThemeManager;
 use GiftCardsPro\EmailThemes\ProductFields as ThemeProductFields;
-use GiftCardsPro\StoreCredit\CreditManager;
 use GiftCardsPro\StoreCredit\OrderHandler;
 use GiftCardsPro\BulkGeneration\Generator;
 use GiftCardsPro\BulkGeneration\CsvHandler;
@@ -29,7 +26,6 @@ class Plugin {
 	public static function init() {
 		// Always load licensing + admin settings (even without active license).
 		License::init();
-		Updater::init();
 
 		if ( is_admin() ) {
 			SettingsPage::init();
@@ -45,14 +41,12 @@ class Plugin {
 		// Scheduled delivery.
 		Scheduler::init();
 		ScheduledProductFields::init();
-		CartFields::init();
 
 		// Email themes.
 		ThemeManager::init();
 		ThemeProductFields::init();
 
 		// Store credit on refund.
-		CreditManager::init();
 		OrderHandler::init();
 
 		// Bulk generation + CSV.
@@ -99,6 +93,15 @@ class Plugin {
 		wp_localize_script( 'wcgc-pro-admin', 'wcgc_pro_params', [
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'nonce'    => wp_create_nonce( 'wcgc_pro_admin' ),
+			'i18n'     => [
+				'generation_failed'  => __( 'Generation failed.', 'smart-gift-cards-for-woocommerce-pro' ),
+				'request_failed'     => __( 'Request failed.', 'smart-gift-cards-for-woocommerce-pro' ),
+				'select_csv'         => __( 'Please select a CSV file.', 'smart-gift-cards-for-woocommerce-pro' ),
+				'importing'          => __( 'Importing...', 'smart-gift-cards-for-woocommerce-pro' ),
+				'import_failed'      => __( 'Import failed.', 'smart-gift-cards-for-woocommerce-pro' ),
+				'save_failed'        => __( 'Save failed.', 'smart-gift-cards-for-woocommerce-pro' ),
+				'confirm_delete_rule' => __( 'Delete this rule?', 'smart-gift-cards-for-woocommerce-pro' ),
+			],
 		] );
 	}
 
@@ -111,7 +114,7 @@ class Plugin {
 		}
 
 		global $product;
-		if ( ! $product || $product->get_type() !== 'gift-card' ) {
+		if ( ! $product instanceof \WC_Product || $product->get_type() !== 'gift-card' ) {
 			return;
 		}
 
@@ -120,6 +123,14 @@ class Plugin {
 			WCGC_PRO_URL . 'assets/css/frontend.css',
 			[],
 			self::asset_version( 'assets/css/frontend.css' )
+		);
+
+		wp_enqueue_script(
+			'wcgc-pro-frontend',
+			WCGC_PRO_URL . 'assets/js/frontend.js',
+			[],
+			self::asset_version( 'assets/js/frontend.js' ),
+			true
 		);
 	}
 

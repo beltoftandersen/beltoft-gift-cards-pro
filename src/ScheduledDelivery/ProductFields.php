@@ -98,10 +98,9 @@ class ProductFields {
 			return false;
 		}
 
-		$today     = wp_date( 'Y-m-d' );
-		$timestamp = strtotime( $date );
+		$today = wp_date( 'Y-m-d' );
 
-		if ( false === $timestamp || $date < $today ) {
+		if ( $date < $today ) {
 			wc_add_notice( __( 'The delivery date cannot be in the past.', 'smart-gift-cards-for-woocommerce-pro' ), 'error' );
 			return false;
 		}

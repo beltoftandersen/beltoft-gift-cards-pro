@@ -2,7 +2,6 @@
 
 namespace GiftCardsPro\BulkGeneration;
 
-use GiftCardsPro\Support\Options;
 use GiftCards\GiftCard\CodeGenerator;
 use GiftCards\GiftCard\Repository;
 use GiftCards\GiftCard\TransactionRepository;
@@ -58,10 +57,8 @@ class Generator {
 		set_transient( 'wcgc_pro_bulk_progress', 0, HOUR_IN_SECONDS );
 
 		// Temporarily override code prefix if a custom one is provided.
-		$original_prefix = '';
-		$has_prefix      = ! empty( $prefix );
+		$has_prefix = ! empty( $prefix );
 		if ( $has_prefix ) {
-			$original_prefix = \GiftCards\Support\Options::get( 'code_prefix' );
 			add_filter( 'option_wcgc_options', function ( $opts ) use ( $prefix ) {
 				if ( is_array( $opts ) ) {
 					$opts['code_prefix'] = $prefix;

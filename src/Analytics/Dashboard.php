@@ -54,23 +54,22 @@ class Dashboard {
 			0   => __( 'All Time', 'smart-gift-cards-for-woocommerce-pro' ),
 		];
 		?>
-		<h3 style="margin-top:24px;margin-bottom:8px;">
-			<?php esc_html_e( 'Pro Analytics', 'smart-gift-cards-for-woocommerce-pro' ); ?>
-		</h3>
-
-		<div style="margin-bottom:12px;">
-			<?php foreach ( $ranges as $days => $label ) :
-				$url       = $days > 0 ? add_query_arg( 'wcgc_range', $days, $base_url ) : remove_query_arg( 'wcgc_range', $base_url );
-				$is_active = ( $range === $days );
-				?>
-				<a href="<?php echo esc_url( $url ); ?>"
-				   style="text-decoration:none;padding:4px 10px;margin-right:4px;border:1px solid <?php echo $is_active ? '#2271b1' : '#c3c4c7'; ?>;border-radius:3px;background:<?php echo $is_active ? '#2271b1' : '#fff'; ?>;color:<?php echo $is_active ? '#fff' : '#2271b1'; ?>;font-size:13px;">
-					<?php echo esc_html( $label ); ?>
-				</a>
-			<?php endforeach; ?>
+		<div class="wcgc-pro-analytics-header">
+			<h3><?php esc_html_e( 'Pro Analytics', 'smart-gift-cards-for-woocommerce-pro' ); ?></h3>
+			<div class="wcgc-pro-range-filter">
+				<?php foreach ( $ranges as $days => $label ) :
+					$url       = $days > 0 ? add_query_arg( 'wcgc_range', $days, $base_url ) : remove_query_arg( 'wcgc_range', $base_url );
+					$is_active = ( $range === $days );
+					?>
+					<a href="<?php echo esc_url( $url ); ?>"
+					   class="<?php echo $is_active ? 'active' : ''; ?>">
+						<?php echo esc_html( $label ); ?>
+					</a>
+				<?php endforeach; ?>
+			</div>
 		</div>
 
-		<div class="wcgc-stats-cards" style="display:flex;gap:16px;margin:16px 0;flex-wrap:wrap;">
+		<div class="wcgc-stats-cards">
 			<?php foreach ( $cards as $label => $value ) : ?>
 				<div class="wcgc-stat-card">
 					<div class="wcgc-stat-label"><?php echo esc_html( $label ); ?></div>
@@ -132,39 +131,24 @@ class Dashboard {
 		);
 
 		// Scheduled pending count.
-		$scheduled_date_clause = '';
-		if ( $days > 0 ) {
-			$scheduled_date_clause = $wpdb->prepare( ' AND created_at >= DATE_SUB(NOW(), INTERVAL %d DAY)', $days );
-		}
-
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table.
 		$scheduled_pending = (int) $wpdb->get_var(
 			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name and validated date clause.
-			"SELECT COUNT(*) FROM {$scheduled_table} WHERE status = 'pending'{$scheduled_date_clause}"
+			"SELECT COUNT(*) FROM {$scheduled_table} WHERE status = 'pending'{$date_clause}"
 		);
 
 		// Store credits count.
-		$credits_date_clause = '';
-		if ( $days > 0 ) {
-			$credits_date_clause = $wpdb->prepare( ' AND created_at >= DATE_SUB(NOW(), INTERVAL %d DAY)', $days );
-		}
-
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table.
 		$store_credits_count = (int) $wpdb->get_var(
 			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name and validated date clause.
-			"SELECT COUNT(*) FROM {$credits_table} WHERE 1=1{$credits_date_clause}"
+			"SELECT COUNT(*) FROM {$credits_table} WHERE 1=1{$date_clause}"
 		);
 
 		// BOGO total uses.
-		$bogo_date_clause = '';
-		if ( $days > 0 ) {
-			$bogo_date_clause = $wpdb->prepare( ' AND created_at >= DATE_SUB(NOW(), INTERVAL %d DAY)', $days );
-		}
-
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table.
 		$bogo_uses = (int) $wpdb->get_var(
 			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name and validated date clause.
-			"SELECT COALESCE(SUM(uses_count), 0) FROM {$bogo_table} WHERE 1=1{$bogo_date_clause}"
+			"SELECT COALESCE(SUM(uses_count), 0) FROM {$bogo_table} WHERE 1=1{$date_clause}"
 		);
 
 		$stats = [

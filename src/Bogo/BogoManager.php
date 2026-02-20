@@ -2,8 +2,6 @@
 
 namespace GiftCardsPro\Bogo;
 
-use GiftCardsPro\Support\Options;
-
 defined( 'ABSPATH' ) || exit;
 
 class BogoManager {
@@ -28,13 +26,8 @@ class BogoManager {
 			wp_send_json_error( [ 'message' => __( 'Permission denied.', 'smart-gift-cards-for-woocommerce-pro' ) ] );
 		}
 
-		$rule_id = isset( $_POST['id'] ) ? absint( $_POST['id'] ) : 0;
-		if ( ! $rule_id && isset( $_POST['rule_id'] ) ) {
-			$rule_id = absint( $_POST['rule_id'] );
-		}
-
 		$data = [
-			'id'           => $rule_id,
+			'id'           => isset( $_POST['id'] ) ? absint( $_POST['id'] ) : 0,
 			'name'         => isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '',
 			'buy_amount'   => isset( $_POST['buy_amount'] ) ? (float) $_POST['buy_amount'] : 0,
 			'get_amount'   => isset( $_POST['get_amount'] ) ? (float) $_POST['get_amount'] : 0,
@@ -65,9 +58,6 @@ class BogoManager {
 		}
 
 		$id = isset( $_POST['id'] ) ? absint( $_POST['id'] ) : 0;
-		if ( ! $id && isset( $_POST['rule_id'] ) ) {
-			$id = absint( $_POST['rule_id'] );
-		}
 		if ( ! $id ) {
 			wp_send_json_error( [ 'message' => __( 'Invalid rule ID.', 'smart-gift-cards-for-woocommerce-pro' ) ] );
 		}
@@ -236,10 +226,14 @@ class BogoManager {
 	}
 
 	/**
-	 * Normalize datetime strings from admin input to MySQL format.
+	 * Normalize admin datetime-local input to UTC MySQL format.
 	 *
-	 * @param string $value Raw datetime value.
-	 * @return string|null
+	 * Admin inputs are in the site's local timezone. The DB stores
+	 * UTC so that get_matching_rules() can compare against
+	 * current_time( 'mysql', true ) consistently.
+	 *
+	 * @param string $value Raw datetime value (site-local).
+	 * @return string|null UTC datetime string, or null if empty/invalid.
 	 */
 	private static function normalize_datetime( $value ) {
 		$value = sanitize_text_field( (string) $value );
@@ -257,6 +251,12 @@ class BogoManager {
 			return null;
 		}
 
-		return $value;
+		// Convert site-local time to UTC for consistent DB storage.
+		$local_dt = \DateTimeImmutable::createFromFormat( 'Y-m-d H:i:s', $value, wp_timezone() );
+		if ( ! $local_dt ) {
+			return null;
+		}
+
+		return $local_dt->setTimezone( new \DateTimeZone( 'UTC' ) )->format( 'Y-m-d H:i:s' );
 	}
 }

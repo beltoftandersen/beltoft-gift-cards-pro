@@ -314,19 +314,7 @@ class SettingsPage {
 			submit_button();
 			?>
 		</form>
-
-			<script>
-			jQuery(function($) {
-				function wcgcProToggleFrequencyFields() {
-					var freq = $('#wcgc-pro-report-frequency').val();
-					$('#wcgc-pro-report-day-of-week').closest('tr').toggle(freq === 'weekly');
-					$('#wcgc-pro-report-day-of-month').closest('tr').toggle(freq === 'monthly');
-				}
-				$('#wcgc-pro-report-frequency').on('change', wcgcProToggleFrequencyFields);
-				wcgcProToggleFrequencyFields();
-			});
-			</script>
-			<?php
+		<?php
 		}
 
 	// =========================================================================

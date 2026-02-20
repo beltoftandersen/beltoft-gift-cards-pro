@@ -3,7 +3,6 @@
 namespace GiftCardsPro\EmailThemes;
 
 use GiftCardsPro\Support\Options;
-use GiftCardsPro\EmailThemes\ThemeManager;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -36,57 +35,28 @@ class ProductFields {
 			$default_theme = 'classic';
 		}
 		?>
-		<div class="wcgc-theme-picker" style="margin-top: 15px;">
-			<h4 style="margin-bottom: 8px;">
+		<div class="wcgc-theme-picker">
+			<h4>
 				<?php esc_html_e( 'Choose a Design', 'smart-gift-cards-for-woocommerce-pro' ); ?>
 			</h4>
-			<div class="wcgc-theme-options" style="display: flex; flex-wrap: wrap; gap: 12px;">
+			<div class="wcgc-theme-options">
 				<?php foreach ( $themes as $slug => $theme ) : ?>
-					<label
-						class="wcgc-theme-option"
-						style="display: inline-block; text-align: center; cursor: pointer; padding: 6px; border: 2px solid <?php echo $slug === $default_theme ? '#7f54b3' : '#ddd'; ?>; border-radius: 6px; transition: border-color 0.2s;"
-					>
+					<label class="wcgc-theme-option<?php echo $slug === $default_theme ? ' selected' : ''; ?>">
 						<input
 							type="radio"
 							name="wcgc_design_theme"
 							value="<?php echo esc_attr( $slug ); ?>"
 							<?php checked( $slug, $default_theme ); ?>
-							style="display: none;"
 						/>
 						<img
 							src="<?php echo esc_url( $theme['image'] ); ?>"
 							alt="<?php echo esc_attr( $theme['name'] ); ?>"
-							style="width: 60px; height: 60px; object-fit: cover; display: block; border-radius: 4px; margin: 0 auto 4px;"
 						/>
-						<span style="font-size: 12px; display: block;">
-							<?php echo esc_html( $theme['name'] ); ?>
-						</span>
+						<span><?php echo esc_html( $theme['name'] ); ?></span>
 					</label>
 				<?php endforeach; ?>
 			</div>
 		</div>
-		<script>
-			(function() {
-				var options = document.querySelectorAll('.wcgc-theme-option');
-				if ( ! options.length ) {
-					return;
-				}
-				options.forEach(function(label) {
-					var radio = label.querySelector('input[type="radio"]');
-					if ( ! radio ) {
-						return;
-					}
-					radio.addEventListener('change', function() {
-						options.forEach(function(l) {
-							l.style.borderColor = '#ddd';
-						});
-						if ( radio.checked ) {
-							label.style.borderColor = '#7f54b3';
-						}
-					});
-				});
-			})();
-		</script>
 		<?php
 	}
 

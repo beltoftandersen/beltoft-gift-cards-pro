@@ -14,7 +14,6 @@ class ThemeManager {
 	public static function init() {
 		add_filter( 'wcgc_email_template_html', [ __CLASS__, 'swap_template' ], 10, 2 );
 		add_action( 'wcgc_email_before_card_design', [ __CLASS__, 'inject_theme_header' ], 10, 2 );
-		add_filter( 'wcgc_gift_card_creation_args', [ __CLASS__, 'store_theme_in_meta' ], 10, 3 );
 	}
 
 	/**
@@ -139,22 +138,6 @@ class ThemeManager {
 			/>
 		</div>
 		<?php
-	}
-
-	/**
-	 * Hook for gift card creation args filter.
-	 *
-	 * The theme is already stored in order item meta by ProductFields
-	 * at checkout time. This hook is available for future extensions
-	 * but does not modify the gift card data itself.
-	 *
-	 * @param array          $gc_data Gift card data array.
-	 * @param \WC_Order      $order   Order object.
-	 * @param \WC_Order_Item $item    Line item.
-	 * @return array
-	 */
-	public static function store_theme_in_meta( $gc_data, $order, $item ) {
-		return $gc_data;
 	}
 
 	/**

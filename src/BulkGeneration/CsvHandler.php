@@ -2,6 +2,7 @@
 
 namespace GiftCardsPro\BulkGeneration;
 
+use GiftCardsPro\Support\CsvUtil;
 use GiftCards\GiftCard\CodeGenerator;
 use GiftCards\GiftCard\Repository;
 use GiftCards\GiftCard\TransactionRepository;
@@ -83,15 +84,15 @@ class CsvHandler {
 
 		foreach ( $cards as $card ) {
 			fputcsv( $output, [
-				self::escape_csv_cell( $card->code ),
+				CsvUtil::escape_cell( $card->code ),
 				$card->initial_amount,
 				$card->balance,
-				self::escape_csv_cell( $card->status ),
-				self::escape_csv_cell( $card->recipient_name ),
-				self::escape_csv_cell( $card->recipient_email ),
-				self::escape_csv_cell( $card->currency ),
-				self::escape_csv_cell( $card->created_at ),
-				self::escape_csv_cell( $card->expires_at ?? '' ),
+				CsvUtil::escape_cell( $card->status ),
+				CsvUtil::escape_cell( $card->recipient_name ),
+				CsvUtil::escape_cell( $card->recipient_email ),
+				CsvUtil::escape_cell( $card->currency ),
+				CsvUtil::escape_cell( $card->created_at ),
+				CsvUtil::escape_cell( $card->expires_at ?? '' ),
 			] );
 		}
 
@@ -361,28 +362,4 @@ class CsvHandler {
 		return trim( $row[ $index ] );
 	}
 
-	/**
-	 * Prefix potentially dangerous spreadsheet formulas to prevent CSV injection.
-	 *
-	 * @param mixed $value CSV cell value.
-	 * @return string
-	 */
-	private static function escape_csv_cell( $value ) {
-		$value = (string) $value;
-		if ( '' === $value ) {
-			return $value;
-		}
-
-		$trimmed = ltrim( $value );
-		if ( '' === $trimmed ) {
-			return $value;
-		}
-
-		$first = $trimmed[0];
-		if ( in_array( $first, [ '=', '+', '-', '@' ], true ) ) {
-			return "'" . $value;
-		}
-
-		return $value;
-	}
 }

@@ -3,6 +3,7 @@
 namespace GiftCardsPro\Analytics;
 
 use GiftCardsPro\Support\Options;
+use GiftCardsPro\Support\CsvUtil;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -169,13 +170,13 @@ class ReportGenerator {
 
 		foreach ( $gift_cards as $gc ) {
 			$row = [
-				self::escape_csv_cell( $gc->code ),
+				CsvUtil::escape_cell( $gc->code ),
 				number_format( (float) $gc->initial_amount, 2, '.', '' ),
 				number_format( (float) $gc->balance, 2, '.', '' ),
-				self::escape_csv_cell( $gc->status ),
-				self::escape_csv_cell( $gc->recipient_email ),
-				self::escape_csv_cell( $gc->created_at ),
-				self::escape_csv_cell( $gc->expires_at ? $gc->expires_at : '' ),
+				CsvUtil::escape_cell( $gc->status ),
+				CsvUtil::escape_cell( $gc->recipient_email ),
+				CsvUtil::escape_cell( $gc->created_at ),
+				CsvUtil::escape_cell( $gc->expires_at ? $gc->expires_at : '' ),
 				(int) $gc->transactions_count,
 			];
 
@@ -218,28 +219,4 @@ class ReportGenerator {
 		}
 	}
 
-	/**
-	 * Prefix potentially dangerous spreadsheet formulas to prevent CSV injection.
-	 *
-	 * @param mixed $value CSV cell value.
-	 * @return string
-	 */
-	private static function escape_csv_cell( $value ) {
-		$value = (string) $value;
-		if ( '' === $value ) {
-			return $value;
-		}
-
-		$trimmed = ltrim( $value );
-		if ( '' === $trimmed ) {
-			return $value;
-		}
-
-		$first = $trimmed[0];
-		if ( in_array( $first, [ '=', '+', '-', '@' ], true ) ) {
-			return "'" . $value;
-		}
-
-		return $value;
-	}
 }
