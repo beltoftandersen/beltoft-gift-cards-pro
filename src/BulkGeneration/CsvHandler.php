@@ -227,11 +227,26 @@ class CsvHandler {
 			$recipient_name  = sanitize_text_field( self::get_col_value( $row, $col_map['recipient_name'] ) );
 			$recipient_email = sanitize_email( self::get_col_value( $row, $col_map['recipient_email'] ) );
 			$message         = sanitize_textarea_field( self::get_col_value( $row, $col_map['message'] ) );
-			$expiry_days     = absint( self::get_col_value( $row, $col_map['expiry_days'] ) );
 
-			$expires_at = $expiry_days > 0
-				? gmdate( 'Y-m-d H:i:s', time() + ( $expiry_days * DAY_IN_SECONDS ) )
-				: null;
+			// Resolve expiry: absolute date ("Expires" column) takes priority over
+			// relative days ("Expiry Days" column).
+			$expires_at    = null;
+			$raw_expires   = sanitize_text_field( self::get_col_value( $row, $col_map['expires_at'] ) );
+			$raw_exp_days  = self::get_col_value( $row, $col_map['expiry_days'] );
+
+			if ( ! empty( $raw_expires ) ) {
+				// Absolute date from export, e.g. "2026-12-31 00:00:00" or "2026-12-31".
+				$ts = strtotime( $raw_expires );
+				if ( false !== $ts && $ts > 0 ) {
+					$expires_at = gmdate( 'Y-m-d H:i:s', $ts );
+				}
+			} elseif ( ! empty( $raw_exp_days ) && ctype_digit( $raw_exp_days ) ) {
+				// Relative days from now.
+				$expiry_days = absint( $raw_exp_days );
+				if ( $expiry_days > 0 ) {
+					$expires_at = gmdate( 'Y-m-d H:i:s', time() + ( $expiry_days * DAY_IN_SECONDS ) );
+				}
+			}
 
 			$code = CodeGenerator::generate();
 
@@ -313,6 +328,7 @@ class CsvHandler {
 			'recipient_email' => false,
 			'message'         => false,
 			'expiry_days'     => false,
+			'expires_at'      => false,
 		];
 
 		foreach ( $headers as $index => $header ) {
@@ -345,8 +361,13 @@ class CsvHandler {
 
 				case 'expiry_days':
 				case 'expiry days':
-				case 'expires':
 					$map['expiry_days'] = $index;
+					break;
+
+				case 'expires':
+				case 'expires_at':
+				case 'expires at':
+					$map['expires_at'] = $index;
 					break;
 			}
 		}
