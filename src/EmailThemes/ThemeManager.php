@@ -13,35 +13,49 @@ class ThemeManager {
 	 */
 	public static function init() {
 		add_filter( 'wcgc_email_template_html', [ __CLASS__, 'swap_template' ], 10, 2 );
-		add_action( 'wcgc_email_before_card_design', [ __CLASS__, 'inject_theme_header' ], 10, 2 );
 	}
 
 	/**
-	 * Get available email themes.
+	 * Get available email themes with color definitions.
 	 *
-	 * @return array<string, array{name: string, image: string}>
+	 * @return array<string, array{name: string, color: string, color_light: string, bg: string, heading: string}>
 	 */
 	public static function get_available_themes() {
 		return [
 			'classic'     => [
-				'name'  => __( 'Classic', 'smart-gift-cards-for-woocommerce-pro' ),
-				'image' => WCGC_PRO_URL . 'assets/images/themes/classic.png',
+				'name'        => __( 'Classic', 'smart-gift-cards-for-woocommerce-pro' ),
+				'color'       => '#6B4C9A',
+				'color_light' => '#8B6CB3',
+				'bg'          => '#F3EEFC',
+				'heading'     => __( "You've received a gift card!", 'smart-gift-cards-for-woocommerce-pro' ),
 			],
 			'birthday'    => [
-				'name'  => __( 'Birthday', 'smart-gift-cards-for-woocommerce-pro' ),
-				'image' => WCGC_PRO_URL . 'assets/images/themes/birthday.png',
+				'name'        => __( 'Birthday', 'smart-gift-cards-for-woocommerce-pro' ),
+				'color'       => '#E91E8C',
+				'color_light' => '#F06AB5',
+				'bg'          => '#FDE7F3',
+				'heading'     => __( 'Happy Birthday!', 'smart-gift-cards-for-woocommerce-pro' ),
 			],
 			'celebration' => [
-				'name'  => __( 'Celebration', 'smart-gift-cards-for-woocommerce-pro' ),
-				'image' => WCGC_PRO_URL . 'assets/images/themes/celebration.png',
+				'name'        => __( 'Celebration', 'smart-gift-cards-for-woocommerce-pro' ),
+				'color'       => '#E88700',
+				'color_light' => '#F5A623',
+				'bg'          => '#FFF3E0',
+				'heading'     => __( 'Congratulations!', 'smart-gift-cards-for-woocommerce-pro' ),
 			],
 			'thank-you'   => [
-				'name'  => __( 'Thank You', 'smart-gift-cards-for-woocommerce-pro' ),
-				'image' => WCGC_PRO_URL . 'assets/images/themes/thank-you.png',
+				'name'        => __( 'Thank You', 'smart-gift-cards-for-woocommerce-pro' ),
+				'color'       => '#1A9E8F',
+				'color_light' => '#3BBFB0',
+				'bg'          => '#E6F7F5',
+				'heading'     => __( 'Thank You!', 'smart-gift-cards-for-woocommerce-pro' ),
 			],
 			'holiday'     => [
-				'name'  => __( 'Holiday', 'smart-gift-cards-for-woocommerce-pro' ),
-				'image' => WCGC_PRO_URL . 'assets/images/themes/holiday.png',
+				'name'        => __( 'Holiday', 'smart-gift-cards-for-woocommerce-pro' ),
+				'color'       => '#B22222',
+				'color_light' => '#D94444',
+				'bg'          => '#FDEAEA',
+				'heading'     => __( 'Happy Holidays!', 'smart-gift-cards-for-woocommerce-pro' ),
 			],
 		];
 	}
@@ -98,46 +112,6 @@ class ThemeManager {
 		);
 
 		return $themed_template;
-	}
-
-	/**
-	 * Inject the theme header image before the card design section in the email.
-	 *
-	 * @param object         $gift_card Gift card data object.
-	 * @param \WC_Order|null $order     Order object.
-	 */
-	public static function inject_theme_header( $gift_card, $order ) {
-		if ( Options::get( 'email_themes' ) !== '1' ) {
-			return;
-		}
-
-		if ( ! $gift_card || empty( $gift_card->order_id ) ) {
-			return;
-		}
-
-		$theme_slug = self::get_theme_for_gift_card( $gift_card );
-
-		if ( empty( $theme_slug ) ) {
-			return;
-		}
-
-		$themes = self::get_available_themes();
-		if ( ! isset( $themes[ $theme_slug ] ) ) {
-			return;
-		}
-
-		$theme     = $themes[ $theme_slug ];
-		$image_url = $theme['image'];
-		$alt_text  = $theme['name'];
-		?>
-		<div style="text-align: center; margin: 20px 0 10px;">
-			<img
-				src="<?php echo esc_url( $image_url ); ?>"
-				alt="<?php echo esc_attr( $alt_text ); ?>"
-				style="max-width: 100%; height: auto; display: inline-block;"
-			/>
-		</div>
-		<?php
 	}
 
 	/**

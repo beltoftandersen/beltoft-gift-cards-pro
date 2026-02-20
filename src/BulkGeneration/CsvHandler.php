@@ -69,7 +69,8 @@ class CsvHandler {
 			wp_die( esc_html__( 'Unable to open output stream.', 'smart-gift-cards-for-woocommerce-pro' ) );
 		}
 
-		// CSV header row.
+		// CSV header row — use English tokens so exported files can be re-imported
+		// regardless of the site language at export or import time.
 		fputcsv( $output, [
 			'Code',
 			'Initial Amount',
@@ -315,6 +316,10 @@ class CsvHandler {
 		];
 
 		foreach ( $headers as $index => $header ) {
+			// Strip BOM and any surrounding whitespace.
+			$header = ltrim( $header, "\xEF\xBB\xBF" );
+			$header = trim( $header );
+
 			switch ( $header ) {
 				case 'amount':
 				case 'initial_amount':
@@ -340,6 +345,7 @@ class CsvHandler {
 
 				case 'expiry_days':
 				case 'expiry days':
+				case 'expires':
 					$map['expiry_days'] = $index;
 					break;
 			}

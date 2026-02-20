@@ -35,14 +35,14 @@ class Scheduler {
 			return $should_send;
 		}
 
-		$delivery_date = self::get_delivery_date_from_order( $gc_id, $order );
+		$delivery_info = self::get_delivery_info_from_order( $gc_id, $order );
 
-		if ( empty( $delivery_date ) ) {
+		if ( empty( $delivery_info['date'] ) ) {
 			return $should_send;
 		}
 
-		// If the scheduled date is in the future, defer the email.
-		if ( self::is_future_local_date( $delivery_date ) ) {
+		// If the scheduled date/time is in the future, defer the email.
+		if ( self::is_future_local_datetime( $delivery_info['date'], $delivery_info['hour'] ) ) {
 			return false;
 		}
 
@@ -64,20 +64,23 @@ class Scheduler {
 			return;
 		}
 
-		$delivery_date = self::get_delivery_date_from_order( $gc_id, $order );
+		$delivery_info = self::get_delivery_info_from_order( $gc_id, $order );
 
-		if ( empty( $delivery_date ) ) {
+		if ( empty( $delivery_info['date'] ) ) {
 			return;
 		}
 
-		// Only schedule if the date is in the future.
-		if ( ! self::is_future_local_date( $delivery_date ) ) {
+		$delivery_date = $delivery_info['date'];
+		$delivery_hour = $delivery_info['hour'];
+
+		// Only schedule if the date/time is in the future.
+		if ( ! self::is_future_local_datetime( $delivery_date, $delivery_hour ) ) {
 			return;
 		}
 
 		global $wpdb;
 
-		$scheduled_date_utc = self::local_date_to_utc_start( $delivery_date );
+		$scheduled_date_utc = self::local_datetime_to_utc( $delivery_date, $delivery_hour );
 		if ( empty( $scheduled_date_utc ) ) {
 			return;
 		}
@@ -164,22 +167,22 @@ class Scheduler {
 	}
 
 	/**
-	 * Get the delivery date from the order item that created a specific gift card.
+	 * Get the delivery date and hour from the order item that created a specific gift card.
 	 *
 	 * Looks through the order items to find one with a `_wcgc_delivery_date` meta
 	 * that corresponds to the given gift card.
 	 *
 	 * @param int       $gc_id Gift card ID.
 	 * @param \WC_Order $order Order object.
-	 * @return string Delivery date in Y-m-d format, or empty string if not set.
+	 * @return array{date: string, hour: int} Delivery date in Y-m-d format + hour (0-23), or empty date if not set.
 	 */
-	private static function get_delivery_date_from_order( $gc_id, $order ) {
+	private static function get_delivery_info_from_order( $gc_id, $order ) {
 		$gift_card = Repository::find( $gc_id );
 		if ( ! $gift_card ) {
-			return '';
+			return [ 'date' => '', 'hour' => 9 ];
 		}
 
-		$fallback_date = '';
+		$fallback = [ 'date' => '', 'hour' => 9 ];
 
 		foreach ( $order->get_items() as $item ) {
 			$product = $item->get_product();
@@ -197,44 +200,58 @@ class Scheduler {
 				continue;
 			}
 
-			if ( '' === $fallback_date ) {
-				$fallback_date = $delivery_date;
+			$delivery_hour = $item->get_meta( '_wcgc_delivery_hour' );
+			$hour          = ( '' !== $delivery_hour && is_numeric( $delivery_hour ) ) ? absint( $delivery_hour ) : 9;
+			$hour          = min( 23, $hour );
+
+			if ( '' === $fallback['date'] ) {
+				$fallback = [ 'date' => $delivery_date, 'hour' => $hour ];
 			}
 
 			if ( self::item_matches_gift_card( $item, $gift_card ) ) {
-				return $delivery_date;
+				return [ 'date' => $delivery_date, 'hour' => $hour ];
 			}
 		}
 
-		return $fallback_date;
+		return $fallback;
 	}
 
 	/**
-	 * Determine whether a local delivery date is in the future.
+	 * Determine whether a local delivery date + hour is in the future.
 	 *
 	 * @param string $delivery_date Date in Y-m-d format.
+	 * @param int    $hour          Hour of the day (0-23).
 	 * @return bool
 	 */
-	private static function is_future_local_date( $delivery_date ) {
+	private static function is_future_local_datetime( $delivery_date, $hour ) {
 		$tz           = wp_timezone();
-		$delivery_obj = \DateTimeImmutable::createFromFormat( 'Y-m-d|', $delivery_date, $tz );
+		$delivery_obj = \DateTimeImmutable::createFromFormat(
+			'Y-m-d H:i:s',
+			$delivery_date . sprintf( ' %02d:00:00', $hour ),
+			$tz
+		);
 
 		if ( ! $delivery_obj ) {
 			return false;
 		}
 
-		$today_obj = new \DateTimeImmutable( 'today', $tz );
-		return $delivery_obj > $today_obj;
+		$now_obj = new \DateTimeImmutable( 'now', $tz );
+		return $delivery_obj > $now_obj;
 	}
 
 	/**
-	 * Convert a site-local delivery date to a UTC datetime string.
+	 * Convert a site-local delivery date + hour to a UTC datetime string.
 	 *
 	 * @param string $delivery_date Date in Y-m-d format.
+	 * @param int    $hour          Hour of the day (0-23).
 	 * @return string
 	 */
-	private static function local_date_to_utc_start( $delivery_date ) {
-		$local_dt = \DateTimeImmutable::createFromFormat( 'Y-m-d H:i:s', $delivery_date . ' 00:00:00', wp_timezone() );
+	private static function local_datetime_to_utc( $delivery_date, $hour ) {
+		$local_dt = \DateTimeImmutable::createFromFormat(
+			'Y-m-d H:i:s',
+			$delivery_date . sprintf( ' %02d:00:00', $hour ),
+			wp_timezone()
+		);
 		if ( ! $local_dt ) {
 			return '';
 		}

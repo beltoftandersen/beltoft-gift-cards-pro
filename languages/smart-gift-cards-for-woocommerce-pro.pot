@@ -1,0 +1,931 @@
+# Copyright (C) 2026 Chimkins IT
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Smart Gift Cards for WooCommerce - Pro 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/smart-gift-cards-for-woocommerce-pro\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-02-20T19:21:12+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: smart-gift-cards-for-woocommerce-pro\n"
+
+#. Plugin Name of the plugin
+#: smart-gift-cards-for-woocommerce-pro.php
+msgid "Smart Gift Cards for WooCommerce - Pro"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: smart-gift-cards-for-woocommerce-pro.php
+msgid "https://chimkins.com/smart-gift-cards-pro"
+msgstr ""
+
+#. Description of the plugin
+#: smart-gift-cards-for-woocommerce-pro.php
+msgid "Premium add-on for Smart Gift Cards for WooCommerce — scheduled delivery, email themes, store credit, bulk generation, BOGO promotions, and analytics. Requires the free core plugin."
+msgstr ""
+
+#. Author of the plugin
+#: smart-gift-cards-for-woocommerce-pro.php
+msgid "Chimkins IT"
+msgstr ""
+
+#. Author URI of the plugin
+#: smart-gift-cards-for-woocommerce-pro.php
+msgid "https://chimkins.com"
+msgstr ""
+
+#: smart-gift-cards-for-woocommerce-pro.php:48
+#: smart-gift-cards-for-woocommerce-pro.php:88
+msgid "Smart Gift Cards for WooCommerce - Pro requires the free \"Smart Gift Cards for WooCommerce\" plugin to be installed and activated."
+msgstr ""
+
+#: smart-gift-cards-for-woocommerce-pro.php:78
+msgid "Smart Gift Cards for WooCommerce - Pro requires WooCommerce to be installed and activated."
+msgstr ""
+
+#: smart-gift-cards-for-woocommerce-pro.php:98
+msgid "Smart Gift Cards for WooCommerce - Pro requires version 1.2.0 or higher of the free plugin. Please update."
+msgstr ""
+
+#: smart-gift-cards-for-woocommerce-pro.php:113
+msgid "Settings"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:48
+msgid "Pro Settings"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:49
+msgid "Bulk & CSV"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:50
+msgid "BOGO Rules"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:51
+msgid "License"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:69
+msgid "Scheduled Delivery"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:71
+msgid "Allow customers to schedule gift card delivery for a future date."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:78
+msgid "Enable Scheduled Delivery"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:80
+msgid "Allow customers to pick a future delivery date when purchasing a gift card."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:86
+msgid "Email Themes"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:88
+msgid "Offer themed email designs for gift card delivery emails."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:95
+msgid "Enable Email Themes"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:97
+msgid "Allow customers to choose a themed design for the gift card email."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:102
+msgid "Default Theme"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:105
+#: src/EmailThemes/ThemeManager.php:26
+msgid "Classic"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:106
+#: src/EmailThemes/ThemeManager.php:33
+msgid "Birthday"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:107
+#: src/EmailThemes/ThemeManager.php:40
+msgid "Celebration"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:108
+#: src/EmailThemes/ThemeManager.php:47
+msgid "Thank You"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:109
+#: src/EmailThemes/ThemeManager.php:54
+msgid "Holiday"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:116
+#: src/StoreCredit/CreditManager.php:39
+msgid "Store Credit"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:118
+msgid "Issue gift cards as store credit for refunds and account balances."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:125
+msgid "Enable Store Credit"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:127
+msgid "Enable store credit functionality backed by gift cards."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:132
+msgid "Auto-Create on Refund"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:134
+msgid "Automatically create a store credit gift card when an order is refunded."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:140
+msgid "BOGO Promotions"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:142
+msgid "Buy-one-get-one promotions for gift card products."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:149
+msgid "Enable BOGO Promotions"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:151
+msgid "Allow creating buy-one-get-one promotions for gift cards."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:157
+msgid "Analytics"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:159
+msgid "Gift card usage reports delivered to your inbox on a schedule."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:166
+msgid "Enable Analytics"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:168
+msgid "Enable analytics dashboard and scheduled email reports."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:171
+msgid "Report Frequency"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:174
+msgid "Daily"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:175
+msgid "Weekly"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:176
+msgid "Monthly"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:193
+msgid "Report Recipients"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:201
+msgid "Comma-separated email addresses. Leave blank to use the site admin email."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:204
+msgid "Day of Week"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:207
+msgid "Monday"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:208
+msgid "Tuesday"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:209
+msgid "Wednesday"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:210
+msgid "Thursday"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:211
+msgid "Friday"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:212
+msgid "Saturday"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:213
+msgid "Sunday"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:228
+msgid "Used for weekly reports."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:231
+msgid "Day of Month"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:246
+msgid "Used for monthly reports. Limited to 28 to ensure consistent delivery across all months."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:249
+msgid "Time of Day"
+msgstr ""
+
+#. translators: %s: WordPress timezone string
+#: src/Admin/SettingsPage.php:267
+#, php-format
+msgid "Uses your site timezone (%s)."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:276
+msgid "Advanced"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:283
+msgid "Cleanup on Uninstall"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:285
+msgid "Delete all Pro plugin data when uninstalled."
+msgstr ""
+
+#. translators: %s: license tab URL
+#: src/Admin/SettingsPage.php:302
+#, php-format
+msgid "An active license is required for Pro Settings. <a href=\"%s\">Enter your license key</a> to enable these features."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:335
+#: src/EmailThemes/ThemeManager.php:30
+#: templates/emails/themes/classic.php:14
+msgid "You've received a gift card!"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:336
+#: src/EmailThemes/ThemeManager.php:37
+#: templates/emails/themes/birthday.php:15
+msgid "Happy Birthday!"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:337
+#: src/EmailThemes/ThemeManager.php:44
+#: templates/emails/themes/celebration.php:15
+msgid "Congratulations!"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:338
+#: src/EmailThemes/ThemeManager.php:51
+#: templates/emails/themes/thank-you.php:15
+msgid "Thank You!"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:339
+#: src/EmailThemes/ThemeManager.php:58
+#: templates/emails/themes/holiday.php:15
+msgid "Happy Holidays!"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:342
+msgid "Theme Customization"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:343
+msgid "Customize the heading text and accent color for each email theme. Leave fields blank to use the defaults."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:359
+msgid "Heading"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:367
+msgid "Accent Color"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:396
+#: src/Admin/SettingsPage.php:424
+msgid "License Key"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:400
+#: src/Admin/SettingsPage.php:579
+msgid "Active"
+msgstr ""
+
+#. translators: %s: license expiration date
+#. translators: %s: expiry date
+#: src/Admin/SettingsPage.php:406
+#: templates/emails/plain/gift-card-delivery.php:50
+#: templates/emails/themes/_base.php:91
+#, php-format
+msgid "Expires: %s"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:412
+msgid "Lifetime"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:415
+#: src/Admin/SettingsPage.php:581
+msgid "Expired"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:417
+msgid "Inactive"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:432
+msgid "Enter your license key"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:437
+#: src/Admin/SettingsPage.php:509
+#: src/Admin/SettingsPage.php:513
+msgid "Deactivate"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:441
+#: src/Admin/SettingsPage.php:485
+#: src/Admin/SettingsPage.php:489
+msgid "Activate"
+msgstr ""
+
+#. translators: %s: date and time of last license check
+#: src/Admin/SettingsPage.php:455
+#, php-format
+msgid "Last checked: %s"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:471
+msgid "Activating..."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:484
+msgid "Activation failed."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:488
+#: src/Admin/SettingsPage.php:512
+msgid "Request failed. Please refresh and try again."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:494
+msgid "Are you sure you want to deactivate this license?"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:496
+msgid "Deactivating..."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:508
+msgid "Deactivation failed."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:530
+msgid "Bulk generation and CSV tools require an active license."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:536
+msgid "Bulk Generate Gift Cards"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:539
+msgid "Quantity"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:543
+msgid "Amount"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:547
+msgid "Code Prefix (optional)"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:551
+msgid "Expiry (days)"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:555
+msgid "Recipient Name (optional)"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:559
+msgid "Recipient Email (optional)"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:564
+msgid "Generate Gift Cards"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:568
+msgid "Preparing generation..."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:574
+msgid "Export Gift Cards (CSV)"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:576
+msgid "Filter by status"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:578
+msgid "All statuses"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:580
+msgid "Disabled"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:582
+msgid "Redeemed"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:586
+msgid "Download CSV"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:591
+msgid "Import Gift Cards (CSV)"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:596
+msgid "Import CSV"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:614
+msgid "BOGO promotions require an active license."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:623
+msgid "Add Rule"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:630
+msgid "Rule Name"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:634
+msgid "Buy Amount"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:638
+msgid "Get Amount"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:642
+msgid "Minimum Quantity"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:646
+msgid "Maximum Uses (0 = unlimited)"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:650
+msgid "Starts At (optional)"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:654
+msgid "Ends At (optional)"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:659
+msgid "Save Rule"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:666
+msgid "Name"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:667
+msgid "Buy"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:668
+msgid "Get"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:669
+msgid "Min Qty"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:670
+msgid "Uses"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:671
+#: src/Analytics/ReportGenerator.php:161
+#: src/BulkGeneration/CsvHandler.php:77
+msgid "Status"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:672
+msgid "Actions"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:678
+msgid "No BOGO rules yet."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:699
+msgid "Delete"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:723
+msgid "Activate your license"
+msgstr ""
+
+#: src/Analytics/Dashboard.php:38
+msgid "Revenue"
+msgstr ""
+
+#: src/Analytics/Dashboard.php:39
+msgid "Redemption Rate"
+msgstr ""
+
+#: src/Analytics/Dashboard.php:40
+msgid "Scheduled Pending"
+msgstr ""
+
+#: src/Analytics/Dashboard.php:41
+msgid "Store Credits Issued"
+msgstr ""
+
+#: src/Analytics/Dashboard.php:42
+msgid "BOGO Bonuses"
+msgstr ""
+
+#: src/Analytics/Dashboard.php:48
+msgid "7d"
+msgstr ""
+
+#: src/Analytics/Dashboard.php:49
+msgid "30d"
+msgstr ""
+
+#: src/Analytics/Dashboard.php:50
+msgid "90d"
+msgstr ""
+
+#: src/Analytics/Dashboard.php:51
+msgid "All Time"
+msgstr ""
+
+#: src/Analytics/Dashboard.php:55
+msgid "Pro Analytics"
+msgstr ""
+
+#. translators: 1: site name, 2: date
+#: src/Analytics/ReportGenerator.php:85
+#, php-format
+msgid "[%1$s] Gift Card Report - %2$s"
+msgstr ""
+
+#. translators: 1: site name, 2: date
+#: src/Analytics/ReportGenerator.php:92
+#, php-format
+msgid "Please find attached the gift card report for %1$s generated on %2$s."
+msgstr ""
+
+#: src/Analytics/ReportGenerator.php:158
+#: src/BulkGeneration/CsvHandler.php:74
+msgid "Code"
+msgstr ""
+
+#: src/Analytics/ReportGenerator.php:159
+#: src/BulkGeneration/CsvHandler.php:75
+msgid "Initial Amount"
+msgstr ""
+
+#: src/Analytics/ReportGenerator.php:160
+#: src/BulkGeneration/CsvHandler.php:76
+msgid "Balance"
+msgstr ""
+
+#: src/Analytics/ReportGenerator.php:162
+msgid "Recipient"
+msgstr ""
+
+#: src/Analytics/ReportGenerator.php:163
+#: src/BulkGeneration/CsvHandler.php:81
+msgid "Created"
+msgstr ""
+
+#: src/Analytics/ReportGenerator.php:164
+#: src/BulkGeneration/CsvHandler.php:82
+msgid "Expires"
+msgstr ""
+
+#: src/Analytics/ReportGenerator.php:165
+msgid "Transactions Count"
+msgstr ""
+
+#: src/Bogo/BogoManager.php:26
+#: src/Bogo/BogoManager.php:57
+#: src/Licensing/License.php:235
+#: src/Licensing/License.php:258
+msgid "Permission denied."
+msgstr ""
+
+#: src/Bogo/BogoManager.php:46
+msgid "Failed to save rule."
+msgstr ""
+
+#: src/Bogo/BogoManager.php:62
+msgid "Invalid rule ID."
+msgstr ""
+
+#: src/Bogo/BogoManager.php:70
+msgid "Failed to delete rule."
+msgstr ""
+
+#. translators: %s: BOGO rule name
+#: src/Bogo/CartHandler.php:112
+#, php-format
+msgid "Bonus gift card from promotion: %s"
+msgstr ""
+
+#. translators: %s: BOGO rule name
+#: src/Bogo/CartHandler.php:134
+#, php-format
+msgid "BOGO bonus from rule: %s"
+msgstr ""
+
+#: src/BulkGeneration/CsvHandler.php:39
+#: src/BulkGeneration/CsvHandler.php:112
+#: src/BulkGeneration/Generator.php:29
+#: src/BulkGeneration/Generator.php:145
+msgid "You do not have permission to perform this action."
+msgstr ""
+
+#: src/BulkGeneration/CsvHandler.php:69
+msgid "Unable to open output stream."
+msgstr ""
+
+#: src/BulkGeneration/CsvHandler.php:78
+msgid "Recipient Name"
+msgstr ""
+
+#: src/BulkGeneration/CsvHandler.php:79
+msgid "Recipient Email"
+msgstr ""
+
+#: src/BulkGeneration/CsvHandler.php:80
+msgid "Currency"
+msgstr ""
+
+#: src/BulkGeneration/CsvHandler.php:120
+msgid "No file was uploaded."
+msgstr ""
+
+#: src/BulkGeneration/CsvHandler.php:129
+msgid "File upload error. Please try again."
+msgstr ""
+
+#. translators: %d: maximum file size in megabytes
+#: src/BulkGeneration/CsvHandler.php:139
+#, php-format
+msgid "File too large. Maximum size is %d MB."
+msgstr ""
+
+#: src/BulkGeneration/CsvHandler.php:150
+msgid "Invalid file type. Please upload a CSV or TXT file."
+msgstr ""
+
+#: src/BulkGeneration/CsvHandler.php:157
+msgid "Invalid upload. Please try again."
+msgstr ""
+
+#: src/BulkGeneration/CsvHandler.php:167
+msgid "Unable to read the uploaded file."
+msgstr ""
+
+#: src/BulkGeneration/CsvHandler.php:177
+msgid "CSV file is empty or unreadable."
+msgstr ""
+
+#: src/BulkGeneration/CsvHandler.php:194
+msgid "CSV must contain an \"amount\" or \"initial_amount\" column."
+msgstr ""
+
+#. translators: %d: CSV row number
+#: src/BulkGeneration/CsvHandler.php:219
+#, php-format
+msgid "Row %d: Invalid or missing amount."
+msgstr ""
+
+#. translators: %d: CSV row number
+#: src/BulkGeneration/CsvHandler.php:258
+#, php-format
+msgid "Row %d: Failed to create gift card."
+msgstr ""
+
+#: src/BulkGeneration/CsvHandler.php:270
+msgid "Imported from CSV"
+msgstr ""
+
+#. translators: 1: imported count, 2: skipped count
+#: src/BulkGeneration/CsvHandler.php:295
+#, php-format
+msgid "%1$d gift card(s) imported, %2$d skipped."
+msgstr ""
+
+#: src/BulkGeneration/Generator.php:44
+msgid "Quantity must be between 1 and 500."
+msgstr ""
+
+#: src/BulkGeneration/Generator.php:51
+msgid "Amount must be greater than zero."
+msgstr ""
+
+#: src/BulkGeneration/Generator.php:102
+msgid "Bulk generated by admin"
+msgstr ""
+
+#. translators: %d: number of gift cards generated
+#: src/BulkGeneration/Generator.php:133
+#, php-format
+msgid "%d gift card(s) generated successfully."
+msgstr ""
+
+#: src/EmailThemes/ProductFields.php:43
+msgid "Choose a Design"
+msgstr ""
+
+#: src/EmailThemes/ProductFields.php:113
+msgid "Design"
+msgstr ""
+
+#: src/Licensing/License.php:75
+#: src/Licensing/License.php:240
+msgid "Please enter a license key."
+msgstr ""
+
+#: src/Licensing/License.php:81
+msgid "This license key is invalid."
+msgstr ""
+
+#: src/Licensing/License.php:87
+msgid "This license key has been revoked."
+msgstr ""
+
+#: src/Licensing/License.php:93
+msgid "This license key has expired."
+msgstr ""
+
+#: src/Licensing/License.php:109
+msgid "License activated successfully."
+msgstr ""
+
+#: src/Licensing/License.php:120
+msgid "No license key to deactivate."
+msgstr ""
+
+#: src/Licensing/License.php:131
+msgid "License deactivated successfully."
+msgstr ""
+
+#. translators: %s: license settings page URL
+#: src/Licensing/License.php:200
+#, php-format
+msgid "Smart Gift Cards Pro: Please <a href=\"%s\">enter your license key</a> to enable Pro features."
+msgstr ""
+
+#. translators: %d: number of days remaining in grace period
+#: src/Licensing/License.php:216
+#, php-format
+msgid "Smart Gift Cards Pro: Your license has expired. Pro features will be disabled in %d day(s)."
+msgstr ""
+
+#: src/Licensing/License.php:222
+msgid "Smart Gift Cards Pro: Your license has expired. Pro features are disabled."
+msgstr ""
+
+#: src/Plugin.php:97
+msgid "Generation failed."
+msgstr ""
+
+#: src/Plugin.php:98
+msgid "Request failed."
+msgstr ""
+
+#: src/Plugin.php:99
+msgid "Please select a CSV file."
+msgstr ""
+
+#: src/Plugin.php:100
+msgid "Importing..."
+msgstr ""
+
+#: src/Plugin.php:101
+msgid "Import failed."
+msgstr ""
+
+#: src/Plugin.php:102
+msgid "Save failed."
+msgstr ""
+
+#: src/Plugin.php:103
+msgid "Delete this rule?"
+msgstr ""
+
+#: src/ScheduledDelivery/ProductFields.php:37
+msgid "Delivery Date & Time (optional)"
+msgstr ""
+
+#: src/ScheduledDelivery/ProductFields.php:48
+msgid "Hour"
+msgstr ""
+
+#: src/ScheduledDelivery/ProductFields.php:57
+msgid "Leave empty to send the gift card immediately."
+msgstr ""
+
+#: src/ScheduledDelivery/ProductFields.php:110
+msgid "Please enter a valid delivery date."
+msgstr ""
+
+#: src/ScheduledDelivery/ProductFields.php:117
+msgid "The delivery date cannot be in the past."
+msgstr ""
+
+#: src/ScheduledDelivery/ProductFields.php:142
+msgid "Delivery Date"
+msgstr ""
+
+#: src/StoreCredit/CreditManager.php:43
+msgid "Store credit from refund"
+msgstr ""
+
+#. translators: %d: order ID
+#: src/StoreCredit/CreditManager.php:63
+#, php-format
+msgid "Store credit issued from refund on order #%d"
+msgstr ""
+
+#. translators: %s: sender name
+#: templates/emails/plain/gift-card-delivery.php:22
+#: templates/emails/themes/_base.php:30
+#, php-format
+msgid "From: %s"
+msgstr ""
+
+#. translators: %s: gift card amount
+#: templates/emails/plain/gift-card-delivery.php:35
+#, php-format
+msgid "Amount: %s"
+msgstr ""
+
+#. translators: %s: gift card code
+#: templates/emails/plain/gift-card-delivery.php:42
+#, php-format
+msgid "Code: %s"
+msgstr ""
+
+#. translators: %s: shop URL
+#: templates/emails/plain/gift-card-delivery.php:59
+#, php-format
+msgid "Shop now: %s"
+msgstr ""
+
+#: templates/emails/plain/gift-card-delivery.php:64
+msgid "Click the link above to apply your gift card automatically, or enter the code at checkout in the coupon/gift card field."
+msgstr ""
+
+#: templates/emails/themes/_base.php:80
+msgid "Shop Now"
+msgstr ""
+
+#: templates/emails/themes/_base.php:105
+msgid "Click \"Shop Now\" to apply your gift card automatically, or enter the code at checkout in the coupon/gift card field."
+msgstr ""

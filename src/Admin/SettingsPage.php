@@ -332,11 +332,11 @@ class SettingsPage {
 		$themes = \GiftCardsPro\EmailThemes\ThemeManager::get_available_themes();
 
 		$defaults = [
-			'classic'     => [ 'heading' => __( "You've received a gift card!", 'smart-gift-cards-for-woocommerce-pro' ), 'color' => '#7f54b3' ],
-			'birthday'    => [ 'heading' => __( "Happy Birthday! \xF0\x9F\x8E\x82", 'smart-gift-cards-for-woocommerce-pro' ), 'color' => '#e91e63' ],
-			'celebration' => [ 'heading' => __( "Congratulations! \xF0\x9F\x8E\x89", 'smart-gift-cards-for-woocommerce-pro' ), 'color' => '#ff9800' ],
-			'thank-you'   => [ 'heading' => __( "Thank You! \xF0\x9F\x92\x9A", 'smart-gift-cards-for-woocommerce-pro' ), 'color' => '#4caf50' ],
-			'holiday'     => [ 'heading' => __( "Happy Holidays! \xE2\xAD\x90", 'smart-gift-cards-for-woocommerce-pro' ), 'color' => '#c62828' ],
+			'classic'     => [ 'heading' => __( "You've received a gift card!", 'smart-gift-cards-for-woocommerce-pro' ), 'color' => '#6B4C9A' ],
+			'birthday'    => [ 'heading' => __( 'Happy Birthday!', 'smart-gift-cards-for-woocommerce-pro' ), 'color' => '#E91E8C' ],
+			'celebration' => [ 'heading' => __( 'Congratulations!', 'smart-gift-cards-for-woocommerce-pro' ), 'color' => '#E88700' ],
+			'thank-you'   => [ 'heading' => __( 'Thank You!', 'smart-gift-cards-for-woocommerce-pro' ), 'color' => '#1A9E8F' ],
+			'holiday'     => [ 'heading' => __( 'Happy Holidays!', 'smart-gift-cards-for-woocommerce-pro' ), 'color' => '#B22222' ],
 		];
 		?>
 		<h2><?php esc_html_e( 'Theme Customization', 'smart-gift-cards-for-woocommerce-pro' ); ?></h2>
@@ -351,10 +351,7 @@ class SettingsPage {
 				?>
 				<div class="wcgc-pro-theme-card">
 					<div class="wcgc-pro-theme-card__preview" style="border-top: 3px solid <?php echo esc_attr( $color ); ?>;">
-						<img src="<?php echo esc_url( $theme['image'] ); ?>"
-							 alt="<?php echo esc_attr( $theme['name'] ); ?>"
-							 loading="lazy"
-							 width="120" height="80" />
+						<span style="display:block;width:120px;height:50px;border-radius:4px;background:linear-gradient(135deg,<?php echo esc_attr( $color ); ?>,<?php echo esc_attr( $theme['color_light'] ); ?>);margin:0 auto 6px;"></span>
 						<strong><?php echo esc_html( $theme['name'] ); ?></strong>
 					</div>
 					<div class="wcgc-pro-theme-card__fields">

@@ -2,11 +2,11 @@
 /**
  * Gift Card Delivery Email — Themed Base Template (HTML).
  *
- * This file is included by each theme file after setting:
- *   $wcgc_theme_image  - theme image filename (e.g. 'classic.png')
- *   $wcgc_theme_color  - accent color (e.g. '#7f54b3')
- *   $wcgc_theme_bg     - code box background (e.g. '#f5f5f5')
- *   $wcgc_theme_heading - heading text
+ * Each theme file sets these variables before including this file:
+ *   $wcgc_theme_color      - accent color (e.g. '#6B4C9A')
+ *   $wcgc_theme_color_light - lighter variant for gradient end (e.g. '#8B6CB3')
+ *   $wcgc_theme_bg         - light background for code box (e.g. '#F3EEFC')
+ *   $wcgc_theme_heading    - heading text
  *
  * @package GiftCardsPro
  * @var object   $gift_card     Gift card data.
@@ -23,63 +23,85 @@ defined( 'ABSPATH' ) || exit;
 do_action( 'woocommerce_email_header', $email_heading, $email );
 ?>
 
-<div style="text-align: center; margin: 20px 0 10px;">
-	<img
-		src="<?php echo esc_url( WCGC_PRO_URL . 'assets/images/themes/' . $wcgc_theme_image ); ?>"
-		alt="<?php echo esc_attr( $wcgc_theme_heading ); ?>"
-		style="max-width: 100%; height: auto; display: inline-block;"
-	/>
-	<h2 style="color: <?php echo esc_attr( $wcgc_theme_color ); ?>; font-size: 24px; margin: 15px 0 5px;">
-		<?php echo esc_html( $wcgc_theme_heading ); ?>
-	</h2>
-</div>
-
-<p>
+<p style="margin: 0 0 4px; font-size: 14px; color: #555;">
 	<?php
 	printf(
 		/* translators: %s: sender name */
 		esc_html__( 'From: %s', 'smart-gift-cards-for-woocommerce-pro' ),
-		esc_html( $gift_card->sender_name )
+		'<strong>' . esc_html( $gift_card->sender_name ) . '</strong>'
 	);
 	?>
 </p>
 
 <?php if ( ! empty( $gift_card->message ) ) : ?>
-	<p style="font-style: italic; color: #555; padding: 10px 20px; border-left: 3px solid <?php echo esc_attr( $wcgc_theme_color ); ?>; margin: 15px 0;">
+	<p style="font-style: italic; color: #555; padding: 10px 16px; border-left: 3px solid <?php echo esc_attr( $wcgc_theme_color ); ?>; margin: 10px 0 20px; background: #fafafa; border-radius: 0 4px 4px 0; font-size: 14px;">
 		&ldquo;<?php echo esc_html( $gift_card->message ); ?>&rdquo;
 	</p>
 <?php endif; ?>
 
-<div style="text-align: center; margin: 30px 0;">
-	<p style="font-size: 32px; font-weight: bold; margin: 0 0 10px;">
-		<?php echo wp_kses_post( wc_price( $gift_card->initial_amount, array( 'currency' => $gift_card->currency ) ) ); ?>
-	</p>
-	<div style="background: <?php echo esc_attr( $wcgc_theme_bg ); ?>; padding: 15px 25px; display: inline-block; border-radius: 6px; margin: 10px 0; border: 2px dashed <?php echo esc_attr( $wcgc_theme_color ); ?>;">
-		<span style="font-family: monospace; font-size: 20px; letter-spacing: 3px; font-weight: bold; color: <?php echo esc_attr( $wcgc_theme_color ); ?>;">
-			<?php echo esc_html( $gift_card->code ); ?>
-		</span>
-	</div>
-	<?php if ( ! empty( $gift_card->expires_at ) ) : ?>
-		<p style="font-size: 13px; color: #888; margin-top: 10px;">
-			<?php
-			printf(
-				/* translators: %s: expiry date */
-				esc_html__( 'Expires: %s', 'smart-gift-cards-for-woocommerce-pro' ),
-				esc_html( date_i18n( get_option( 'date_format' ), strtotime( $gift_card->expires_at ) ) )
-			);
-			?>
-		</p>
-	<?php endif; ?>
-</div>
+<!-- Gift Card -->
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin: 20px 0; border-collapse: collapse;">
+	<tr>
+		<td align="center">
+			<table cellpadding="0" cellspacing="0" border="0" width="420" style="max-width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid #e0e0e0; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+				<!-- Themed Header -->
+				<tr>
+					<td style="background-color: <?php echo esc_attr( $wcgc_theme_color ); ?>; padding: 28px 20px; text-align: center;">
+						<p style="margin: 0; color: #ffffff; font-size: 20px; font-weight: 700; line-height: 1.3;">
+							<?php echo esc_html( $wcgc_theme_heading ); ?>
+						</p>
+					</td>
+				</tr>
+				<!-- Card Body -->
+				<tr>
+					<td style="background: #ffffff; padding: 28px 24px; text-align: center;">
+						<!-- Amount -->
+						<p style="font-size: 34px; font-weight: bold; margin: 0 0 18px; color: <?php echo esc_attr( $wcgc_theme_color ); ?>; line-height: 1;">
+							<?php echo wp_kses_post( wc_price( $gift_card->initial_amount, array( 'currency' => $gift_card->currency ) ) ); ?>
+						</p>
+						<!-- Code Box -->
+						<table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin: 0 0 20px;">
+							<tr>
+								<td align="center">
+									<div style="background: <?php echo esc_attr( $wcgc_theme_bg ); ?>; padding: 12px 24px; display: inline-block; border-radius: 6px; border: 1px solid <?php echo esc_attr( $wcgc_theme_color ); ?>33;">
+										<span style="font-family: 'Courier New', Courier, monospace; font-size: 18px; letter-spacing: 2px; font-weight: bold; color: #333;">
+											<?php echo esc_html( $gift_card->code ); ?>
+										</span>
+									</div>
+								</td>
+							</tr>
+						</table>
+						<!-- Shop Now Button -->
+						<table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin: 0 0 14px;">
+							<tr>
+								<td align="center">
+									<a href="<?php echo esc_url( add_query_arg( 'wcgc_apply', rawurlencode( $gift_card->code ), wc_get_page_permalink( 'shop' ) ) ); ?>"
+									   style="display: inline-block; background: <?php echo esc_attr( $wcgc_theme_color ); ?>; color: #ffffff; padding: 12px 32px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 15px;">
+										<?php esc_html_e( 'Shop Now', 'smart-gift-cards-for-woocommerce-pro' ); ?>
+									</a>
+								</td>
+							</tr>
+						</table>
+						<?php if ( ! empty( $gift_card->expires_at ) ) : ?>
+							<!-- Expiry -->
+							<p style="font-size: 12px; color: #999; margin: 0;">
+								<?php
+								printf(
+									/* translators: %s: expiry date */
+									esc_html__( 'Expires: %s', 'smart-gift-cards-for-woocommerce-pro' ),
+									esc_html( date_i18n( get_option( 'date_format' ), strtotime( $gift_card->expires_at ) ) )
+								);
+								?>
+							</p>
+						<?php endif; ?>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
 
-<p style="text-align: center; margin: 25px 0;">
-	<a href="<?php echo esc_url( add_query_arg( 'wcgc_apply', rawurlencode( $gift_card->code ), wc_get_page_permalink( 'shop' ) ) ); ?>"
-	   style="display: inline-block; background: <?php echo esc_attr( $wcgc_theme_color ); ?>; color: #fff; padding: 12px 30px; text-decoration: none; border-radius: 4px; font-weight: bold;">
-		<?php esc_html_e( 'Shop Now', 'smart-gift-cards-for-woocommerce-pro' ); ?>
-	</a>
-</p>
-
-<p style="font-size: 13px; color: #888; text-align: center;">
+<p style="font-size: 12px; color: #999; text-align: center; margin: 16px 0 0;">
 	<?php esc_html_e( 'Click "Shop Now" to apply your gift card automatically, or enter the code at checkout in the coupon/gift card field.', 'smart-gift-cards-for-woocommerce-pro' ); ?>
 </p>
 

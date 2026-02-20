@@ -70,6 +70,7 @@ add_action( 'before_woocommerce_init', function () {
  * Bootstrap — runs after core plugin (priority 20 vs core's default 10).
  */
 add_action( 'plugins_loaded', function () {
+
 	// Check WooCommerce.
 	if ( ! class_exists( 'WooCommerce' ) ) {
 		add_action( 'admin_notices', function () {

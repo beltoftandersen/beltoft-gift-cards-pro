@@ -113,8 +113,9 @@ class Plugin {
 			return;
 		}
 
-		global $product;
-		if ( ! $product instanceof \WC_Product || $product->get_type() !== 'gift-card' ) {
+		// Only load on gift-card product pages.
+		$product = wc_get_product();
+		if ( ! $product || 'gift-card' !== $product->get_type() ) {
 			return;
 		}
 

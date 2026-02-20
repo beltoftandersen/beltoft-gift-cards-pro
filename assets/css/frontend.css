@@ -2,7 +2,7 @@
  * Smart Gift Cards Pro - Frontend Styles
  */
 
-/* ── Delivery Date Picker ───────────────────── */
+/* ── Delivery Date & Time Picker ────────────── */
 .wcgc-scheduled-delivery {
 	margin: 12px 0;
 }
@@ -13,12 +13,20 @@
 	margin-bottom: 6px;
 }
 
-.wcgc-scheduled-delivery input[type="date"] {
-	width: 100%;
-	max-width: 250px;
-	padding: 8px;
-	border: 1px solid #ddd;
-	border-radius: 4px;
+.wcgc-delivery-datetime-row {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+.wcgc-delivery-date {
+	flex: 1;
+	max-width: 200px;
+}
+
+.wcgc-delivery-hour {
+	width: auto;
+	min-width: 90px;
 }
 
 .wcgc-delivery-date-note {
@@ -47,11 +55,12 @@
 .wcgc-theme-option {
 	cursor: pointer;
 	text-align: center;
-	padding: 6px;
+	padding: 5px;
 	border: 2px solid #eee;
 	border-radius: 6px;
 	transition: border-color 0.2s, box-shadow 0.2s;
 	background: #fff;
+	width: 90px;
 }
 
 .wcgc-theme-option:hover {
@@ -63,19 +72,66 @@
 }
 
 .wcgc-theme-option.selected {
-	border-color: #7f54b3;
-	box-shadow: 0 0 0 1px #7f54b3;
+	border-color: var(--wcgc-amount-focus-color, #7f54b3);
+	box-shadow: 0 0 0 1px var(--wcgc-amount-focus-color, #7f54b3);
 }
 
-.wcgc-theme-option img {
-	width: 70px;
-	height: 70px;
-	object-fit: cover;
-	border-radius: 4px;
+/* Mini email preview card */
+.wcgc-theme-preview {
 	display: block;
+	border-radius: 4px;
+	overflow: hidden;
+	border: 1px solid #e8e8e8;
 }
 
-.wcgc-theme-option span {
+.wcgc-theme-preview-header {
+	display: block;
+	padding: 8px 6px;
+	text-align: center;
+}
+
+.wcgc-theme-preview-heading {
+	font-size: 8px;
+	font-weight: 700;
+	color: #fff;
+	letter-spacing: 0.3px;
+	line-height: 1;
+}
+
+.wcgc-theme-preview-body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+	padding: 6px 8px 8px;
+	background: #fff;
+}
+
+.wcgc-theme-preview-amount {
+	font-size: 12px;
+	font-weight: 700;
+	line-height: 1;
+}
+
+.wcgc-theme-preview-code {
+	font-size: 7px;
+	font-family: monospace;
+	letter-spacing: 1px;
+	padding: 2px 8px;
+	border-radius: 3px;
+	border: 1px solid;
+	color: #666;
+	line-height: 1;
+}
+
+.wcgc-theme-preview-btn {
+	display: block;
+	width: 40px;
+	height: 8px;
+	border-radius: 2px;
+}
+
+.wcgc-theme-label {
 	display: block;
 	font-size: 11px;
 	margin-top: 4px;

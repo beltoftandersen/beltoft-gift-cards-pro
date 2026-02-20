@@ -19,7 +19,10 @@ class ProductFields {
 	}
 
 	/**
-	 * Render visual theme picker with radio buttons on the product page.
+	 * Render mini email preview cards as the theme picker on the product page.
+	 *
+	 * Each card is a tiny visual mockup of the email showing the themed header,
+	 * amount placeholder, code placeholder, and button — all in pure HTML/CSS.
 	 *
 	 * @param \WC_Product $product Current product.
 	 */
@@ -48,11 +51,17 @@ class ProductFields {
 							value="<?php echo esc_attr( $slug ); ?>"
 							<?php checked( $slug, $default_theme ); ?>
 						/>
-						<img
-							src="<?php echo esc_url( $theme['image'] ); ?>"
-							alt="<?php echo esc_attr( $theme['name'] ); ?>"
-						/>
-						<span><?php echo esc_html( $theme['name'] ); ?></span>
+						<span class="wcgc-theme-preview">
+							<span class="wcgc-theme-preview-header" style="background: linear-gradient(135deg, <?php echo esc_attr( $theme['color'] ); ?>, <?php echo esc_attr( $theme['color_light'] ); ?>);">
+								<span class="wcgc-theme-preview-heading"><?php echo esc_html( $theme['name'] ); ?></span>
+							</span>
+							<span class="wcgc-theme-preview-body">
+								<span class="wcgc-theme-preview-amount" style="color: <?php echo esc_attr( $theme['color'] ); ?>;">$&mdash;</span>
+								<span class="wcgc-theme-preview-code" style="border-color: <?php echo esc_attr( $theme['color'] ); ?>33; background: <?php echo esc_attr( $theme['bg'] ); ?>;">XXXX</span>
+								<span class="wcgc-theme-preview-btn" style="background: <?php echo esc_attr( $theme['color'] ); ?>;"></span>
+							</span>
+						</span>
+						<span class="wcgc-theme-label"><?php echo esc_html( $theme['name'] ); ?></span>
 					</label>
 				<?php endforeach; ?>
 			</div>

@@ -15,4 +15,20 @@
 		});
 		e.target.closest('.wcgc-theme-option').classList.add('selected');
 	});
+
+	/* ── Delivery Date: enable hour picker ──────── */
+
+	var dateInput = document.getElementById('wcgc_delivery_date');
+	var hourSelect = document.getElementById('wcgc_delivery_hour');
+
+	if (dateInput && hourSelect) {
+		dateInput.addEventListener('change', function () {
+			if (this.value) {
+				hourSelect.disabled = false;
+			} else {
+				hourSelect.disabled = true;
+				hourSelect.value = '';
+			}
+		});
+	}
 })();

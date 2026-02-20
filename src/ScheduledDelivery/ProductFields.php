@@ -20,7 +20,7 @@ class ProductFields {
 	}
 
 	/**
-	 * Render a date picker for scheduled delivery on the product page.
+	 * Render a date and time picker for scheduled delivery on the product page.
 	 *
 	 * @param \WC_Product $product Current product.
 	 */
@@ -34,15 +34,25 @@ class ProductFields {
 		<div class="wcgc-scheduled-delivery">
 			<p class="form-row form-row-wide">
 				<label for="wcgc_delivery_date">
-					<?php esc_html_e( 'Delivery Date (optional)', 'smart-gift-cards-for-woocommerce-pro' ); ?>
+					<?php esc_html_e( 'Delivery Date & Time (optional)', 'smart-gift-cards-for-woocommerce-pro' ); ?>
 				</label>
-				<input
-					type="date"
-					name="wcgc_delivery_date"
-					id="wcgc_delivery_date"
-					class="input-text"
-					min="<?php echo esc_attr( $today ); ?>"
-				/>
+				<span class="wcgc-delivery-datetime-row">
+					<input
+						type="date"
+						name="wcgc_delivery_date"
+						id="wcgc_delivery_date"
+						class="input-text wcgc-delivery-date"
+						min="<?php echo esc_attr( $today ); ?>"
+					/>
+					<select name="wcgc_delivery_hour" id="wcgc_delivery_hour" class="input-text wcgc-delivery-hour" disabled>
+						<option value=""><?php esc_html_e( 'Hour', 'smart-gift-cards-for-woocommerce-pro' ); ?></option>
+						<?php for ( $h = 0; $h < 24; $h++ ) : ?>
+							<option value="<?php echo esc_attr( $h ); ?>"<?php selected( $h, 9 ); ?>>
+								<?php echo esc_html( sprintf( '%02d:00', $h ) ); ?>
+							</option>
+						<?php endfor; ?>
+					</select>
+				</span>
 				<span class="wcgc-delivery-date-note">
 					<?php esc_html_e( 'Leave empty to send the gift card immediately.', 'smart-gift-cards-for-woocommerce-pro' ); ?>
 				</span>
@@ -52,7 +62,7 @@ class ProductFields {
 	}
 
 	/**
-	 * Store the delivery date in cart item data.
+	 * Store the delivery date and hour in cart item data.
 	 *
 	 * @param array $cart_data  Cart item data.
 	 * @param int   $product_id Product ID.
@@ -63,11 +73,16 @@ class ProductFields {
 			return $cart_data;
 		}
 
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce handled by WooCommerce add-to-cart form.
-		$date = isset( $_POST['wcgc_delivery_date'] ) ? sanitize_text_field( wp_unslash( $_POST['wcgc_delivery_date'] ) ) : '';
+		// phpcs:disable WordPress.Security.NonceVerification.Missing -- Nonce handled by WooCommerce add-to-cart form.
+		$date     = isset( $_POST['wcgc_delivery_date'] ) ? sanitize_text_field( wp_unslash( $_POST['wcgc_delivery_date'] ) ) : '';
+		$raw_hour = isset( $_POST['wcgc_delivery_hour'] ) ? wp_unslash( $_POST['wcgc_delivery_hour'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized via absint below.
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 		if ( ! empty( $date ) ) {
 			$cart_data['wcgc_delivery_date'] = $date;
+			// Default to 9 AM when the hour select is left on the empty placeholder.
+			$hour = ( '' !== $raw_hour && is_numeric( $raw_hour ) ) ? absint( $raw_hour ) : 9;
+			$cart_data['wcgc_delivery_hour'] = min( $hour, 23 );
 		}
 
 		return $cart_data;
@@ -93,7 +108,13 @@ class ProductFields {
 		}
 
 		// Validate date format (YYYY-MM-DD).
-		if ( ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $date ) ) {
+		if ( ! preg_match( '/^(\d{4})-(\d{2})-(\d{2})$/', $date, $m ) ) {
+			wc_add_notice( __( 'Please enter a valid delivery date.', 'smart-gift-cards-for-woocommerce-pro' ), 'error' );
+			return false;
+		}
+
+		// Reject impossible calendar dates like 2026-02-31.
+		if ( ! checkdate( (int) $m[2], (int) $m[3], (int) $m[1] ) ) {
 			wc_add_notice( __( 'Please enter a valid delivery date.', 'smart-gift-cards-for-woocommerce-pro' ), 'error' );
 			return false;
 		}
@@ -109,7 +130,7 @@ class ProductFields {
 	}
 
 	/**
-	 * Display the delivery date in the cart.
+	 * Display the delivery date and time in the cart.
 	 *
 	 * @param array $item_data Cart item display data.
 	 * @param array $cart_item Cart item.
@@ -120,8 +141,10 @@ class ProductFields {
 			return $item_data;
 		}
 
+		$hour      = isset( $cart_item['wcgc_delivery_hour'] ) ? absint( $cart_item['wcgc_delivery_hour'] ) : 9;
 		$timestamp = strtotime( $cart_item['wcgc_delivery_date'] );
 		$formatted = $timestamp ? wp_date( get_option( 'date_format' ), $timestamp ) : $cart_item['wcgc_delivery_date'];
+		$formatted .= ' ' . sprintf( '%02d:00', $hour );
 
 		$item_data[] = [
 			'key'   => __( 'Delivery Date', 'smart-gift-cards-for-woocommerce-pro' ),
@@ -142,6 +165,8 @@ class ProductFields {
 	public static function save_order_item_meta( $item, $cart_item_key, $values, $order ) {
 		if ( ! empty( $values['wcgc_delivery_date'] ) ) {
 			$item->add_meta_data( '_wcgc_delivery_date', sanitize_text_field( $values['wcgc_delivery_date'] ) );
+			$hour = isset( $values['wcgc_delivery_hour'] ) ? absint( $values['wcgc_delivery_hour'] ) : 9;
+			$item->add_meta_data( '_wcgc_delivery_hour', min( 23, $hour ) );
 		}
 	}
 }
