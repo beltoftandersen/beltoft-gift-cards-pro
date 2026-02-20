@@ -30,19 +30,16 @@ class Dashboard {
 		$stats = self::get_pro_stats( $range );
 
 		$total_initial  = (float) $stats['total_revenue'];
-		$total_balance  = (float) $stats['outstanding_liability'];
 		$redemption_pct = $total_initial > 0
 			? round( ( $total_initial - (float) $stats['unredeemed_balance'] ) / $total_initial * 100, 1 )
 			: 0;
 
 		$cards = [
 			__( 'Revenue', 'smart-gift-cards-for-woocommerce-pro' )              => wp_strip_all_tags( wc_price( $total_initial ) ),
-			__( 'Outstanding Liability', 'smart-gift-cards-for-woocommerce-pro' ) => wp_strip_all_tags( wc_price( $total_balance ) ),
-			/* translators: %s: percentage value */
-			__( 'Redemption Rate', 'smart-gift-cards-for-woocommerce-pro' )       => $redemption_pct . '%',
-			__( 'Scheduled Pending', 'smart-gift-cards-for-woocommerce-pro' )     => number_format_i18n( (int) $stats['scheduled_pending'] ),
-			__( 'Store Credits Issued', 'smart-gift-cards-for-woocommerce-pro' )  => number_format_i18n( (int) $stats['store_credits_count'] ),
-			__( 'BOGO Bonuses', 'smart-gift-cards-for-woocommerce-pro' )          => number_format_i18n( (int) $stats['bogo_uses'] ),
+			__( 'Redemption Rate', 'smart-gift-cards-for-woocommerce-pro' )      => $redemption_pct . '%',
+			__( 'Scheduled Pending', 'smart-gift-cards-for-woocommerce-pro' )    => number_format_i18n( (int) $stats['scheduled_pending'] ),
+			__( 'Store Credits Issued', 'smart-gift-cards-for-woocommerce-pro' ) => number_format_i18n( (int) $stats['store_credits_count'] ),
+			__( 'BOGO Bonuses', 'smart-gift-cards-for-woocommerce-pro' )         => number_format_i18n( (int) $stats['bogo_uses'] ),
 		];
 
 		// Date range filter links.
@@ -116,13 +113,6 @@ class Dashboard {
 			"SELECT COALESCE(SUM(initial_amount), 0) FROM {$gc_table} WHERE 1=1{$date_clause}"
 		);
 
-		// Outstanding liability: SUM of balance WHERE status = 'active'.
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table.
-		$outstanding_liability = (float) $wpdb->get_var(
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name and validated date clause.
-			"SELECT COALESCE(SUM(balance), 0) FROM {$gc_table} WHERE status = 'active'{$date_clause}"
-		);
-
 		// Unredeemed balance: SUM of balance WHERE status IN ('active', 'expired') - for redemption rate calculation.
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table.
 		$unredeemed_balance = (float) $wpdb->get_var(
@@ -152,12 +142,11 @@ class Dashboard {
 		);
 
 		$stats = [
-			'total_revenue'         => $total_revenue,
-			'outstanding_liability' => $outstanding_liability,
-			'unredeemed_balance'    => $unredeemed_balance,
-			'scheduled_pending'     => $scheduled_pending,
-			'store_credits_count'   => $store_credits_count,
-			'bogo_uses'             => $bogo_uses,
+			'total_revenue'      => $total_revenue,
+			'unredeemed_balance' => $unredeemed_balance,
+			'scheduled_pending'  => $scheduled_pending,
+			'store_credits_count' => $store_credits_count,
+			'bogo_uses'          => $bogo_uses,
 		];
 
 		set_transient( $cache_key, $stats, HOUR_IN_SECONDS );
