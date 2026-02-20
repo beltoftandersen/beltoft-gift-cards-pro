@@ -1,0 +1,161 @@
+<?php
+
+namespace GiftCardsPro\Support;
+
+defined( 'ABSPATH' ) || exit;
+
+class Options {
+
+	const OPTION = 'wcgc_pro_options';
+
+	/**
+	 * In-memory cache to avoid repeated get_option + wp_parse_args.
+	 *
+	 * @var array|null
+	 */
+	private static $cache = null;
+
+	/**
+	 * Default option values.
+	 *
+	 * @return array
+	 */
+	public static function defaults(): array {
+		return [
+			// License.
+			'license_key'          => '',
+			'license_status'       => '',
+			'license_expires'      => '',
+			'license_last_checked' => '',
+			'license_grace_until'  => '',
+
+			// Scheduled Delivery.
+			'scheduled_delivery' => '1',
+
+			// Email Themes.
+			'email_themes'   => '1',
+			'default_theme'  => 'classic',
+
+			// Store Credit.
+			'store_credit'      => '1',
+			'auto_store_credit' => '0',
+
+			// BOGO.
+			'bogo_enabled' => '1',
+
+			// Analytics.
+			'analytics_enabled'   => '1',
+			'report_frequency'    => 'weekly',
+			'report_recipients'   => '',
+			'report_day_of_week'  => '1',
+			'report_day_of_month' => '1',
+			'report_time_of_day'  => '9',
+			'report_last_sent'    => '',
+
+			// Advanced.
+			'cleanup_on_uninstall' => '0',
+		];
+	}
+
+	/**
+	 * Get all options or a single key.
+	 *
+	 * @param string|null $key Option key, or null for all.
+	 * @return mixed
+	 */
+	public static function get( $key = null ) {
+		if ( null === self::$cache ) {
+			$saved       = get_option( self::OPTION, [] );
+			self::$cache = wp_parse_args( $saved, self::defaults() );
+		}
+
+		if ( null !== $key ) {
+			return self::$cache[ $key ] ?? null;
+		}
+
+		return self::$cache;
+	}
+
+	/**
+	 * Update a single key or merge an array.
+	 *
+	 * @param string|array $key   Option key or array of key-value pairs.
+	 * @param mixed        $value Value when $key is a string.
+	 */
+	public static function set( $key, $value = null ) {
+		$opts = self::get();
+
+		if ( is_array( $key ) ) {
+			$opts = array_merge( $opts, $key );
+		} else {
+			$opts[ $key ] = $value;
+		}
+
+		update_option( self::OPTION, $opts );
+		self::$cache = null; // Invalidate cache.
+	}
+
+	/**
+	 * Sanitize callback for settings save.
+	 *
+	 * @param array $input Raw POST input.
+	 * @return array Sanitized options.
+	 */
+	public static function sanitize( array $input ): array {
+		$clean = self::get();
+
+		// Checkbox fields (present = 1, absent = 0).
+		$checks = [
+			'scheduled_delivery',
+			'email_themes',
+			'store_credit',
+			'auto_store_credit',
+			'bogo_enabled',
+			'analytics_enabled',
+			'cleanup_on_uninstall',
+		];
+		foreach ( $checks as $f ) {
+			$clean[ $f ] = isset( $input[ $f ] ) ? '1' : '0';
+		}
+
+		// Enum fields.
+		if ( isset( $input['report_frequency'] ) && in_array( $input['report_frequency'], [ 'daily', 'weekly', 'monthly' ], true ) ) {
+			$clean['report_frequency'] = $input['report_frequency'];
+		}
+
+		// Default theme.
+		if ( isset( $input['default_theme'] ) ) {
+			$clean['default_theme'] = sanitize_key( $input['default_theme'] );
+		}
+
+		// Email recipients — sanitize each email.
+		if ( isset( $input['report_recipients'] ) ) {
+			$emails = array_map( 'trim', explode( ',', $input['report_recipients'] ) );
+			$emails = array_filter( $emails, 'is_email' );
+			$clean['report_recipients'] = implode( ', ', $emails );
+		}
+
+		// Day of week (1-7).
+		if ( isset( $input['report_day_of_week'] ) ) {
+			$day = absint( $input['report_day_of_week'] );
+			$clean['report_day_of_week'] = (string) max( 1, min( 7, $day ) );
+		}
+
+		// Day of month (1-28).
+		if ( isset( $input['report_day_of_month'] ) ) {
+			$day = absint( $input['report_day_of_month'] );
+			$clean['report_day_of_month'] = (string) max( 1, min( 28, $day ) );
+		}
+
+		// Time of day (0-23).
+		if ( isset( $input['report_time_of_day'] ) ) {
+			$hour = absint( $input['report_time_of_day'] );
+			$clean['report_time_of_day'] = (string) min( 23, $hour );
+		}
+
+		// License fields are managed exclusively by the License class.
+		// They are NOT accepted from POST input to prevent bypass.
+
+		return $clean;
+	}
+}

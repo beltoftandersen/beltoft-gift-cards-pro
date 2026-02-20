@@ -1,0 +1,227 @@
+/**
+ * Smart Gift Cards Pro - Admin Styles
+ */
+
+/* ── License Tab ────────────────────────────── */
+.wcgc-pro-license-badge {
+	display: inline-block;
+	padding: 4px 12px;
+	border-radius: 3px;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.4;
+	color: #fff;
+}
+
+.wcgc-pro-license-badge--active {
+	background: #00a32a;
+}
+
+.wcgc-pro-license-badge--expired {
+	background: #d63638;
+}
+
+.wcgc-pro-license-badge--inactive {
+	background: #787c82;
+}
+
+.wcgc-pro-license-expires {
+	display: inline-block;
+	margin-left: 8px;
+	font-size: 13px;
+	color: #50575e;
+}
+
+.wcgc-pro-license-message {
+	display: inline-block;
+	margin-left: 8px;
+	font-size: 13px;
+}
+
+/* ── Pro Settings Tab ───────────────────────── */
+.wcgc-pro-settings-wrap {
+	margin-top: 16px;
+}
+
+.wcgc-pro-settings-wrap .form-table th {
+	width: 250px;
+}
+
+.wcgc-pro-feature-section {
+	margin: 20px 0;
+	padding: 16px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+}
+
+.wcgc-pro-feature-section h3 {
+	margin-top: 0;
+	padding-bottom: 8px;
+	border-bottom: 1px solid #eee;
+}
+
+/* ── Bulk Generation ────────────────────────── */
+.wcgc-pro-bulk-wrap {
+	margin-top: 16px;
+	padding: 16px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+}
+
+.wcgc-pro-bulk-wrap h3 {
+	margin-top: 0;
+}
+
+.wcgc-pro-bulk-progress {
+	margin-top: 12px;
+	display: none;
+}
+
+.wcgc-pro-bulk-progress .progress-bar {
+	height: 20px;
+	background: #f0f0f1;
+	border-radius: 3px;
+	overflow: hidden;
+}
+
+.wcgc-pro-bulk-progress .progress-bar-fill {
+	height: 100%;
+	background: #2271b1;
+	transition: width 0.3s;
+	border-radius: 3px;
+}
+
+.wcgc-pro-bulk-progress .progress-text {
+	margin-top: 4px;
+	font-size: 12px;
+	color: #787c82;
+}
+
+/* ── BOGO Rules ─────────────────────────────── */
+.wcgc-pro-bogo-rules {
+	margin-top: 16px;
+}
+
+.wcgc-pro-bogo-rules table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.wcgc-pro-bogo-rules th,
+.wcgc-pro-bogo-rules td {
+	padding: 8px 12px;
+	text-align: left;
+	border-bottom: 1px solid #eee;
+}
+
+.wcgc-pro-bogo-form {
+	margin-top: 16px;
+	padding: 16px;
+	background: #f9f9f9;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	display: none;
+}
+
+/* ── Analytics Dashboard ────────────────────── */
+.wcgc-pro-analytics-header {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin: 16px 0 8px;
+}
+
+.wcgc-pro-analytics-header h3 {
+	margin: 0;
+}
+
+.wcgc-pro-range-filter {
+	display: flex;
+	gap: 6px;
+}
+
+.wcgc-pro-range-filter a {
+	padding: 4px 10px;
+	border: 1px solid #c3c4c7;
+	border-radius: 3px;
+	text-decoration: none;
+	font-size: 12px;
+	color: #2271b1;
+	background: #fff;
+}
+
+.wcgc-pro-range-filter a.active {
+	background: #2271b1;
+	color: #fff;
+	border-color: #2271b1;
+}
+
+/* ── CSV Import/Export ──────────────────────── */
+.wcgc-pro-csv-wrap {
+	margin-top: 16px;
+	display: flex;
+	gap: 16px;
+	flex-wrap: wrap;
+}
+
+.wcgc-pro-csv-box {
+	flex: 1;
+	min-width: 280px;
+	padding: 16px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+}
+
+.wcgc-pro-csv-box h3 {
+	margin-top: 0;
+}
+
+/* ── Theme Picker (frontend) ────────────────── */
+.wcgc-pro-theme-picker {
+	margin: 12px 0;
+}
+
+.wcgc-pro-theme-picker label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 8px;
+}
+
+.wcgc-pro-theme-options {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
+.wcgc-pro-theme-option {
+	cursor: pointer;
+	text-align: center;
+	padding: 6px;
+	border: 2px solid transparent;
+	border-radius: 4px;
+	transition: border-color 0.2s;
+}
+
+.wcgc-pro-theme-option:hover {
+	border-color: #c3c4c7;
+}
+
+.wcgc-pro-theme-option.selected {
+	border-color: #2271b1;
+}
+
+.wcgc-pro-theme-option img {
+	width: 60px;
+	height: 60px;
+	object-fit: cover;
+	border-radius: 3px;
+}
+
+.wcgc-pro-theme-option span {
+	display: block;
+	font-size: 11px;
+	margin-top: 4px;
+}

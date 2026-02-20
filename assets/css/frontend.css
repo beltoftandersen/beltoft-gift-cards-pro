@@ -1,0 +1,87 @@
+/**
+ * Smart Gift Cards Pro - Frontend Styles
+ */
+
+/* ── Delivery Date Picker ───────────────────── */
+.wcgc-pro-delivery-date {
+	margin: 12px 0;
+}
+
+.wcgc-pro-delivery-date label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 6px;
+}
+
+.wcgc-pro-delivery-date input[type="date"] {
+	width: 100%;
+	max-width: 250px;
+	padding: 8px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
+
+.wcgc-pro-delivery-date .description {
+	font-size: 12px;
+	color: #787c82;
+	margin-top: 4px;
+}
+
+/* ── Theme Picker ───────────────────────────── */
+.wcgc-pro-theme-picker {
+	margin: 12px 0;
+}
+
+.wcgc-pro-theme-picker > label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 8px;
+}
+
+.wcgc-pro-theme-options {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
+.wcgc-pro-theme-option {
+	cursor: pointer;
+	text-align: center;
+	padding: 6px;
+	border: 2px solid #eee;
+	border-radius: 6px;
+	transition: border-color 0.2s, box-shadow 0.2s;
+	background: #fff;
+}
+
+.wcgc-pro-theme-option:hover {
+	border-color: #c3c4c7;
+}
+
+.wcgc-pro-theme-option input[type="radio"] {
+	display: none;
+}
+
+.wcgc-pro-theme-option input[type="radio"]:checked + .wcgc-pro-theme-preview {
+	/* Parent label gets selected class via JS */
+}
+
+.wcgc-pro-theme-option.selected {
+	border-color: #7f54b3;
+	box-shadow: 0 0 0 1px #7f54b3;
+}
+
+.wcgc-pro-theme-preview img {
+	width: 70px;
+	height: 70px;
+	object-fit: cover;
+	border-radius: 4px;
+	display: block;
+}
+
+.wcgc-pro-theme-preview span {
+	display: block;
+	font-size: 11px;
+	margin-top: 4px;
+	color: #555;
+}
