@@ -314,11 +314,74 @@ class SettingsPage {
 			<?php
 			settings_fields( self::GROUP );
 			do_settings_sections( self::PAGE_SLUG );
-			submit_button();
 			?>
+
+			<?php if ( Options::get( 'email_themes' ) === '1' ) : ?>
+				<?php self::render_theme_customization(); ?>
+			<?php endif; ?>
+
+			<?php submit_button(); ?>
 		</form>
 		<?php
 		}
+
+	/**
+	 * Render the email theme customization cards.
+	 */
+	private static function render_theme_customization() {
+		$themes = \GiftCardsPro\EmailThemes\ThemeManager::get_available_themes();
+
+		$defaults = [
+			'classic'     => [ 'heading' => __( "You've received a gift card!", 'smart-gift-cards-for-woocommerce-pro' ), 'color' => '#7f54b3' ],
+			'birthday'    => [ 'heading' => __( "Happy Birthday! \xF0\x9F\x8E\x82", 'smart-gift-cards-for-woocommerce-pro' ), 'color' => '#e91e63' ],
+			'celebration' => [ 'heading' => __( "Congratulations! \xF0\x9F\x8E\x89", 'smart-gift-cards-for-woocommerce-pro' ), 'color' => '#ff9800' ],
+			'thank-you'   => [ 'heading' => __( "Thank You! \xF0\x9F\x92\x9A", 'smart-gift-cards-for-woocommerce-pro' ), 'color' => '#4caf50' ],
+			'holiday'     => [ 'heading' => __( "Happy Holidays! \xE2\xAD\x90", 'smart-gift-cards-for-woocommerce-pro' ), 'color' => '#c62828' ],
+		];
+		?>
+		<h2><?php esc_html_e( 'Theme Customization', 'smart-gift-cards-for-woocommerce-pro' ); ?></h2>
+		<p class="description"><?php esc_html_e( 'Customize the heading text and accent color for each email theme. Leave fields blank to use the defaults.', 'smart-gift-cards-for-woocommerce-pro' ); ?></p>
+
+		<div class="wcgc-pro-theme-grid">
+			<?php foreach ( $themes as $slug => $theme ) :
+				$saved_heading = Options::get( 'theme_heading_' . $slug );
+				$saved_color   = Options::get( 'theme_color_' . $slug );
+				$color         = $saved_color ?: $defaults[ $slug ]['color'];
+				$option_name   = Options::OPTION;
+				?>
+				<div class="wcgc-pro-theme-card">
+					<div class="wcgc-pro-theme-card__preview" style="border-top: 3px solid <?php echo esc_attr( $color ); ?>;">
+						<img src="<?php echo esc_url( $theme['image'] ); ?>"
+							 alt="<?php echo esc_attr( $theme['name'] ); ?>"
+							 loading="lazy"
+							 width="120" height="80" />
+						<strong><?php echo esc_html( $theme['name'] ); ?></strong>
+					</div>
+					<div class="wcgc-pro-theme-card__fields">
+						<label>
+							<?php esc_html_e( 'Heading', 'smart-gift-cards-for-woocommerce-pro' ); ?>
+							<input type="text"
+								   name="<?php echo esc_attr( $option_name ); ?>[theme_heading_<?php echo esc_attr( $slug ); ?>]"
+								   value="<?php echo esc_attr( $saved_heading ); ?>"
+								   placeholder="<?php echo esc_attr( $defaults[ $slug ]['heading'] ); ?>"
+								   class="widefat" />
+						</label>
+						<label class="wcgc-pro-theme-card__color">
+							<?php esc_html_e( 'Accent Color', 'smart-gift-cards-for-woocommerce-pro' ); ?>
+							<span class="wcgc-color-setting">
+								<input type="color"
+									   name="<?php echo esc_attr( $option_name ); ?>[theme_color_<?php echo esc_attr( $slug ); ?>]"
+									   value="<?php echo esc_attr( $color ); ?>"
+									   class="wcgc-color-picker" />
+								<code><?php echo esc_html( $color ); ?></code>
+							</span>
+						</label>
+					</div>
+				</div>
+			<?php endforeach; ?>
+		</div>
+		<?php
+	}
 
 	// =========================================================================
 	// TAB: License

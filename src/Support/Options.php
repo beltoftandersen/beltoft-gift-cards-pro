@@ -33,8 +33,20 @@ class Options {
 			'scheduled_delivery' => '1',
 
 			// Email Themes.
-			'email_themes'   => '1',
-			'default_theme'  => 'classic',
+			'email_themes'  => '1',
+			'default_theme' => 'classic',
+
+			// Per-theme customization (empty = use built-in default).
+			'theme_heading_classic'     => '',
+			'theme_heading_birthday'    => '',
+			'theme_heading_celebration' => '',
+			'theme_heading_thank-you'   => '',
+			'theme_heading_holiday'     => '',
+			'theme_color_classic'       => '',
+			'theme_color_birthday'      => '',
+			'theme_color_celebration'   => '',
+			'theme_color_thank-you'     => '',
+			'theme_color_holiday'       => '',
 
 			// Store Credit.
 			'store_credit'      => '1',
@@ -151,6 +163,20 @@ class Options {
 		if ( isset( $input['report_time_of_day'] ) ) {
 			$hour = absint( $input['report_time_of_day'] );
 			$clean['report_time_of_day'] = (string) min( 23, $hour );
+		}
+
+		// Per-theme headings and colors.
+		$theme_slugs = [ 'classic', 'birthday', 'celebration', 'thank-you', 'holiday' ];
+		foreach ( $theme_slugs as $slug ) {
+			$heading_key = 'theme_heading_' . $slug;
+			if ( isset( $input[ $heading_key ] ) ) {
+				$clean[ $heading_key ] = sanitize_text_field( $input[ $heading_key ] );
+			}
+			$color_key = 'theme_color_' . $slug;
+			if ( isset( $input[ $color_key ] ) ) {
+				$val = sanitize_hex_color( $input[ $color_key ] );
+				$clean[ $color_key ] = $val ? $val : '';
+			}
 		}
 
 		// License fields are managed exclusively by the License class.

@@ -111,6 +111,61 @@
 	display: none;
 }
 
+/* ── Theme Customization Grid ──────────────── */
+.wcgc-pro-theme-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+	gap: 16px;
+	margin: 16px 0;
+}
+
+.wcgc-pro-theme-card {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.wcgc-pro-theme-card__preview {
+	text-align: center;
+	padding: 16px 12px 12px;
+	background: #f9f9f9;
+}
+
+.wcgc-pro-theme-card__preview img {
+	display: block;
+	margin: 0 auto 8px;
+	border-radius: 3px;
+	object-fit: cover;
+}
+
+.wcgc-pro-theme-card__preview strong {
+	display: block;
+	font-size: 13px;
+}
+
+.wcgc-pro-theme-card__fields {
+	padding: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.wcgc-pro-theme-card__fields label {
+	display: block;
+	font-size: 12px;
+	font-weight: 600;
+	color: #646970;
+}
+
+.wcgc-pro-theme-card__fields input[type="text"] {
+	margin-top: 4px;
+}
+
+.wcgc-pro-theme-card__color .wcgc-color-setting {
+	margin-top: 4px;
+}
+
 /* ── Analytics Dashboard ────────────────────── */
 .wcgc-pro-analytics-header {
 	display: flex;
