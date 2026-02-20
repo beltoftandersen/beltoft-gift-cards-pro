@@ -111,7 +111,7 @@
 		$.post(wcgc_pro_params.ajax_url, {
 			action: 'wcgc_pro_save_bogo_rule',
 			nonce: wcgc_pro_params.nonce,
-			rule_id: $('#wcgc-pro-bogo-id').val(),
+			id: $('#wcgc-pro-bogo-id').val(),
 			name: $('#wcgc-pro-bogo-name').val(),
 			buy_amount: $('#wcgc-pro-bogo-buy').val(),
 			get_amount: $('#wcgc-pro-bogo-get').val(),
@@ -143,7 +143,7 @@
 		$.post(wcgc_pro_params.ajax_url, {
 			action: 'wcgc_pro_delete_bogo_rule',
 			nonce: wcgc_pro_params.nonce,
-			rule_id: ruleId
+			id: ruleId
 		}, function (response) {
 			if (response.success) {
 				location.reload();

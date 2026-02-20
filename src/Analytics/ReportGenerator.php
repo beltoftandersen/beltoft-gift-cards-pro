@@ -96,13 +96,19 @@ class ReportGenerator {
 		$headers     = [ 'Content-Type: text/plain; charset=UTF-8' ];
 		$attachments = [ $csv_path ];
 
-		$sent = wp_mail( $recipients, $subject, $body, $headers, $attachments );
+		try {
+			$sent = wp_mail( $recipients, $subject, $body, $headers, $attachments );
 
-		if ( $sent ) {
-			Options::set( 'report_last_sent', current_datetime()->format( 'Y-m-d H:i:s' ) );
+			if ( $sent ) {
+				Options::set( 'report_last_sent', current_datetime()->format( 'Y-m-d H:i:s' ) );
+			}
+
+			return $sent;
+		} finally {
+			if ( file_exists( $csv_path ) ) {
+				wp_delete_file( $csv_path );
+			}
 		}
-
-		return $sent;
 	}
 
 	/**
@@ -111,15 +117,10 @@ class ReportGenerator {
 	 * @return string|false File path on success, false on failure.
 	 */
 	public static function generate_csv() {
-		$upload_dir = wp_get_upload_dir();
-		$report_dir = trailingslashit( $upload_dir['basedir'] ) . 'wcgc-pro-reports';
-
-		if ( ! wp_mkdir_p( $report_dir ) ) {
+		$filepath = wp_tempnam( 'wcgc-pro-report.csv' );
+		if ( ! $filepath ) {
 			return false;
 		}
-
-		$filename = 'gift-cards-report-' . gmdate( 'Y-m-d-His' ) . '.csv';
-		$filepath = trailingslashit( $report_dir ) . $filename;
 
 		global $wpdb;
 
@@ -140,12 +141,14 @@ class ReportGenerator {
 		// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 
 		if ( ! is_array( $gift_cards ) ) {
+			wp_delete_file( $filepath );
 			return false;
 		}
 
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- Writing CSV report file.
 		$handle = fopen( $filepath, 'w' );
 		if ( ! $handle ) {
+			wp_delete_file( $filepath );
 			return false;
 		}
 
@@ -166,13 +169,13 @@ class ReportGenerator {
 
 		foreach ( $gift_cards as $gc ) {
 			$row = [
-				$gc->code,
+				self::escape_csv_cell( $gc->code ),
 				number_format( (float) $gc->initial_amount, 2, '.', '' ),
 				number_format( (float) $gc->balance, 2, '.', '' ),
-				$gc->status,
-				$gc->recipient_email,
-				$gc->created_at,
-				$gc->expires_at ? $gc->expires_at : '',
+				self::escape_csv_cell( $gc->status ),
+				self::escape_csv_cell( $gc->recipient_email ),
+				self::escape_csv_cell( $gc->created_at ),
+				self::escape_csv_cell( $gc->expires_at ? $gc->expires_at : '' ),
 				(int) $gc->transactions_count,
 			];
 
@@ -213,5 +216,30 @@ class ReportGenerator {
 				unlink( $file );
 			}
 		}
+	}
+
+	/**
+	 * Prefix potentially dangerous spreadsheet formulas to prevent CSV injection.
+	 *
+	 * @param mixed $value CSV cell value.
+	 * @return string
+	 */
+	private static function escape_csv_cell( $value ) {
+		$value = (string) $value;
+		if ( '' === $value ) {
+			return $value;
+		}
+
+		$trimmed = ltrim( $value );
+		if ( '' === $trimmed ) {
+			return $value;
+		}
+
+		$first = $trimmed[0];
+		if ( in_array( $first, [ '=', '+', '-', '@' ], true ) ) {
+			return "'" . $value;
+		}
+
+		return $value;
 	}
 }

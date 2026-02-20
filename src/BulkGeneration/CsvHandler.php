@@ -38,7 +38,7 @@ class CsvHandler {
 			wp_die( esc_html__( 'You do not have permission to perform this action.', 'smart-gift-cards-for-woocommerce-pro' ), 403 );
 		}
 
-		$status = isset( $_GET['status'] ) ? sanitize_key( $_GET['status'] ) : '';
+		$status = isset( $_GET['status'] ) ? sanitize_key( wp_unslash( $_GET['status'] ) ) : '';
 
 		$args = [
 			'per_page' => 10000,
@@ -83,15 +83,15 @@ class CsvHandler {
 
 		foreach ( $cards as $card ) {
 			fputcsv( $output, [
-				$card->code,
+				self::escape_csv_cell( $card->code ),
 				$card->initial_amount,
 				$card->balance,
-				$card->status,
-				$card->recipient_name,
-				$card->recipient_email,
-				$card->currency,
-				$card->created_at,
-				$card->expires_at ?? '',
+				self::escape_csv_cell( $card->status ),
+				self::escape_csv_cell( $card->recipient_name ),
+				self::escape_csv_cell( $card->recipient_email ),
+				self::escape_csv_cell( $card->currency ),
+				self::escape_csv_cell( $card->created_at ),
+				self::escape_csv_cell( $card->expires_at ?? '' ),
 			] );
 		}
 
@@ -359,5 +359,30 @@ class CsvHandler {
 			return '';
 		}
 		return trim( $row[ $index ] );
+	}
+
+	/**
+	 * Prefix potentially dangerous spreadsheet formulas to prevent CSV injection.
+	 *
+	 * @param mixed $value CSV cell value.
+	 * @return string
+	 */
+	private static function escape_csv_cell( $value ) {
+		$value = (string) $value;
+		if ( '' === $value ) {
+			return $value;
+		}
+
+		$trimmed = ltrim( $value );
+		if ( '' === $trimmed ) {
+			return $value;
+		}
+
+		$first = $trimmed[0];
+		if ( in_array( $first, [ '=', '+', '-', '@' ], true ) ) {
+			return "'" . $value;
+		}
+
+		return $value;
 	}
 }

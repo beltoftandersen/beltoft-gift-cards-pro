@@ -28,14 +28,19 @@ class BogoManager {
 			wp_send_json_error( [ 'message' => __( 'Permission denied.', 'smart-gift-cards-for-woocommerce-pro' ) ] );
 		}
 
+		$rule_id = isset( $_POST['id'] ) ? absint( $_POST['id'] ) : 0;
+		if ( ! $rule_id && isset( $_POST['rule_id'] ) ) {
+			$rule_id = absint( $_POST['rule_id'] );
+		}
+
 		$data = [
-			'id'           => isset( $_POST['id'] ) ? absint( $_POST['id'] ) : 0,
+			'id'           => $rule_id,
 			'name'         => isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '',
 			'buy_amount'   => isset( $_POST['buy_amount'] ) ? (float) $_POST['buy_amount'] : 0,
 			'get_amount'   => isset( $_POST['get_amount'] ) ? (float) $_POST['get_amount'] : 0,
-			'min_quantity'  => isset( $_POST['min_quantity'] ) ? absint( $_POST['min_quantity'] ) : 1,
+			'min_quantity' => isset( $_POST['min_quantity'] ) ? absint( $_POST['min_quantity'] ) : 1,
 			'max_uses'     => isset( $_POST['max_uses'] ) ? absint( $_POST['max_uses'] ) : 0,
-			'status'       => isset( $_POST['status'] ) ? sanitize_key( $_POST['status'] ) : 'active',
+			'status'       => isset( $_POST['status'] ) ? sanitize_key( wp_unslash( $_POST['status'] ) ) : 'active',
 			'starts_at'    => isset( $_POST['starts_at'] ) ? sanitize_text_field( wp_unslash( $_POST['starts_at'] ) ) : '',
 			'ends_at'      => isset( $_POST['ends_at'] ) ? sanitize_text_field( wp_unslash( $_POST['ends_at'] ) ) : '',
 		];
@@ -60,6 +65,9 @@ class BogoManager {
 		}
 
 		$id = isset( $_POST['id'] ) ? absint( $_POST['id'] ) : 0;
+		if ( ! $id && isset( $_POST['rule_id'] ) ) {
+			$id = absint( $_POST['rule_id'] );
+		}
 		if ( ! $id ) {
 			wp_send_json_error( [ 'message' => __( 'Invalid rule ID.', 'smart-gift-cards-for-woocommerce-pro' ) ] );
 		}
@@ -129,11 +137,11 @@ class BogoManager {
 			'name'         => isset( $data['name'] ) ? sanitize_text_field( $data['name'] ) : '',
 			'buy_amount'   => isset( $data['buy_amount'] ) ? round( (float) $data['buy_amount'], 2 ) : 0,
 			'get_amount'   => isset( $data['get_amount'] ) ? round( (float) $data['get_amount'], 2 ) : 0,
-			'min_quantity'  => isset( $data['min_quantity'] ) ? max( 1, absint( $data['min_quantity'] ) ) : 1,
+			'min_quantity' => isset( $data['min_quantity'] ) ? max( 1, absint( $data['min_quantity'] ) ) : 1,
 			'max_uses'     => isset( $data['max_uses'] ) ? absint( $data['max_uses'] ) : 0,
 			'status'       => $status,
-			'starts_at'    => ! empty( $data['starts_at'] ) ? sanitize_text_field( $data['starts_at'] ) : null,
-			'ends_at'      => ! empty( $data['ends_at'] ) ? sanitize_text_field( $data['ends_at'] ) : null,
+			'starts_at'    => self::normalize_datetime( $data['starts_at'] ?? '' ),
+			'ends_at'      => self::normalize_datetime( $data['ends_at'] ?? '' ),
 		];
 
 		$formats = [ '%s', '%f', '%f', '%d', '%d', '%s', '%s', '%s' ];
@@ -225,5 +233,30 @@ class BogoManager {
 		);
 
 		return false !== $rows && $rows > 0;
+	}
+
+	/**
+	 * Normalize datetime strings from admin input to MySQL format.
+	 *
+	 * @param string $value Raw datetime value.
+	 * @return string|null
+	 */
+	private static function normalize_datetime( $value ) {
+		$value = sanitize_text_field( (string) $value );
+		if ( '' === $value ) {
+			return null;
+		}
+
+		$value = str_replace( 'T', ' ', $value );
+
+		if ( preg_match( '/^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}$/', $value ) ) {
+			$value .= ':00';
+		}
+
+		if ( ! preg_match( '/^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}$/', $value ) ) {
+			return null;
+		}
+
+		return $value;
 	}
 }

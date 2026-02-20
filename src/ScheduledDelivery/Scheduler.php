@@ -41,10 +41,8 @@ class Scheduler {
 			return $should_send;
 		}
 
-		$today = wp_date( 'Y-m-d' );
-
 		// If the scheduled date is in the future, defer the email.
-		if ( $delivery_date > $today ) {
+		if ( self::is_future_local_date( $delivery_date ) ) {
 			return false;
 		}
 
@@ -72,16 +70,19 @@ class Scheduler {
 			return;
 		}
 
-		$today = wp_date( 'Y-m-d' );
-
 		// Only schedule if the date is in the future.
-		if ( $delivery_date <= $today ) {
+		if ( ! self::is_future_local_date( $delivery_date ) ) {
 			return;
 		}
 
 		global $wpdb;
 
-		$now = current_time( 'mysql', true );
+		$scheduled_date_utc = self::local_date_to_utc_start( $delivery_date );
+		if ( empty( $scheduled_date_utc ) ) {
+			return;
+		}
+
+		$now_utc = gmdate( 'Y-m-d H:i:s' );
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom table with no WP API.
 		$wpdb->insert(
@@ -89,9 +90,9 @@ class Scheduler {
 			[
 				'gift_card_id'   => $gc_id,
 				'order_id'       => $order->get_id(),
-				'scheduled_date' => $delivery_date . ' 00:00:00',
+				'scheduled_date' => $scheduled_date_utc,
 				'status'         => 'pending',
-				'created_at'     => $now,
+				'created_at'     => $now_utc,
 			],
 			[ '%d', '%d', '%s', '%s', '%s' ]
 		);
@@ -110,14 +111,14 @@ class Scheduler {
 
 		global $wpdb;
 
-		$now = current_time( 'mysql', true );
+		$now_utc = gmdate( 'Y-m-d H:i:s' );
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table, cron job.
 		$pending = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT * FROM {$wpdb->prefix}wcgc_scheduled_deliveries WHERE status = %s AND scheduled_date <= %s ORDER BY scheduled_date ASC LIMIT 50",
 				'pending',
-				$now
+				$now_utc
 			)
 		);
 
@@ -173,6 +174,13 @@ class Scheduler {
 	 * @return string Delivery date in Y-m-d format, or empty string if not set.
 	 */
 	private static function get_delivery_date_from_order( $gc_id, $order ) {
+		$gift_card = Repository::find( $gc_id );
+		if ( ! $gift_card ) {
+			return '';
+		}
+
+		$fallback_date = '';
+
 		foreach ( $order->get_items() as $item ) {
 			$product = $item->get_product();
 			if ( ! $product || 'gift-card' !== $product->get_type() ) {
@@ -189,9 +197,91 @@ class Scheduler {
 				continue;
 			}
 
-			return $delivery_date;
+			if ( '' === $fallback_date ) {
+				$fallback_date = $delivery_date;
+			}
+
+			if ( self::item_matches_gift_card( $item, $gift_card ) ) {
+				return $delivery_date;
+			}
 		}
 
-		return '';
+		return $fallback_date;
+	}
+
+	/**
+	 * Determine whether a local delivery date is in the future.
+	 *
+	 * @param string $delivery_date Date in Y-m-d format.
+	 * @return bool
+	 */
+	private static function is_future_local_date( $delivery_date ) {
+		$tz           = wp_timezone();
+		$delivery_obj = \DateTimeImmutable::createFromFormat( 'Y-m-d|', $delivery_date, $tz );
+
+		if ( ! $delivery_obj ) {
+			return false;
+		}
+
+		$today_obj = new \DateTimeImmutable( 'today', $tz );
+		return $delivery_obj > $today_obj;
+	}
+
+	/**
+	 * Convert a site-local delivery date to a UTC datetime string.
+	 *
+	 * @param string $delivery_date Date in Y-m-d format.
+	 * @return string
+	 */
+	private static function local_date_to_utc_start( $delivery_date ) {
+		$local_dt = \DateTimeImmutable::createFromFormat( 'Y-m-d H:i:s', $delivery_date . ' 00:00:00', wp_timezone() );
+		if ( ! $local_dt ) {
+			return '';
+		}
+
+		return $local_dt->setTimezone( new \DateTimeZone( 'UTC' ) )->format( 'Y-m-d H:i:s' );
+	}
+
+	/**
+	 * Best-effort match between a gift card record and an order item.
+	 *
+	 * @param \WC_Order_Item $item      Gift-card order item.
+	 * @param object         $gift_card Gift card database row.
+	 * @return bool
+	 */
+	private static function item_matches_gift_card( $item, $gift_card ) {
+		$has_signal = false;
+
+		$item_amount = (float) $item->get_meta( '_wcgc_amount' );
+		if ( $item_amount > 0 ) {
+			$has_signal = true;
+			if ( abs( $item_amount - (float) $gift_card->initial_amount ) > 0.00001 ) {
+				return false;
+			}
+		}
+
+		$pairs = [
+			[ (string) $item->get_meta( '_wcgc_recipient_email' ), (string) $gift_card->recipient_email ],
+			[ (string) $item->get_meta( '_wcgc_recipient_name' ), (string) $gift_card->recipient_name ],
+			[ (string) $item->get_meta( '_wcgc_sender_email' ), (string) $gift_card->sender_email ],
+			[ (string) $item->get_meta( '_wcgc_sender_name' ), (string) $gift_card->sender_name ],
+			[ (string) $item->get_meta( '_wcgc_message' ), (string) $gift_card->message ],
+		];
+
+		foreach ( $pairs as $pair ) {
+			$item_value = trim( $pair[0] );
+			$gc_value   = trim( $pair[1] );
+
+			if ( '' === $item_value || '' === $gc_value ) {
+				continue;
+			}
+
+			$has_signal = true;
+			if ( strtolower( $item_value ) !== strtolower( $gc_value ) ) {
+				return false;
+			}
+		}
+
+		return $has_signal;
 	}
 }

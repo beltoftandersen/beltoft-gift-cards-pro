@@ -91,7 +91,7 @@ add_action( 'plugins_loaded', function () {
 	}
 
 	// Check minimum version.
-	if ( version_compare( WCGC_VERSION, '1.0.0', '<' ) ) {
+	if ( version_compare( WCGC_VERSION, '1.2.0', '<' ) ) {
 		add_action( 'admin_notices', function () {
 			echo '<div class="notice notice-warning"><p>';
 			esc_html_e( 'Smart Gift Cards for WooCommerce - Pro requires version 1.2.0 or higher of the free plugin. Please update.', 'smart-gift-cards-for-woocommerce-pro' );

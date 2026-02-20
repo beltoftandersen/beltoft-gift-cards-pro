@@ -136,12 +136,22 @@ class Installer {
 			[
 				'base'    => $upload_dir['basedir'] . '/wcgc-pro-reports',
 				'file'    => '.htaccess',
-				'content' => 'deny from all',
+				'content' => "Order deny,allow\nDeny from all\n<IfModule mod_authz_core.c>\nRequire all denied\n</IfModule>\n",
 			],
 			[
 				'base'    => $upload_dir['basedir'] . '/wcgc-pro-reports',
 				'file'    => 'index.html',
 				'content' => '',
+			],
+			[
+				'base'    => $upload_dir['basedir'] . '/wcgc-pro-reports',
+				'file'    => 'index.php',
+				'content' => "<?php\n// Silence is golden.\n",
+			],
+			[
+				'base'    => $upload_dir['basedir'] . '/wcgc-pro-reports',
+				'file'    => 'web.config',
+				'content' => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<configuration>\n\t<system.webServer>\n\t\t<authorization>\n\t\t\t<remove users=\"*\" roles=\"\" verbs=\"\" />\n\t\t\t<add accessType=\"Deny\" users=\"*\" />\n\t\t</authorization>\n\t</system.webServer>\n</configuration>\n",
 			],
 		];
 
