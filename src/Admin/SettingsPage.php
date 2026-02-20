@@ -19,8 +19,9 @@ class SettingsPage {
 	public static function init() {
 		add_filter( 'wcgc_admin_tabs', [ __CLASS__, 'register_tabs' ] );
 		add_action( 'wcgc_admin_tab_pro-settings', [ __CLASS__, 'render_pro_settings_tab' ] );
+		add_action( 'wcgc_admin_tab_bulk-csv', [ __CLASS__, 'render_bulk_csv_tab' ] );
+		add_action( 'wcgc_admin_tab_bogo', [ __CLASS__, 'render_bogo_tab' ] );
 		add_action( 'wcgc_admin_tab_license', [ __CLASS__, 'render_license_tab' ] );
-		add_action( 'wcgc_admin_after_gift_cards_list', [ __CLASS__, 'render_pro_gift_cards_tools' ] );
 		add_action( 'admin_init', [ __CLASS__, 'register_settings' ] );
 		add_action( 'admin_enqueue_scripts', [ __CLASS__, 'enqueue_assets' ] );
 	}
@@ -45,6 +46,8 @@ class SettingsPage {
 	 */
 	public static function register_tabs( array $tabs ): array {
 		$tabs['pro-settings'] = __( 'Pro Settings', 'smart-gift-cards-for-woocommerce-pro' );
+		$tabs['bulk-csv']     = __( 'Bulk & CSV', 'smart-gift-cards-for-woocommerce-pro' );
+		$tabs['bogo']         = __( 'BOGO Rules', 'smart-gift-cards-for-woocommerce-pro' );
 		$tabs['license']      = __( 'License', 'smart-gift-cards-for-woocommerce-pro' );
 		return $tabs;
 	}
@@ -455,191 +458,211 @@ class SettingsPage {
 		<?php
 	}
 
+	// =========================================================================
+	// TAB: Bulk & CSV
+	// =========================================================================
+
 	/**
-	 * Render Pro tools below the core Gift Cards list tab.
+	 * Render the Bulk & CSV tab content.
 	 */
-	public static function render_pro_gift_cards_tools() {
-		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+	public static function render_bulk_csv_tab() {
+		if ( ! License::is_active() ) {
+			self::render_license_gate( __( 'Bulk generation and CSV tools require an active license.', 'smart-gift-cards-for-woocommerce-pro' ) );
 			return;
 		}
+		?>
+		<div class="wcgc-pro-settings-wrap">
+			<div class="wcgc-pro-bulk-wrap">
+				<h3><?php esc_html_e( 'Bulk Generate Gift Cards', 'smart-gift-cards-for-woocommerce-pro' ); ?></h3>
+				<table class="form-table">
+					<tr>
+						<th><label for="wcgc-pro-bulk-quantity"><?php esc_html_e( 'Quantity', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
+						<td><input type="number" id="wcgc-pro-bulk-quantity" min="1" max="500" step="1" value="10" class="small-text" /></td>
+					</tr>
+					<tr>
+						<th><label for="wcgc-pro-bulk-amount"><?php esc_html_e( 'Amount', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
+						<td><input type="number" id="wcgc-pro-bulk-amount" min="0.01" step="0.01" class="small-text" /></td>
+					</tr>
+					<tr>
+						<th><label for="wcgc-pro-bulk-prefix"><?php esc_html_e( 'Code Prefix (optional)', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
+						<td><input type="text" id="wcgc-pro-bulk-prefix" class="regular-text" /></td>
+					</tr>
+					<tr>
+						<th><label for="wcgc-pro-bulk-expiry"><?php esc_html_e( 'Expiry (days)', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
+						<td><input type="number" id="wcgc-pro-bulk-expiry" min="0" step="1" value="0" class="small-text" /></td>
+					</tr>
+					<tr>
+						<th><label for="wcgc-pro-bulk-name"><?php esc_html_e( 'Recipient Name (optional)', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
+						<td><input type="text" id="wcgc-pro-bulk-name" class="regular-text" /></td>
+					</tr>
+					<tr>
+						<th><label for="wcgc-pro-bulk-email"><?php esc_html_e( 'Recipient Email (optional)', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
+						<td><input type="email" id="wcgc-pro-bulk-email" class="regular-text" /></td>
+					</tr>
+				</table>
+				<p>
+					<button type="button" class="button button-primary" id="wcgc-pro-bulk-generate-btn"><?php esc_html_e( 'Generate Gift Cards', 'smart-gift-cards-for-woocommerce-pro' ); ?></button>
+				</p>
+				<div class="wcgc-pro-bulk-progress" aria-live="polite">
+					<div class="progress-bar"><div class="progress-bar-fill" style="width:0%;"></div></div>
+					<div class="progress-text"><?php esc_html_e( 'Preparing generation...', 'smart-gift-cards-for-woocommerce-pro' ); ?></div>
+				</div>
+			</div>
 
-		echo '<div class="wcgc-pro-settings-wrap">';
+			<div class="wcgc-pro-csv-wrap">
+				<div class="wcgc-pro-csv-box">
+					<h3><?php esc_html_e( 'Export Gift Cards (CSV)', 'smart-gift-cards-for-woocommerce-pro' ); ?></h3>
+					<p>
+						<label for="wcgc-pro-export-status"><?php esc_html_e( 'Filter by status', 'smart-gift-cards-for-woocommerce-pro' ); ?></label><br />
+						<select id="wcgc-pro-export-status">
+							<option value=""><?php esc_html_e( 'All statuses', 'smart-gift-cards-for-woocommerce-pro' ); ?></option>
+							<option value="active"><?php esc_html_e( 'Active', 'smart-gift-cards-for-woocommerce-pro' ); ?></option>
+							<option value="disabled"><?php esc_html_e( 'Disabled', 'smart-gift-cards-for-woocommerce-pro' ); ?></option>
+							<option value="expired"><?php esc_html_e( 'Expired', 'smart-gift-cards-for-woocommerce-pro' ); ?></option>
+							<option value="redeemed"><?php esc_html_e( 'Redeemed', 'smart-gift-cards-for-woocommerce-pro' ); ?></option>
+						</select>
+					</p>
+					<p>
+						<button type="button" class="button" id="wcgc-pro-export-csv-btn"><?php esc_html_e( 'Download CSV', 'smart-gift-cards-for-woocommerce-pro' ); ?></button>
+					</p>
+				</div>
 
+				<div class="wcgc-pro-csv-box">
+					<h3><?php esc_html_e( 'Import Gift Cards (CSV)', 'smart-gift-cards-for-woocommerce-pro' ); ?></h3>
+					<p>
+						<input type="file" id="wcgc-pro-import-file" accept=".csv,.txt,text/csv,text/plain" />
+					</p>
+					<p>
+						<button type="button" class="button" id="wcgc-pro-import-csv-btn"><?php esc_html_e( 'Import CSV', 'smart-gift-cards-for-woocommerce-pro' ); ?></button>
+					</p>
+					<p id="wcgc-pro-import-result" class="description" style="display:none;"></p>
+				</div>
+			</div>
+		</div>
+		<?php
+	}
+
+	// =========================================================================
+	// TAB: BOGO Rules
+	// =========================================================================
+
+	/**
+	 * Render the BOGO Rules tab content.
+	 */
+	public static function render_bogo_tab() {
 		if ( ! License::is_active() ) {
-			echo '<div class="notice notice-warning inline"><p>';
-			printf(
-				wp_kses(
-					/* translators: %s: license settings URL */
-					__( 'Bulk generation, CSV tools, and BOGO management require an active license. <a href="%s">Activate your license</a> to use Pro tools.', 'smart-gift-cards-for-woocommerce-pro' ),
-					[ 'a' => [ 'href' => [] ] ]
-				),
-				esc_url( admin_url( 'admin.php?page=wcgc-gift-cards&tab=license' ) )
-			);
-			echo '</p></div>';
-			echo '</div>';
+			self::render_license_gate( __( 'BOGO promotions require an active license.', 'smart-gift-cards-for-woocommerce-pro' ) );
 			return;
 		}
 
 		$rules = array_merge( BogoManager::get_rules( 'active' ), BogoManager::get_rules( 'inactive' ) );
 		?>
-		<div class="wcgc-pro-bulk-wrap">
-			<h3><?php esc_html_e( 'Bulk Generate Gift Cards', 'smart-gift-cards-for-woocommerce-pro' ); ?></h3>
-			<table class="form-table">
-				<tr>
-					<th><label for="wcgc-pro-bulk-quantity"><?php esc_html_e( 'Quantity', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-					<td><input type="number" id="wcgc-pro-bulk-quantity" min="1" max="500" step="1" value="10" class="small-text" /></td>
-				</tr>
-				<tr>
-					<th><label for="wcgc-pro-bulk-amount"><?php esc_html_e( 'Amount', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-					<td><input type="number" id="wcgc-pro-bulk-amount" min="0.01" step="0.01" class="small-text" /></td>
-				</tr>
-				<tr>
-					<th><label for="wcgc-pro-bulk-prefix"><?php esc_html_e( 'Code Prefix (optional)', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-					<td><input type="text" id="wcgc-pro-bulk-prefix" class="regular-text" /></td>
-				</tr>
-				<tr>
-					<th><label for="wcgc-pro-bulk-expiry"><?php esc_html_e( 'Expiry (days)', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-					<td><input type="number" id="wcgc-pro-bulk-expiry" min="0" step="1" value="0" class="small-text" /></td>
-				</tr>
-				<tr>
-					<th><label for="wcgc-pro-bulk-name"><?php esc_html_e( 'Recipient Name (optional)', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-					<td><input type="text" id="wcgc-pro-bulk-name" class="regular-text" /></td>
-				</tr>
-				<tr>
-					<th><label for="wcgc-pro-bulk-email"><?php esc_html_e( 'Recipient Email (optional)', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-					<td><input type="email" id="wcgc-pro-bulk-email" class="regular-text" /></td>
-				</tr>
-			</table>
-			<p>
-				<button type="button" class="button button-primary" id="wcgc-pro-bulk-generate-btn"><?php esc_html_e( 'Generate Gift Cards', 'smart-gift-cards-for-woocommerce-pro' ); ?></button>
-			</p>
-			<div class="wcgc-pro-bulk-progress" aria-live="polite">
-				<div class="progress-bar"><div class="progress-bar-fill" style="width:0%;"></div></div>
-				<div class="progress-text"><?php esc_html_e( 'Preparing generation...', 'smart-gift-cards-for-woocommerce-pro' ); ?></div>
-			</div>
-		</div>
-
-		<div class="wcgc-pro-csv-wrap">
-			<div class="wcgc-pro-csv-box">
-				<h3><?php esc_html_e( 'Export Gift Cards (CSV)', 'smart-gift-cards-for-woocommerce-pro' ); ?></h3>
+		<div class="wcgc-pro-settings-wrap">
+			<div class="wcgc-pro-bogo-rules">
 				<p>
-					<label for="wcgc-pro-export-status"><?php esc_html_e( 'Filter by status', 'smart-gift-cards-for-woocommerce-pro' ); ?></label><br />
-					<select id="wcgc-pro-export-status">
-						<option value=""><?php esc_html_e( 'All statuses', 'smart-gift-cards-for-woocommerce-pro' ); ?></option>
-						<option value="active"><?php esc_html_e( 'Active', 'smart-gift-cards-for-woocommerce-pro' ); ?></option>
-						<option value="disabled"><?php esc_html_e( 'Disabled', 'smart-gift-cards-for-woocommerce-pro' ); ?></option>
-						<option value="expired"><?php esc_html_e( 'Expired', 'smart-gift-cards-for-woocommerce-pro' ); ?></option>
-						<option value="redeemed"><?php esc_html_e( 'Redeemed', 'smart-gift-cards-for-woocommerce-pro' ); ?></option>
-					</select>
+					<button type="button" class="button" id="wcgc-pro-add-bogo-btn"><?php esc_html_e( 'Add Rule', 'smart-gift-cards-for-woocommerce-pro' ); ?></button>
 				</p>
-				<p>
-					<button type="button" class="button" id="wcgc-pro-export-csv-btn"><?php esc_html_e( 'Download CSV', 'smart-gift-cards-for-woocommerce-pro' ); ?></button>
-				</p>
-			</div>
 
-			<div class="wcgc-pro-csv-box">
-				<h3><?php esc_html_e( 'Import Gift Cards (CSV)', 'smart-gift-cards-for-woocommerce-pro' ); ?></h3>
-				<p>
-					<input type="file" id="wcgc-pro-import-file" accept=".csv,.txt,text/csv,text/plain" />
-				</p>
-				<p>
-					<button type="button" class="button" id="wcgc-pro-import-csv-btn"><?php esc_html_e( 'Import CSV', 'smart-gift-cards-for-woocommerce-pro' ); ?></button>
-				</p>
-				<p id="wcgc-pro-import-result" class="description" style="display:none;"></p>
-			</div>
-		</div>
-
-		<div class="wcgc-pro-bogo-rules">
-			<h3><?php esc_html_e( 'BOGO Rules', 'smart-gift-cards-for-woocommerce-pro' ); ?></h3>
-			<p>
-				<button type="button" class="button" id="wcgc-pro-add-bogo-btn"><?php esc_html_e( 'Add Rule', 'smart-gift-cards-for-woocommerce-pro' ); ?></button>
-			</p>
-
-			<div class="wcgc-pro-bogo-form">
-				<input type="hidden" id="wcgc-pro-bogo-id" value="" />
-				<table class="form-table">
-					<tr>
-						<th><label for="wcgc-pro-bogo-name"><?php esc_html_e( 'Rule Name', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-						<td><input type="text" id="wcgc-pro-bogo-name" class="regular-text" /></td>
-					</tr>
-					<tr>
-						<th><label for="wcgc-pro-bogo-buy"><?php esc_html_e( 'Buy Amount', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-						<td><input type="number" id="wcgc-pro-bogo-buy" min="0" step="0.01" class="small-text" /></td>
-					</tr>
-					<tr>
-						<th><label for="wcgc-pro-bogo-get"><?php esc_html_e( 'Get Amount', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-						<td><input type="number" id="wcgc-pro-bogo-get" min="0" step="0.01" class="small-text" /></td>
-					</tr>
-					<tr>
-						<th><label for="wcgc-pro-bogo-min-qty"><?php esc_html_e( 'Minimum Quantity', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-						<td><input type="number" id="wcgc-pro-bogo-min-qty" min="1" step="1" value="1" class="small-text" /></td>
-					</tr>
-					<tr>
-						<th><label for="wcgc-pro-bogo-max-uses"><?php esc_html_e( 'Maximum Uses (0 = unlimited)', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-						<td><input type="number" id="wcgc-pro-bogo-max-uses" min="0" step="1" value="0" class="small-text" /></td>
-					</tr>
-					<tr>
-						<th><label for="wcgc-pro-bogo-starts"><?php esc_html_e( 'Starts At (optional)', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-						<td><input type="datetime-local" id="wcgc-pro-bogo-starts" /></td>
-					</tr>
-					<tr>
-						<th><label for="wcgc-pro-bogo-ends"><?php esc_html_e( 'Ends At (optional)', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-						<td><input type="datetime-local" id="wcgc-pro-bogo-ends" /></td>
-					</tr>
-				</table>
-				<p>
-					<button type="button" class="button button-primary" id="wcgc-pro-save-bogo-btn"><?php esc_html_e( 'Save Rule', 'smart-gift-cards-for-woocommerce-pro' ); ?></button>
-				</p>
-			</div>
-
-			<table class="widefat striped">
-				<thead>
-					<tr>
-						<th><?php esc_html_e( 'Name', 'smart-gift-cards-for-woocommerce-pro' ); ?></th>
-						<th><?php esc_html_e( 'Buy', 'smart-gift-cards-for-woocommerce-pro' ); ?></th>
-						<th><?php esc_html_e( 'Get', 'smart-gift-cards-for-woocommerce-pro' ); ?></th>
-						<th><?php esc_html_e( 'Min Qty', 'smart-gift-cards-for-woocommerce-pro' ); ?></th>
-						<th><?php esc_html_e( 'Uses', 'smart-gift-cards-for-woocommerce-pro' ); ?></th>
-						<th><?php esc_html_e( 'Status', 'smart-gift-cards-for-woocommerce-pro' ); ?></th>
-						<th><?php esc_html_e( 'Actions', 'smart-gift-cards-for-woocommerce-pro' ); ?></th>
-					</tr>
-				</thead>
-				<tbody>
-				<?php if ( empty( $rules ) ) : ?>
-					<tr>
-						<td colspan="7"><?php esc_html_e( 'No BOGO rules yet.', 'smart-gift-cards-for-woocommerce-pro' ); ?></td>
-					</tr>
-				<?php else : ?>
-					<?php foreach ( $rules as $rule ) : ?>
+				<div class="wcgc-pro-bogo-form">
+					<input type="hidden" id="wcgc-pro-bogo-id" value="" />
+					<table class="form-table">
 						<tr>
-							<td><?php echo esc_html( $rule->name ); ?></td>
-							<td><?php echo esc_html( wp_strip_all_tags( wc_price( (float) $rule->buy_amount ) ) ); ?></td>
-							<td><?php echo esc_html( wp_strip_all_tags( wc_price( (float) $rule->get_amount ) ) ); ?></td>
-							<td><?php echo esc_html( number_format_i18n( (int) $rule->min_quantity ) ); ?></td>
-							<td>
-								<?php
-								$uses_display = (int) $rule->uses_count;
-								if ( (int) $rule->max_uses > 0 ) {
-									$uses_display .= ' / ' . (int) $rule->max_uses;
-								}
-								echo esc_html( $uses_display );
-								?>
-							</td>
-							<td><?php echo esc_html( $rule->status ); ?></td>
-							<td>
-								<button type="button" class="button-link-delete wcgc-pro-delete-bogo" data-id="<?php echo esc_attr( (int) $rule->id ); ?>">
-									<?php esc_html_e( 'Delete', 'smart-gift-cards-for-woocommerce-pro' ); ?>
-								</button>
-							</td>
+							<th><label for="wcgc-pro-bogo-name"><?php esc_html_e( 'Rule Name', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
+							<td><input type="text" id="wcgc-pro-bogo-name" class="regular-text" /></td>
 						</tr>
-					<?php endforeach; ?>
-				<?php endif; ?>
-				</tbody>
-			</table>
+						<tr>
+							<th><label for="wcgc-pro-bogo-buy"><?php esc_html_e( 'Buy Amount', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
+							<td><input type="number" id="wcgc-pro-bogo-buy" min="0" step="0.01" class="small-text" /></td>
+						</tr>
+						<tr>
+							<th><label for="wcgc-pro-bogo-get"><?php esc_html_e( 'Get Amount', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
+							<td><input type="number" id="wcgc-pro-bogo-get" min="0" step="0.01" class="small-text" /></td>
+						</tr>
+						<tr>
+							<th><label for="wcgc-pro-bogo-min-qty"><?php esc_html_e( 'Minimum Quantity', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
+							<td><input type="number" id="wcgc-pro-bogo-min-qty" min="1" step="1" value="1" class="small-text" /></td>
+						</tr>
+						<tr>
+							<th><label for="wcgc-pro-bogo-max-uses"><?php esc_html_e( 'Maximum Uses (0 = unlimited)', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
+							<td><input type="number" id="wcgc-pro-bogo-max-uses" min="0" step="1" value="0" class="small-text" /></td>
+						</tr>
+						<tr>
+							<th><label for="wcgc-pro-bogo-starts"><?php esc_html_e( 'Starts At (optional)', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
+							<td><input type="datetime-local" id="wcgc-pro-bogo-starts" /></td>
+						</tr>
+						<tr>
+							<th><label for="wcgc-pro-bogo-ends"><?php esc_html_e( 'Ends At (optional)', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
+							<td><input type="datetime-local" id="wcgc-pro-bogo-ends" /></td>
+						</tr>
+					</table>
+					<p>
+						<button type="button" class="button button-primary" id="wcgc-pro-save-bogo-btn"><?php esc_html_e( 'Save Rule', 'smart-gift-cards-for-woocommerce-pro' ); ?></button>
+					</p>
+				</div>
+
+				<table class="widefat striped">
+					<thead>
+						<tr>
+							<th><?php esc_html_e( 'Name', 'smart-gift-cards-for-woocommerce-pro' ); ?></th>
+							<th><?php esc_html_e( 'Buy', 'smart-gift-cards-for-woocommerce-pro' ); ?></th>
+							<th><?php esc_html_e( 'Get', 'smart-gift-cards-for-woocommerce-pro' ); ?></th>
+							<th><?php esc_html_e( 'Min Qty', 'smart-gift-cards-for-woocommerce-pro' ); ?></th>
+							<th><?php esc_html_e( 'Uses', 'smart-gift-cards-for-woocommerce-pro' ); ?></th>
+							<th><?php esc_html_e( 'Status', 'smart-gift-cards-for-woocommerce-pro' ); ?></th>
+							<th><?php esc_html_e( 'Actions', 'smart-gift-cards-for-woocommerce-pro' ); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php if ( empty( $rules ) ) : ?>
+						<tr>
+							<td colspan="7"><?php esc_html_e( 'No BOGO rules yet.', 'smart-gift-cards-for-woocommerce-pro' ); ?></td>
+						</tr>
+					<?php else : ?>
+						<?php foreach ( $rules as $rule ) : ?>
+							<tr>
+								<td><?php echo esc_html( $rule->name ); ?></td>
+								<td><?php echo esc_html( wp_strip_all_tags( wc_price( (float) $rule->buy_amount ) ) ); ?></td>
+								<td><?php echo esc_html( wp_strip_all_tags( wc_price( (float) $rule->get_amount ) ) ); ?></td>
+								<td><?php echo esc_html( number_format_i18n( (int) $rule->min_quantity ) ); ?></td>
+								<td>
+									<?php
+									$uses_display = (int) $rule->uses_count;
+									if ( (int) $rule->max_uses > 0 ) {
+										$uses_display .= ' / ' . (int) $rule->max_uses;
+									}
+									echo esc_html( $uses_display );
+									?>
+								</td>
+								<td><?php echo esc_html( $rule->status ); ?></td>
+								<td>
+									<button type="button" class="button-link-delete wcgc-pro-delete-bogo" data-id="<?php echo esc_attr( (int) $rule->id ); ?>">
+										<?php esc_html_e( 'Delete', 'smart-gift-cards-for-woocommerce-pro' ); ?>
+									</button>
+								</td>
+							</tr>
+						<?php endforeach; ?>
+					<?php endif; ?>
+					</tbody>
+				</table>
+			</div>
 		</div>
 		<?php
+	}
 
-		echo '</div>';
+	/**
+	 * Render a license gate notice for tabs that require an active license.
+	 *
+	 * @param string $message The message to display.
+	 */
+	private static function render_license_gate( $message ) {
+		echo '<div class="notice notice-warning inline" style="margin-top:16px;"><p>';
+		printf(
+			'%s <a href="%s">%s</a>',
+			esc_html( $message ),
+			esc_url( admin_url( 'admin.php?page=wcgc-gift-cards&tab=license' ) ),
+			esc_html__( 'Activate your license', 'smart-gift-cards-for-woocommerce-pro' )
+		);
+		echo '</p></div>';
 	}
 
 	// =========================================================================
