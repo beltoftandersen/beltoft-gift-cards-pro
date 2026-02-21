@@ -53,7 +53,7 @@ class ProductFields {
 						/>
 						<span class="wcgc-theme-preview">
 							<span class="wcgc-theme-preview-header" style="background: linear-gradient(135deg, <?php echo esc_attr( $theme['color'] ); ?>, <?php echo esc_attr( $theme['color_light'] ); ?>);">
-								<span class="wcgc-theme-preview-heading"><?php echo esc_html( $theme['name'] ); ?></span>
+								<span class="wcgc-theme-preview-heading"><?php echo esc_html( $theme['heading'] ); ?></span>
 							</span>
 							<span class="wcgc-theme-preview-body">
 								<span class="wcgc-theme-preview-amount" style="color: <?php echo esc_attr( $theme['color'] ); ?>;">$&mdash;</span>
