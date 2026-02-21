@@ -85,8 +85,11 @@
 }
 
 .wcgc-theme-preview-header {
-	display: block;
-	padding: 8px 6px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 32px;
+	padding: 4px 6px;
 	text-align: center;
 }
 
