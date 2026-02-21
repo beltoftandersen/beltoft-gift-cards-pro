@@ -21,7 +21,7 @@ class ThemeManager {
 	 * @return array<string, array{name: string, color: string, color_light: string, bg: string, heading: string}>
 	 */
 	public static function get_available_themes() {
-		return [
+		$themes = [
 			'classic'     => [
 				'name'        => __( 'Classic', 'smart-gift-cards-for-woocommerce-pro' ),
 				'color'       => '#6B4C9A',
@@ -58,6 +58,21 @@ class ThemeManager {
 				'heading'     => __( 'Happy Holidays!', 'smart-gift-cards-for-woocommerce-pro' ),
 			],
 		];
+
+		// Apply admin overrides from Pro Settings.
+		foreach ( $themes as $slug => &$theme ) {
+			$custom_heading = Options::get( 'theme_heading_' . $slug );
+			if ( ! empty( $custom_heading ) ) {
+				$theme['heading'] = $custom_heading;
+			}
+			$custom_color = Options::get( 'theme_color_' . $slug );
+			if ( ! empty( $custom_color ) ) {
+				$theme['color'] = $custom_color;
+			}
+		}
+		unset( $theme );
+
+		return $themes;
 	}
 
 	/**
