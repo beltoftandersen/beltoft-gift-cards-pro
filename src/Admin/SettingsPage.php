@@ -353,6 +353,8 @@ class SettingsPage {
 					<div class="wcgc-pro-theme-card__preview" style="border-top: 3px solid <?php echo esc_attr( $color ); ?>;">
 						<span style="display:block;width:120px;height:50px;border-radius:4px;background-color:<?php echo esc_attr( $color ); ?>;margin:0 auto 6px;"></span>
 						<strong><?php echo esc_html( $theme['name'] ); ?></strong>
+						<br />
+						<em style="font-size:12px;color:#666;"><?php echo esc_html( $saved_heading ?: $defaults[ $slug ]['heading'] ); ?></em>
 					</div>
 					<div class="wcgc-pro-theme-card__fields">
 						<label>
