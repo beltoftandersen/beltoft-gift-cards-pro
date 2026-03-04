@@ -1,8 +1,8 @@
 <?php
 
-namespace GiftCardsPro\StoreCredit;
+namespace BgcwPro\StoreCredit;
 
-use GiftCardsPro\Support\Options;
+use BgcwPro\Support\Options;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -12,13 +12,13 @@ class OrderHandler {
 	 * Initialize hooks.
 	 */
 	public static function init() {
-		add_filter( 'wcgc_refund_as_store_credit', [ __CLASS__, 'handle_refund' ], 10, 4 );
+		add_filter( 'bgcw_refund_as_store_credit', [ __CLASS__, 'handle_refund' ], 10, 4 );
 	}
 
 	/**
 	 * Handle refund as store credit when both options are enabled.
 	 *
-	 * Hooked to `wcgc_refund_as_store_credit` filter. When the store_credit
+	 * Hooked to `bgcw_refund_as_store_credit` filter. When the store_credit
 	 * feature AND auto_store_credit are both turned on, this intercepts the
 	 * normal balance-restore flow and creates a new store-credit gift card
 	 * for the customer instead.

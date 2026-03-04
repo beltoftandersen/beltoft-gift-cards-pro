@@ -1,10 +1,10 @@
 <?php
 
-namespace GiftCardsPro\StoreCredit;
+namespace BgcwPro\StoreCredit;
 
-use GiftCards\GiftCard\CodeGenerator;
-use GiftCards\GiftCard\Repository;
-use GiftCards\GiftCard\TransactionRepository;
+use Bgcw\GiftCard\CodeGenerator;
+use Bgcw\GiftCard\Repository;
+use Bgcw\GiftCard\TransactionRepository;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -36,11 +36,11 @@ class CreditManager {
 			'initial_amount'  => $amount,
 			'balance'         => $amount,
 			'currency'        => get_woocommerce_currency(),
-			'sender_name'     => __( 'Store Credit', 'smart-gift-cards-for-woocommerce-pro' ),
+			'sender_name'     => __( 'Store Credit', 'beltoft-gift-cards-for-woocommerce-pro' ),
 			'sender_email'    => get_option( 'admin_email' ),
 			'recipient_name'  => $user->display_name,
 			'recipient_email' => $user->user_email,
-			'message'         => __( 'Store credit from refund', 'smart-gift-cards-for-woocommerce-pro' ),
+			'message'         => __( 'Store credit from refund', 'beltoft-gift-cards-for-woocommerce-pro' ),
 			'order_id'        => $order_id,
 			'customer_id'     => $customer_id,
 			'status'          => 'active',
@@ -60,7 +60,7 @@ class CreditManager {
 			'balance_after' => $amount,
 			'note'          => sprintf(
 				/* translators: %d: order ID */
-				__( 'Store credit issued from refund on order #%d', 'smart-gift-cards-for-woocommerce-pro' ),
+				__( 'Store credit issued from refund on order #%d', 'beltoft-gift-cards-for-woocommerce-pro' ),
 				$order_id
 			),
 		] );
@@ -70,7 +70,7 @@ class CreditManager {
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom table with no WP API.
 		$wpdb->insert(
-			$wpdb->prefix . 'wcgc_store_credits',
+			$wpdb->prefix . 'bgcw_store_credits',
 			[
 				'gift_card_id'      => $gc_id,
 				'original_order_id' => $order_id,

@@ -1,6 +1,6 @@
 <?php
 
-namespace GiftCardsPro\Bogo;
+namespace BgcwPro\Bogo;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -11,8 +11,8 @@ class BogoManager {
 	 */
 	public static function init() {
 		if ( is_admin() ) {
-			add_action( 'wp_ajax_wcgc_pro_save_bogo_rule', [ __CLASS__, 'ajax_save_rule' ] );
-			add_action( 'wp_ajax_wcgc_pro_delete_bogo_rule', [ __CLASS__, 'ajax_delete_rule' ] );
+			add_action( 'wp_ajax_bgcw_pro_save_bogo_rule', [ __CLASS__, 'ajax_save_rule' ] );
+			add_action( 'wp_ajax_bgcw_pro_delete_bogo_rule', [ __CLASS__, 'ajax_delete_rule' ] );
 		}
 	}
 
@@ -20,10 +20,10 @@ class BogoManager {
 	 * AJAX handler: save (create or update) a BOGO rule.
 	 */
 	public static function ajax_save_rule() {
-		check_ajax_referer( 'wcgc_pro_admin', 'nonce' );
+		check_ajax_referer( 'bgcw_pro_admin', 'nonce' );
 
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			wp_send_json_error( [ 'message' => __( 'Permission denied.', 'smart-gift-cards-for-woocommerce-pro' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Permission denied.', 'beltoft-gift-cards-for-woocommerce-pro' ) ] );
 		}
 
 		$data = [
@@ -43,7 +43,7 @@ class BogoManager {
 		if ( $result ) {
 			wp_send_json_success( [ 'id' => $result ] );
 		} else {
-			wp_send_json_error( [ 'message' => __( 'Failed to save rule.', 'smart-gift-cards-for-woocommerce-pro' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Failed to save rule.', 'beltoft-gift-cards-for-woocommerce-pro' ) ] );
 		}
 	}
 
@@ -51,15 +51,15 @@ class BogoManager {
 	 * AJAX handler: delete a BOGO rule.
 	 */
 	public static function ajax_delete_rule() {
-		check_ajax_referer( 'wcgc_pro_admin', 'nonce' );
+		check_ajax_referer( 'bgcw_pro_admin', 'nonce' );
 
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			wp_send_json_error( [ 'message' => __( 'Permission denied.', 'smart-gift-cards-for-woocommerce-pro' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Permission denied.', 'beltoft-gift-cards-for-woocommerce-pro' ) ] );
 		}
 
 		$id = isset( $_POST['id'] ) ? absint( $_POST['id'] ) : 0;
 		if ( ! $id ) {
-			wp_send_json_error( [ 'message' => __( 'Invalid rule ID.', 'smart-gift-cards-for-woocommerce-pro' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Invalid rule ID.', 'beltoft-gift-cards-for-woocommerce-pro' ) ] );
 		}
 
 		$result = self::delete_rule( $id );
@@ -67,7 +67,7 @@ class BogoManager {
 		if ( $result ) {
 			wp_send_json_success();
 		} else {
-			wp_send_json_error( [ 'message' => __( 'Failed to delete rule.', 'smart-gift-cards-for-woocommerce-pro' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Failed to delete rule.', 'beltoft-gift-cards-for-woocommerce-pro' ) ] );
 		}
 	}
 
@@ -83,7 +83,7 @@ class BogoManager {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table.
 		return $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT * FROM {$wpdb->prefix}wcgc_bogo_rules WHERE status = %s ORDER BY created_at DESC",
+				"SELECT * FROM {$wpdb->prefix}bgcw_bogo_rules WHERE status = %s ORDER BY created_at DESC",
 				$status
 			)
 		);
@@ -101,7 +101,7 @@ class BogoManager {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table.
 		return $wpdb->get_row(
 			$wpdb->prepare(
-				"SELECT * FROM {$wpdb->prefix}wcgc_bogo_rules WHERE id = %d",
+				"SELECT * FROM {$wpdb->prefix}bgcw_bogo_rules WHERE id = %d",
 				$id
 			)
 		);
@@ -116,7 +116,7 @@ class BogoManager {
 	public static function save_rule( $data ) {
 		global $wpdb;
 
-		$table = $wpdb->prefix . 'wcgc_bogo_rules';
+		$table = $wpdb->prefix . 'bgcw_bogo_rules';
 
 		$allowed_statuses = [ 'active', 'inactive' ];
 		$status           = isset( $data['status'] ) && in_array( $data['status'], $allowed_statuses, true )
@@ -165,7 +165,7 @@ class BogoManager {
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table.
 		return (bool) $wpdb->delete(
-			$wpdb->prefix . 'wcgc_bogo_rules',
+			$wpdb->prefix . 'bgcw_bogo_rules',
 			[ 'id' => absint( $id ) ],
 			[ '%d' ]
 		);
@@ -189,7 +189,7 @@ class BogoManager {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table with dynamic conditions.
 		return $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT * FROM {$wpdb->prefix}wcgc_bogo_rules
+				"SELECT * FROM {$wpdb->prefix}bgcw_bogo_rules
 				WHERE status = 'active'
 				AND buy_amount <= %f
 				AND min_quantity <= %d
@@ -217,7 +217,7 @@ class BogoManager {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table atomic increment.
 		$rows = $wpdb->query(
 			$wpdb->prepare(
-				"UPDATE {$wpdb->prefix}wcgc_bogo_rules SET uses_count = uses_count + 1 WHERE id = %d",
+				"UPDATE {$wpdb->prefix}bgcw_bogo_rules SET uses_count = uses_count + 1 WHERE id = %d",
 				$rule_id
 			)
 		);

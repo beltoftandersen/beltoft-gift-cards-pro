@@ -1,11 +1,11 @@
 <?php
 
-namespace GiftCardsPro\Bogo;
+namespace BgcwPro\Bogo;
 
-use GiftCardsPro\Support\Options;
-use GiftCards\GiftCard\CodeGenerator;
-use GiftCards\GiftCard\Repository;
-use GiftCards\GiftCard\TransactionRepository;
+use BgcwPro\Support\Options;
+use Bgcw\GiftCard\CodeGenerator;
+use Bgcw\GiftCard\Repository;
+use Bgcw\GiftCard\TransactionRepository;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -18,7 +18,7 @@ class CartHandler {
 	 * Initialize hooks.
 	 */
 	public static function init() {
-		add_action( 'wcgc_gift_card_created', [ __CLASS__, 'check_bogo' ], 10, 2 );
+		add_action( 'bgcw_gift_card_created', [ __CLASS__, 'check_bogo' ], 10, 2 );
 	}
 
 	/**
@@ -48,7 +48,7 @@ class CartHandler {
 		}
 
 		// Idempotency: skip if this order already had BOGO processed.
-		if ( $order->get_meta( '_wcgc_bogo_processed' ) ) {
+		if ( $order->get_meta( '_bgcw_bogo_processed' ) ) {
 			return;
 		}
 
@@ -65,7 +65,7 @@ class CartHandler {
 					continue;
 				}
 
-				$amount = (float) $item->get_meta( '_wcgc_amount' );
+				$amount = (float) $item->get_meta( '_bgcw_amount' );
 				if ( $amount <= 0 ) {
 					continue;
 				}
@@ -109,7 +109,7 @@ class CartHandler {
 				'recipient_email' => $buyer_email,
 				'message'         => sprintf(
 					/* translators: %s: BOGO rule name */
-					__( 'Bonus gift card from promotion: %s', 'smart-gift-cards-for-woocommerce-pro' ),
+					__( 'Bonus gift card from promotion: %s', 'beltoft-gift-cards-for-woocommerce-pro' ),
 					$rule->name
 				),
 				'order_id'        => $order_id,
@@ -131,13 +131,13 @@ class CartHandler {
 				'balance_after' => $get_amount,
 				'note'          => sprintf(
 					/* translators: %s: BOGO rule name */
-					__( 'BOGO bonus from rule: %s', 'smart-gift-cards-for-woocommerce-pro' ),
+					__( 'BOGO bonus from rule: %s', 'beltoft-gift-cards-for-woocommerce-pro' ),
 					$rule->name
 				),
 			] );
 
 			// Mark order as BOGO-processed before triggering downstream hooks to avoid recursion.
-			$order->update_meta_data( '_wcgc_bogo_processed', '1' );
+			$order->update_meta_data( '_bgcw_bogo_processed', '1' );
 			$order->save();
 
 			// Increment rule usage.
@@ -150,7 +150,7 @@ class CartHandler {
 			 * @param int            $bonus_gc_id Bonus gift card ID.
 			 * @param \WC_Order|null $order       Order object.
 			 */
-			do_action( 'wcgc_gift_card_created', $bonus_gc_id, $order );
+			do_action( 'bgcw_gift_card_created', $bonus_gc_id, $order );
 		} finally {
 			unset( self::$in_progress_orders[ $order_id ] );
 		}

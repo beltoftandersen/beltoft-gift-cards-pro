@@ -1,6 +1,6 @@
 <?php
 
-namespace GiftCardsPro\Support;
+namespace BgcwPro\Support;
 
 defined( 'ABSPATH' ) || exit;
 

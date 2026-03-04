@@ -1,8 +1,8 @@
 <?php
 
-namespace GiftCardsPro\Analytics;
+namespace BgcwPro\Analytics;
 
-use GiftCardsPro\Support\Options;
+use BgcwPro\Support\Options;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -12,13 +12,13 @@ class Dashboard {
 	 * Register hooks.
 	 */
 	public static function init() {
-		add_action( 'wcgc_dashboard_after_stats', [ __CLASS__, 'render_pro_stats' ] );
+		add_action( 'bgcw_dashboard_after_stats', [ __CLASS__, 'render_pro_stats' ] );
 	}
 
 	/**
 	 * Render Pro analytics stat cards on the dashboard.
 	 *
-	 * Hooked to `wcgc_dashboard_after_stats`.
+	 * Hooked to `bgcw_dashboard_after_stats`.
 	 */
 	public static function render_pro_stats() {
 		if ( '1' !== Options::get( 'analytics_enabled' ) ) {
@@ -26,7 +26,7 @@ class Dashboard {
 		}
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only display filter.
-		$range = isset( $_GET['wcgc_range'] ) ? absint( wp_unslash( $_GET['wcgc_range'] ) ) : 0;
+		$range = isset( $_GET['bgcw_range'] ) ? absint( wp_unslash( $_GET['bgcw_range'] ) ) : 0;
 		$stats = self::get_pro_stats( $range );
 
 		$total_initial  = (float) $stats['total_revenue'];
@@ -35,27 +35,27 @@ class Dashboard {
 			: 0;
 
 		$cards = [
-			__( 'Revenue', 'smart-gift-cards-for-woocommerce-pro' )              => wp_strip_all_tags( wc_price( $total_initial ) ),
-			__( 'Redemption Rate', 'smart-gift-cards-for-woocommerce-pro' )      => $redemption_pct . '%',
-			__( 'Scheduled Pending', 'smart-gift-cards-for-woocommerce-pro' )    => number_format_i18n( (int) $stats['scheduled_pending'] ),
-			__( 'Store Credits Issued', 'smart-gift-cards-for-woocommerce-pro' ) => number_format_i18n( (int) $stats['store_credits_count'] ),
-			__( 'BOGO Bonuses', 'smart-gift-cards-for-woocommerce-pro' )         => number_format_i18n( (int) $stats['bogo_uses'] ),
+			__( 'Revenue', 'beltoft-gift-cards-for-woocommerce-pro' )              => wp_strip_all_tags( wc_price( $total_initial ) ),
+			__( 'Redemption Rate', 'beltoft-gift-cards-for-woocommerce-pro' )      => $redemption_pct . '%',
+			__( 'Scheduled Pending', 'beltoft-gift-cards-for-woocommerce-pro' )    => number_format_i18n( (int) $stats['scheduled_pending'] ),
+			__( 'Store Credits Issued', 'beltoft-gift-cards-for-woocommerce-pro' ) => number_format_i18n( (int) $stats['store_credits_count'] ),
+			__( 'BOGO Bonuses', 'beltoft-gift-cards-for-woocommerce-pro' )         => number_format_i18n( (int) $stats['bogo_uses'] ),
 		];
 
 		// Date range filter links.
-		$base_url = admin_url( 'admin.php?page=wcgc-gift-cards&tab=dashboard' );
+		$base_url = admin_url( 'admin.php?page=bgcw-gift-cards&tab=dashboard' );
 		$ranges   = [
-			7   => __( '7d', 'smart-gift-cards-for-woocommerce-pro' ),
-			30  => __( '30d', 'smart-gift-cards-for-woocommerce-pro' ),
-			90  => __( '90d', 'smart-gift-cards-for-woocommerce-pro' ),
-			0   => __( 'All Time', 'smart-gift-cards-for-woocommerce-pro' ),
+			7   => __( '7d', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			30  => __( '30d', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			90  => __( '90d', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			0   => __( 'All Time', 'beltoft-gift-cards-for-woocommerce-pro' ),
 		];
 		?>
-		<div class="wcgc-pro-analytics-header">
-			<h3><?php esc_html_e( 'Pro Analytics', 'smart-gift-cards-for-woocommerce-pro' ); ?></h3>
-			<div class="wcgc-pro-range-filter">
+		<div class="bgcw-pro-analytics-header">
+			<h3><?php esc_html_e( 'Pro Analytics', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></h3>
+			<div class="bgcw-pro-range-filter">
 				<?php foreach ( $ranges as $days => $label ) :
-					$url       = $days > 0 ? add_query_arg( 'wcgc_range', $days, $base_url ) : remove_query_arg( 'wcgc_range', $base_url );
+					$url       = $days > 0 ? add_query_arg( 'bgcw_range', $days, $base_url ) : remove_query_arg( 'bgcw_range', $base_url );
 					$is_active = ( $range === $days );
 					?>
 					<a href="<?php echo esc_url( $url ); ?>"
@@ -66,11 +66,11 @@ class Dashboard {
 			</div>
 		</div>
 
-		<div class="wcgc-stats-cards">
+		<div class="bgcw-stats-cards">
 			<?php foreach ( $cards as $label => $value ) : ?>
-				<div class="wcgc-stat-card">
-					<div class="wcgc-stat-label"><?php echo esc_html( $label ); ?></div>
-					<div class="wcgc-stat-value"><?php echo esc_html( $value ); ?></div>
+				<div class="bgcw-stat-card">
+					<div class="bgcw-stat-label"><?php echo esc_html( $label ); ?></div>
+					<div class="bgcw-stat-value"><?php echo esc_html( $value ); ?></div>
 				</div>
 			<?php endforeach; ?>
 		</div>
@@ -84,7 +84,7 @@ class Dashboard {
 	 * @return array Associative array of statistics.
 	 */
 	public static function get_pro_stats( $days = 0 ) {
-		$cache_key = 'wcgc_pro_analytics';
+		$cache_key = 'bgcw_pro_analytics';
 		if ( $days > 0 ) {
 			$cache_key .= '_' . $days;
 		}
@@ -96,10 +96,10 @@ class Dashboard {
 
 		global $wpdb;
 
-		$gc_table        = $wpdb->prefix . 'wcgc_gift_cards';
-		$scheduled_table = $wpdb->prefix . 'wcgc_scheduled_deliveries';
-		$credits_table   = $wpdb->prefix . 'wcgc_store_credits';
-		$bogo_table      = $wpdb->prefix . 'wcgc_bogo_rules';
+		$gc_table        = $wpdb->prefix . 'bgcw_gift_cards';
+		$scheduled_table = $wpdb->prefix . 'bgcw_scheduled_deliveries';
+		$credits_table   = $wpdb->prefix . 'bgcw_store_credits';
+		$bogo_table      = $wpdb->prefix . 'bgcw_bogo_rules';
 
 		$date_clause = '';
 		if ( $days > 0 ) {

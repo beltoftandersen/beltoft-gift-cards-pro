@@ -1,33 +1,33 @@
 /**
- * Smart Gift Cards Pro - Admin JavaScript
+ * Beltoft Gift Cards Pro - Admin JavaScript
  *
  * NOTE: License activate/deactivate is handled by inline <script> in
  * SettingsPage::render_license_tab() — do NOT duplicate those handlers here.
  */
-/* global jQuery, wcgc_pro_params */
+/* global jQuery, bgcw_pro_params */
 
 (function ($) {
 	'use strict';
 
 	/* ── Bulk Generation ─────────────────────── */
 
-	$(document).on('click', '#wcgc-pro-bulk-generate-btn', function (e) {
+	$(document).on('click', '#bgcw-pro-bulk-generate-btn', function (e) {
 		e.preventDefault();
 		var $btn = $(this);
-		var $progress = $('.wcgc-pro-bulk-progress');
+		var $progress = $('.bgcw-pro-bulk-progress');
 
 		$btn.prop('disabled', true);
 		$progress.show();
 
-		$.post(wcgc_pro_params.ajax_url, {
-			action: 'wcgc_pro_bulk_generate',
-			nonce: wcgc_pro_params.nonce,
-			quantity: $('#wcgc-pro-bulk-quantity').val(),
-			amount: $('#wcgc-pro-bulk-amount').val(),
-			prefix: $('#wcgc-pro-bulk-prefix').val(),
-			expiry_days: $('#wcgc-pro-bulk-expiry').val(),
-			recipient_email: $('#wcgc-pro-bulk-email').val(),
-			recipient_name: $('#wcgc-pro-bulk-name').val()
+		$.post(bgcw_pro_params.ajax_url, {
+			action: 'bgcw_pro_bulk_generate',
+			nonce: bgcw_pro_params.nonce,
+			quantity: $('#bgcw-pro-bulk-quantity').val(),
+			amount: $('#bgcw-pro-bulk-amount').val(),
+			prefix: $('#bgcw-pro-bulk-prefix').val(),
+			expiry_days: $('#bgcw-pro-bulk-expiry').val(),
+			recipient_email: $('#bgcw-pro-bulk-email').val(),
+			recipient_name: $('#bgcw-pro-bulk-name').val()
 		}, function (response) {
 			$btn.prop('disabled', false);
 			if (response.success) {
@@ -35,47 +35,47 @@
 				$('.progress-text').text(response.data.message);
 				setTimeout(function () { location.reload(); }, 2000);
 			} else {
-				$('.progress-text').text(response.data.message || wcgc_pro_params.i18n.generation_failed);
+				$('.progress-text').text(response.data.message || bgcw_pro_params.i18n.generation_failed);
 			}
 		}).fail(function () {
 			$btn.prop('disabled', false);
-			$('.progress-text').text(wcgc_pro_params.i18n.request_failed);
+			$('.progress-text').text(bgcw_pro_params.i18n.request_failed);
 		});
 	});
 
 	/* ── CSV Export ───────────────────────────── */
 
-	$(document).on('click', '#wcgc-pro-export-csv-btn', function (e) {
+	$(document).on('click', '#bgcw-pro-export-csv-btn', function (e) {
 		e.preventDefault();
-		var status = $('#wcgc-pro-export-status').val() || '';
-		window.location.href = wcgc_pro_params.ajax_url +
-			'?action=wcgc_pro_export_csv&nonce=' + wcgc_pro_params.nonce +
+		var status = $('#bgcw-pro-export-status').val() || '';
+		window.location.href = bgcw_pro_params.ajax_url +
+			'?action=bgcw_pro_export_csv&nonce=' + bgcw_pro_params.nonce +
 			'&status=' + status;
 	});
 
 	/* ── CSV Import ──────────────────────────── */
 
-	$(document).on('click', '#wcgc-pro-import-csv-btn', function (e) {
+	$(document).on('click', '#bgcw-pro-import-csv-btn', function (e) {
 		e.preventDefault();
 		var $btn = $(this);
-		var $file = $('#wcgc-pro-import-file')[0];
-		var $result = $('#wcgc-pro-import-result');
+		var $file = $('#bgcw-pro-import-file')[0];
+		var $result = $('#bgcw-pro-import-result');
 
 		if (!$file.files.length) {
-			$result.text(wcgc_pro_params.i18n.select_csv).show();
+			$result.text(bgcw_pro_params.i18n.select_csv).show();
 			return;
 		}
 
 		var formData = new FormData();
-		formData.append('action', 'wcgc_pro_import_csv');
-		formData.append('nonce', wcgc_pro_params.nonce);
+		formData.append('action', 'bgcw_pro_import_csv');
+		formData.append('nonce', bgcw_pro_params.nonce);
 		formData.append('csv_file', $file.files[0]);
 
 		$btn.prop('disabled', true);
-		$result.text(wcgc_pro_params.i18n.importing).show();
+		$result.text(bgcw_pro_params.i18n.importing).show();
 
 		$.ajax({
-			url: wcgc_pro_params.ajax_url,
+			url: bgcw_pro_params.ajax_url,
 			type: 'POST',
 			data: formData,
 			processData: false,
@@ -85,64 +85,64 @@
 				if (response.success) {
 					$result.text(response.data.message);
 				} else {
-					$result.text(response.data.message || wcgc_pro_params.i18n.import_failed);
+					$result.text(response.data.message || bgcw_pro_params.i18n.import_failed);
 				}
 			},
 			error: function () {
 				$btn.prop('disabled', false);
-				$result.text(wcgc_pro_params.i18n.request_failed);
+				$result.text(bgcw_pro_params.i18n.request_failed);
 			}
 		});
 	});
 
 	/* ── BOGO Rule Form Toggle ───────────────── */
 
-	$(document).on('click', '#wcgc-pro-add-bogo-btn', function (e) {
+	$(document).on('click', '#bgcw-pro-add-bogo-btn', function (e) {
 		e.preventDefault();
-		$('.wcgc-pro-bogo-form').toggle();
+		$('.bgcw-pro-bogo-form').toggle();
 	});
 
-	$(document).on('click', '#wcgc-pro-save-bogo-btn', function (e) {
+	$(document).on('click', '#bgcw-pro-save-bogo-btn', function (e) {
 		e.preventDefault();
 		var $btn = $(this);
 
 		$btn.prop('disabled', true);
 
-		$.post(wcgc_pro_params.ajax_url, {
-			action: 'wcgc_pro_save_bogo_rule',
-			nonce: wcgc_pro_params.nonce,
-			id: $('#wcgc-pro-bogo-id').val(),
-			name: $('#wcgc-pro-bogo-name').val(),
-			buy_amount: $('#wcgc-pro-bogo-buy').val(),
-			get_amount: $('#wcgc-pro-bogo-get').val(),
-			min_quantity: $('#wcgc-pro-bogo-min-qty').val(),
-			max_uses: $('#wcgc-pro-bogo-max-uses').val(),
-			starts_at: $('#wcgc-pro-bogo-starts').val(),
-			ends_at: $('#wcgc-pro-bogo-ends').val()
+		$.post(bgcw_pro_params.ajax_url, {
+			action: 'bgcw_pro_save_bogo_rule',
+			nonce: bgcw_pro_params.nonce,
+			id: $('#bgcw-pro-bogo-id').val(),
+			name: $('#bgcw-pro-bogo-name').val(),
+			buy_amount: $('#bgcw-pro-bogo-buy').val(),
+			get_amount: $('#bgcw-pro-bogo-get').val(),
+			min_quantity: $('#bgcw-pro-bogo-min-qty').val(),
+			max_uses: $('#bgcw-pro-bogo-max-uses').val(),
+			starts_at: $('#bgcw-pro-bogo-starts').val(),
+			ends_at: $('#bgcw-pro-bogo-ends').val()
 		}, function (response) {
 			$btn.prop('disabled', false);
 			if (response.success) {
 				location.reload();
 			} else {
 				/* translators: not used in PHP — JS alert only */
-				alert(response.data.message || wcgc_pro_params.i18n.save_failed);
+				alert(response.data.message || bgcw_pro_params.i18n.save_failed);
 			}
 		}).fail(function () {
 			$btn.prop('disabled', false);
 		});
 	});
 
-	$(document).on('click', '.wcgc-pro-delete-bogo', function (e) {
+	$(document).on('click', '.bgcw-pro-delete-bogo', function (e) {
 		e.preventDefault();
-		if (!confirm(wcgc_pro_params.i18n.confirm_delete_rule)) {
+		if (!confirm(bgcw_pro_params.i18n.confirm_delete_rule)) {
 			return;
 		}
 
 		var ruleId = $(this).data('id');
 
-		$.post(wcgc_pro_params.ajax_url, {
-			action: 'wcgc_pro_delete_bogo_rule',
-			nonce: wcgc_pro_params.nonce,
+		$.post(bgcw_pro_params.ajax_url, {
+			action: 'bgcw_pro_delete_bogo_rule',
+			nonce: bgcw_pro_params.nonce,
 			id: ruleId
 		}, function (response) {
 			if (response.success) {
@@ -153,11 +153,11 @@
 
 	/* ── Report Frequency Toggle ─────────────── */
 
-	$(document).on('change', '#wcgc-pro-report-frequency', function () {
+	$(document).on('change', '#bgcw-pro-report-frequency', function () {
 		var freq = $(this).val();
-		$('#wcgc-pro-report-day-of-week').closest('tr').toggle(freq === 'weekly');
-		$('#wcgc-pro-report-day-of-month').closest('tr').toggle(freq === 'monthly');
+		$('#bgcw-pro-report-day-of-week').closest('tr').toggle(freq === 'weekly');
+		$('#bgcw-pro-report-day-of-month').closest('tr').toggle(freq === 'monthly');
 	});
-	$('#wcgc-pro-report-frequency').trigger('change');
+	$('#bgcw-pro-report-frequency').trigger('change');
 
 })(jQuery);

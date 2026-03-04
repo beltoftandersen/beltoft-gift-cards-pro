@@ -1,9 +1,9 @@
 <?php
 
-namespace GiftCardsPro\Analytics;
+namespace BgcwPro\Analytics;
 
-use GiftCardsPro\Support\Options;
-use GiftCardsPro\Support\CsvUtil;
+use BgcwPro\Support\Options;
+use BgcwPro\Support\CsvUtil;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -13,8 +13,8 @@ class ReportGenerator {
 	 * Register hooks.
 	 */
 	public static function init() {
-		add_action( 'wcgc_pro_send_report', [ __CLASS__, 'maybe_send_report' ] );
-		add_action( 'wcgc_pro_cleanup_old_reports', [ __CLASS__, 'cleanup_old_reports' ] );
+		add_action( 'bgcw_pro_send_report', [ __CLASS__, 'maybe_send_report' ] );
+		add_action( 'bgcw_pro_cleanup_old_reports', [ __CLASS__, 'cleanup_old_reports' ] );
 	}
 
 	/**
@@ -82,14 +82,14 @@ class ReportGenerator {
 
 		$subject = sprintf(
 			/* translators: 1: site name, 2: date */
-			__( '[%1$s] Gift Card Report - %2$s', 'smart-gift-cards-for-woocommerce-pro' ),
+			__( '[%1$s] Gift Card Report - %2$s', 'beltoft-gift-cards-for-woocommerce-pro' ),
 			$site_name,
 			$date
 		);
 
 		$body = sprintf(
 			/* translators: 1: site name, 2: date */
-			__( 'Please find attached the gift card report for %1$s generated on %2$s.', 'smart-gift-cards-for-woocommerce-pro' ),
+			__( 'Please find attached the gift card report for %1$s generated on %2$s.', 'beltoft-gift-cards-for-woocommerce-pro' ),
 			$site_name,
 			$date
 		);
@@ -118,15 +118,15 @@ class ReportGenerator {
 	 * @return string|false File path on success, false on failure.
 	 */
 	public static function generate_csv() {
-		$filepath = wp_tempnam( 'wcgc-pro-report.csv' );
+		$filepath = wp_tempnam( 'bgcw-pro-report.csv' );
 		if ( ! $filepath ) {
 			return false;
 		}
 
 		global $wpdb;
 
-		$gc_table    = $wpdb->prefix . 'wcgc_gift_cards';
-		$tx_table    = $wpdb->prefix . 'wcgc_transactions';
+		$gc_table    = $wpdb->prefix . 'bgcw_gift_cards';
+		$tx_table    = $wpdb->prefix . 'bgcw_transactions';
 
 		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom tables, no user input.
 		$gift_cards = $wpdb->get_results(
@@ -155,14 +155,14 @@ class ReportGenerator {
 
 		// CSV headers.
 		$headers = [
-			__( 'Code', 'smart-gift-cards-for-woocommerce-pro' ),
-			__( 'Initial Amount', 'smart-gift-cards-for-woocommerce-pro' ),
-			__( 'Balance', 'smart-gift-cards-for-woocommerce-pro' ),
-			__( 'Status', 'smart-gift-cards-for-woocommerce-pro' ),
-			__( 'Recipient', 'smart-gift-cards-for-woocommerce-pro' ),
-			__( 'Created', 'smart-gift-cards-for-woocommerce-pro' ),
-			__( 'Expires', 'smart-gift-cards-for-woocommerce-pro' ),
-			__( 'Transactions Count', 'smart-gift-cards-for-woocommerce-pro' ),
+			__( 'Code', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			__( 'Initial Amount', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			__( 'Balance', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			__( 'Status', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			__( 'Recipient', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			__( 'Created', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			__( 'Expires', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			__( 'Transactions Count', 'beltoft-gift-cards-for-woocommerce-pro' ),
 		];
 
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fwrite -- CSV writing via fputcsv.
@@ -193,11 +193,11 @@ class ReportGenerator {
 	/**
 	 * Delete CSV report files older than 1 day.
 	 *
-	 * Hooked to `wcgc_pro_cleanup_old_reports` daily cron.
+	 * Hooked to `bgcw_pro_cleanup_old_reports` daily cron.
 	 */
 	public static function cleanup_old_reports() {
 		$upload_dir = wp_get_upload_dir();
-		$report_dir = trailingslashit( $upload_dir['basedir'] ) . 'wcgc-pro-reports';
+		$report_dir = trailingslashit( $upload_dir['basedir'] ) . 'bgcw-pro-reports';
 
 		if ( ! is_dir( $report_dir ) ) {
 			return;

@@ -2,8 +2,8 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Smart Gift Cards for WooCommerce - Pro 1.0.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/smart-gift-cards-for-woocommerce-pro\n"
+"Project-Id-Version: Beltoft Gift Cards for WooCommerce - Pro 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/beltoft-gift-cards-for-woocommerce-pro\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -12,47 +12,47 @@ msgstr ""
 "POT-Creation-Date: 2026-02-20T19:21:12+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
-"X-Domain: smart-gift-cards-for-woocommerce-pro\n"
+"X-Domain: beltoft-gift-cards-for-woocommerce-pro\n"
 
 #. Plugin Name of the plugin
-#: smart-gift-cards-for-woocommerce-pro.php
-msgid "Smart Gift Cards for WooCommerce - Pro"
+#: beltoft-gift-cards-for-woocommerce-pro.php
+msgid "Beltoft Gift Cards for WooCommerce - Pro"
 msgstr ""
 
 #. Plugin URI of the plugin
-#: smart-gift-cards-for-woocommerce-pro.php
-msgid "https://chimkins.com/smart-gift-cards-pro"
+#: beltoft-gift-cards-for-woocommerce-pro.php
+msgid "https://chimkins.com/beltoft-gift-cards-pro"
 msgstr ""
 
 #. Description of the plugin
-#: smart-gift-cards-for-woocommerce-pro.php
-msgid "Premium add-on for Smart Gift Cards for WooCommerce — scheduled delivery, email themes, store credit, bulk generation, BOGO promotions, and analytics. Requires the free core plugin."
+#: beltoft-gift-cards-for-woocommerce-pro.php
+msgid "Premium add-on for Beltoft Gift Cards for WooCommerce — scheduled delivery, email themes, store credit, bulk generation, BOGO promotions, and analytics. Requires the free core plugin."
 msgstr ""
 
 #. Author of the plugin
-#: smart-gift-cards-for-woocommerce-pro.php
+#: beltoft-gift-cards-for-woocommerce-pro.php
 msgid "Chimkins IT"
 msgstr ""
 
 #. Author URI of the plugin
-#: smart-gift-cards-for-woocommerce-pro.php
+#: beltoft-gift-cards-for-woocommerce-pro.php
 msgid "https://chimkins.com"
 msgstr ""
 
-#: smart-gift-cards-for-woocommerce-pro.php:48
-#: smart-gift-cards-for-woocommerce-pro.php:88
-msgid "Smart Gift Cards for WooCommerce - Pro requires the free \"Smart Gift Cards for WooCommerce\" plugin to be installed and activated."
+#: beltoft-gift-cards-for-woocommerce-pro.php:48
+#: beltoft-gift-cards-for-woocommerce-pro.php:88
+msgid "Beltoft Gift Cards for WooCommerce - Pro requires the free \"Beltoft Gift Cards for WooCommerce\" plugin to be installed and activated."
 msgstr ""
 
-#: smart-gift-cards-for-woocommerce-pro.php:78
-msgid "Smart Gift Cards for WooCommerce - Pro requires WooCommerce to be installed and activated."
+#: beltoft-gift-cards-for-woocommerce-pro.php:78
+msgid "Beltoft Gift Cards for WooCommerce - Pro requires WooCommerce to be installed and activated."
 msgstr ""
 
-#: smart-gift-cards-for-woocommerce-pro.php:98
-msgid "Smart Gift Cards for WooCommerce - Pro requires version 1.2.0 or higher of the free plugin. Please update."
+#: beltoft-gift-cards-for-woocommerce-pro.php:98
+msgid "Beltoft Gift Cards for WooCommerce - Pro requires version 1.2.0 or higher of the free plugin. Please update."
 msgstr ""
 
-#: smart-gift-cards-for-woocommerce-pro.php:113
+#: beltoft-gift-cards-for-woocommerce-pro.php:113
 msgid "Settings"
 msgstr ""
 
@@ -818,17 +818,17 @@ msgstr ""
 #. translators: %s: license settings page URL
 #: src/Licensing/License.php:200
 #, php-format
-msgid "Smart Gift Cards Pro: Please <a href=\"%s\">enter your license key</a> to enable Pro features."
+msgid "Beltoft Gift Cards Pro: Please <a href=\"%s\">enter your license key</a> to enable Pro features."
 msgstr ""
 
 #. translators: %d: number of days remaining in grace period
 #: src/Licensing/License.php:216
 #, php-format
-msgid "Smart Gift Cards Pro: Your license has expired. Pro features will be disabled in %d day(s)."
+msgid "Beltoft Gift Cards Pro: Your license has expired. Pro features will be disabled in %d day(s)."
 msgstr ""
 
 #: src/Licensing/License.php:222
-msgid "Smart Gift Cards Pro: Your license has expired. Pro features are disabled."
+msgid "Beltoft Gift Cards Pro: Your license has expired. Pro features are disabled."
 msgstr ""
 
 #: src/Plugin.php:97

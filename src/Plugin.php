@@ -1,20 +1,20 @@
 <?php
 
-namespace GiftCardsPro;
+namespace BgcwPro;
 
-use GiftCardsPro\Licensing\License;
-use GiftCardsPro\Admin\SettingsPage;
-use GiftCardsPro\ScheduledDelivery\Scheduler;
-use GiftCardsPro\ScheduledDelivery\ProductFields as ScheduledProductFields;
-use GiftCardsPro\EmailThemes\ThemeManager;
-use GiftCardsPro\EmailThemes\ProductFields as ThemeProductFields;
-use GiftCardsPro\StoreCredit\OrderHandler;
-use GiftCardsPro\BulkGeneration\Generator;
-use GiftCardsPro\BulkGeneration\CsvHandler;
-use GiftCardsPro\Bogo\BogoManager;
-use GiftCardsPro\Bogo\CartHandler as BogoCartHandler;
-use GiftCardsPro\Analytics\Dashboard;
-use GiftCardsPro\Analytics\ReportGenerator;
+use BgcwPro\Licensing\License;
+use BgcwPro\Admin\SettingsPage;
+use BgcwPro\ScheduledDelivery\Scheduler;
+use BgcwPro\ScheduledDelivery\ProductFields as ScheduledProductFields;
+use BgcwPro\EmailThemes\ThemeManager;
+use BgcwPro\EmailThemes\ProductFields as ThemeProductFields;
+use BgcwPro\StoreCredit\OrderHandler;
+use BgcwPro\BulkGeneration\Generator;
+use BgcwPro\BulkGeneration\CsvHandler;
+use BgcwPro\Bogo\BogoManager;
+use BgcwPro\Bogo\CartHandler as BogoCartHandler;
+use BgcwPro\Analytics\Dashboard;
+use BgcwPro\Analytics\ReportGenerator;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -74,7 +74,7 @@ class Plugin {
 	 * @param string $hook Current admin page.
 	 */
 	public static function enqueue_admin_assets( $hook ) {
-		if ( 'woocommerce_page_wcgc-gift-cards' !== $hook ) {
+		if ( 'woocommerce_page_bgcw-gift-cards' !== $hook ) {
 			return;
 		}
 
@@ -83,24 +83,24 @@ class Plugin {
 		// an active license. License tab JS is inline in render_license_tab().
 
 		wp_enqueue_script(
-			'wcgc-pro-admin',
-			WCGC_PRO_URL . 'assets/js/admin.js',
+			'bgcw-pro-admin',
+			BGCW_PRO_URL . 'assets/js/admin.js',
 			[ 'jquery' ],
 			self::asset_version( 'assets/js/admin.js' ),
 			true
 		);
 
-		wp_localize_script( 'wcgc-pro-admin', 'wcgc_pro_params', [
+		wp_localize_script( 'bgcw-pro-admin', 'bgcw_pro_params', [
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
-			'nonce'    => wp_create_nonce( 'wcgc_pro_admin' ),
+			'nonce'    => wp_create_nonce( 'bgcw_pro_admin' ),
 			'i18n'     => [
-				'generation_failed'  => __( 'Generation failed.', 'smart-gift-cards-for-woocommerce-pro' ),
-				'request_failed'     => __( 'Request failed.', 'smart-gift-cards-for-woocommerce-pro' ),
-				'select_csv'         => __( 'Please select a CSV file.', 'smart-gift-cards-for-woocommerce-pro' ),
-				'importing'          => __( 'Importing...', 'smart-gift-cards-for-woocommerce-pro' ),
-				'import_failed'      => __( 'Import failed.', 'smart-gift-cards-for-woocommerce-pro' ),
-				'save_failed'        => __( 'Save failed.', 'smart-gift-cards-for-woocommerce-pro' ),
-				'confirm_delete_rule' => __( 'Delete this rule?', 'smart-gift-cards-for-woocommerce-pro' ),
+				'generation_failed'  => __( 'Generation failed.', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				'request_failed'     => __( 'Request failed.', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				'select_csv'         => __( 'Please select a CSV file.', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				'importing'          => __( 'Importing...', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				'import_failed'      => __( 'Import failed.', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				'save_failed'        => __( 'Save failed.', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				'confirm_delete_rule' => __( 'Delete this rule?', 'beltoft-gift-cards-for-woocommerce-pro' ),
 			],
 		] );
 	}
@@ -120,15 +120,15 @@ class Plugin {
 		}
 
 		wp_enqueue_style(
-			'wcgc-pro-frontend',
-			WCGC_PRO_URL . 'assets/css/frontend.css',
+			'bgcw-pro-frontend',
+			BGCW_PRO_URL . 'assets/css/frontend.css',
 			[],
 			self::asset_version( 'assets/css/frontend.css' )
 		);
 
 		wp_enqueue_script(
-			'wcgc-pro-frontend',
-			WCGC_PRO_URL . 'assets/js/frontend.js',
+			'bgcw-pro-frontend',
+			BGCW_PRO_URL . 'assets/js/frontend.js',
 			[],
 			self::asset_version( 'assets/js/frontend.js' ),
 			true
@@ -142,11 +142,11 @@ class Plugin {
 	 * @return string
 	 */
 	private static function asset_version( $relative_path ) {
-		$file = WCGC_PRO_PATH . ltrim( $relative_path, '/' );
+		$file = BGCW_PRO_PATH . ltrim( $relative_path, '/' );
 		if ( file_exists( $file ) ) {
 			return (string) filemtime( $file );
 		}
 
-		return WCGC_PRO_VER;
+		return BGCW_PRO_VER;
 	}
 }

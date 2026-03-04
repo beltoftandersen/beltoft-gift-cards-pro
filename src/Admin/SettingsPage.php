@@ -1,27 +1,27 @@
 <?php
 
-namespace GiftCardsPro\Admin;
+namespace BgcwPro\Admin;
 
-use GiftCardsPro\Support\Options;
-use GiftCardsPro\Licensing\License;
-use GiftCardsPro\Bogo\BogoManager;
+use BgcwPro\Support\Options;
+use BgcwPro\Licensing\License;
+use BgcwPro\Bogo\BogoManager;
 
 defined( 'ABSPATH' ) || exit;
 
 class SettingsPage {
 
-	const GROUP     = 'wcgc_pro_settings_group';
-	const PAGE_SLUG = 'wcgc-gift-cards-pro-settings';
+	const GROUP     = 'bgcw_pro_settings_group';
+	const PAGE_SLUG = 'bgcw-gift-cards-pro-settings';
 
 	/**
 	 * Register hooks.
 	 */
 	public static function init() {
-		add_filter( 'wcgc_admin_tabs', [ __CLASS__, 'register_tabs' ] );
-		add_action( 'wcgc_admin_tab_pro-settings', [ __CLASS__, 'render_pro_settings_tab' ] );
-		add_action( 'wcgc_admin_tab_bulk-csv', [ __CLASS__, 'render_bulk_csv_tab' ] );
-		add_action( 'wcgc_admin_tab_bogo', [ __CLASS__, 'render_bogo_tab' ] );
-		add_action( 'wcgc_admin_tab_license', [ __CLASS__, 'render_license_tab' ] );
+		add_filter( 'bgcw_admin_tabs', [ __CLASS__, 'register_tabs' ] );
+		add_action( 'bgcw_admin_tab_pro-settings', [ __CLASS__, 'render_pro_settings_tab' ] );
+		add_action( 'bgcw_admin_tab_bulk-csv', [ __CLASS__, 'render_bulk_csv_tab' ] );
+		add_action( 'bgcw_admin_tab_bogo', [ __CLASS__, 'render_bogo_tab' ] );
+		add_action( 'bgcw_admin_tab_license', [ __CLASS__, 'render_license_tab' ] );
 		add_action( 'admin_init', [ __CLASS__, 'register_settings' ] );
 		add_action( 'admin_enqueue_scripts', [ __CLASS__, 'enqueue_assets' ] );
 	}
@@ -32,10 +32,10 @@ class SettingsPage {
 	 * @param string $hook Current admin page.
 	 */
 	public static function enqueue_assets( $hook ) {
-		if ( 'woocommerce_page_wcgc-gift-cards' !== $hook ) {
+		if ( 'woocommerce_page_bgcw-gift-cards' !== $hook ) {
 			return;
 		}
-		wp_enqueue_style( 'wcgc-pro-admin', WCGC_PRO_URL . 'assets/css/admin.css', [], WCGC_PRO_VER );
+		wp_enqueue_style( 'bgcw-pro-admin', BGCW_PRO_URL . 'assets/css/admin.css', [], BGCW_PRO_VER );
 	}
 
 	/**
@@ -45,10 +45,10 @@ class SettingsPage {
 	 * @return array
 	 */
 	public static function register_tabs( array $tabs ): array {
-		$tabs['pro-settings'] = __( 'Pro Settings', 'smart-gift-cards-for-woocommerce-pro' );
-		$tabs['bulk-csv']     = __( 'Bulk & CSV', 'smart-gift-cards-for-woocommerce-pro' );
-		$tabs['bogo']         = __( 'BOGO Rules', 'smart-gift-cards-for-woocommerce-pro' );
-		$tabs['license']      = __( 'License', 'smart-gift-cards-for-woocommerce-pro' );
+		$tabs['pro-settings'] = __( 'Pro Settings', 'beltoft-gift-cards-for-woocommerce-pro' );
+		$tabs['bulk-csv']     = __( 'Bulk & CSV', 'beltoft-gift-cards-for-woocommerce-pro' );
+		$tabs['bogo']         = __( 'BOGO Rules', 'beltoft-gift-cards-for-woocommerce-pro' );
+		$tabs['license']      = __( 'License', 'beltoft-gift-cards-for-woocommerce-pro' );
 		return $tabs;
 	}
 
@@ -65,118 +65,118 @@ class SettingsPage {
 
 		// ── Scheduled Delivery Section ──
 		add_settings_section(
-			'wcgc_pro_scheduled_delivery',
-			__( 'Scheduled Delivery', 'smart-gift-cards-for-woocommerce-pro' ),
+			'bgcw_pro_scheduled_delivery',
+			__( 'Scheduled Delivery', 'beltoft-gift-cards-for-woocommerce-pro' ),
 			function () {
-				echo '<p>' . esc_html__( 'Allow customers to schedule gift card delivery for a future date.', 'smart-gift-cards-for-woocommerce-pro' ) . '</p>';
+				echo '<p>' . esc_html__( 'Allow customers to schedule gift card delivery for a future date.', 'beltoft-gift-cards-for-woocommerce-pro' ) . '</p>';
 			},
 			self::PAGE_SLUG
 		);
 
 		self::add_checkbox(
 			'scheduled_delivery',
-			__( 'Enable Scheduled Delivery', 'smart-gift-cards-for-woocommerce-pro' ),
-			'wcgc_pro_scheduled_delivery',
-			__( 'Allow customers to pick a future delivery date when purchasing a gift card.', 'smart-gift-cards-for-woocommerce-pro' )
+			__( 'Enable Scheduled Delivery', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			'bgcw_pro_scheduled_delivery',
+			__( 'Allow customers to pick a future delivery date when purchasing a gift card.', 'beltoft-gift-cards-for-woocommerce-pro' )
 		);
 
 		// ── Email Themes Section ──
 		add_settings_section(
-			'wcgc_pro_email_themes',
-			__( 'Email Themes', 'smart-gift-cards-for-woocommerce-pro' ),
+			'bgcw_pro_email_themes',
+			__( 'Email Themes', 'beltoft-gift-cards-for-woocommerce-pro' ),
 			function () {
-				echo '<p>' . esc_html__( 'Offer themed email designs for gift card delivery emails.', 'smart-gift-cards-for-woocommerce-pro' ) . '</p>';
+				echo '<p>' . esc_html__( 'Offer themed email designs for gift card delivery emails.', 'beltoft-gift-cards-for-woocommerce-pro' ) . '</p>';
 			},
 			self::PAGE_SLUG
 		);
 
 		self::add_checkbox(
 			'email_themes',
-			__( 'Enable Email Themes', 'smart-gift-cards-for-woocommerce-pro' ),
-			'wcgc_pro_email_themes',
-			__( 'Allow customers to choose a themed design for the gift card email.', 'smart-gift-cards-for-woocommerce-pro' )
+			__( 'Enable Email Themes', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			'bgcw_pro_email_themes',
+			__( 'Allow customers to choose a themed design for the gift card email.', 'beltoft-gift-cards-for-woocommerce-pro' )
 		);
 
 		self::add_select(
 			'default_theme',
-			__( 'Default Theme', 'smart-gift-cards-for-woocommerce-pro' ),
-			'wcgc_pro_email_themes',
+			__( 'Default Theme', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			'bgcw_pro_email_themes',
 			[
-				'classic'     => __( 'Classic', 'smart-gift-cards-for-woocommerce-pro' ),
-				'birthday'    => __( 'Birthday', 'smart-gift-cards-for-woocommerce-pro' ),
-				'celebration' => __( 'Celebration', 'smart-gift-cards-for-woocommerce-pro' ),
-				'thank-you'   => __( 'Thank You', 'smart-gift-cards-for-woocommerce-pro' ),
-				'holiday'     => __( 'Holiday', 'smart-gift-cards-for-woocommerce-pro' ),
+				'classic'     => __( 'Classic', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				'birthday'    => __( 'Birthday', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				'celebration' => __( 'Celebration', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				'thank-you'   => __( 'Thank You', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				'holiday'     => __( 'Holiday', 'beltoft-gift-cards-for-woocommerce-pro' ),
 			]
 		);
 
 		// ── Store Credit Section ──
 		add_settings_section(
-			'wcgc_pro_store_credit',
-			__( 'Store Credit', 'smart-gift-cards-for-woocommerce-pro' ),
+			'bgcw_pro_store_credit',
+			__( 'Store Credit', 'beltoft-gift-cards-for-woocommerce-pro' ),
 			function () {
-				echo '<p>' . esc_html__( 'Issue gift cards as store credit for refunds and account balances.', 'smart-gift-cards-for-woocommerce-pro' ) . '</p>';
+				echo '<p>' . esc_html__( 'Issue gift cards as store credit for refunds and account balances.', 'beltoft-gift-cards-for-woocommerce-pro' ) . '</p>';
 			},
 			self::PAGE_SLUG
 		);
 
 		self::add_checkbox(
 			'store_credit',
-			__( 'Enable Store Credit', 'smart-gift-cards-for-woocommerce-pro' ),
-			'wcgc_pro_store_credit',
-			__( 'Enable store credit functionality backed by gift cards.', 'smart-gift-cards-for-woocommerce-pro' )
+			__( 'Enable Store Credit', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			'bgcw_pro_store_credit',
+			__( 'Enable store credit functionality backed by gift cards.', 'beltoft-gift-cards-for-woocommerce-pro' )
 		);
 
 		self::add_checkbox(
 			'auto_store_credit',
-			__( 'Auto-Create on Refund', 'smart-gift-cards-for-woocommerce-pro' ),
-			'wcgc_pro_store_credit',
-			__( 'Automatically create a store credit gift card when an order is refunded.', 'smart-gift-cards-for-woocommerce-pro' )
+			__( 'Auto-Create on Refund', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			'bgcw_pro_store_credit',
+			__( 'Automatically create a store credit gift card when an order is refunded.', 'beltoft-gift-cards-for-woocommerce-pro' )
 		);
 
 		// ── BOGO Promotions Section ──
 		add_settings_section(
-			'wcgc_pro_bogo',
-			__( 'BOGO Promotions', 'smart-gift-cards-for-woocommerce-pro' ),
+			'bgcw_pro_bogo',
+			__( 'BOGO Promotions', 'beltoft-gift-cards-for-woocommerce-pro' ),
 			function () {
-				echo '<p>' . esc_html__( 'Buy-one-get-one promotions for gift card products.', 'smart-gift-cards-for-woocommerce-pro' ) . '</p>';
+				echo '<p>' . esc_html__( 'Buy-one-get-one promotions for gift card products.', 'beltoft-gift-cards-for-woocommerce-pro' ) . '</p>';
 			},
 			self::PAGE_SLUG
 		);
 
 		self::add_checkbox(
 			'bogo_enabled',
-			__( 'Enable BOGO Promotions', 'smart-gift-cards-for-woocommerce-pro' ),
-			'wcgc_pro_bogo',
-			__( 'Allow creating buy-one-get-one promotions for gift cards.', 'smart-gift-cards-for-woocommerce-pro' )
+			__( 'Enable BOGO Promotions', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			'bgcw_pro_bogo',
+			__( 'Allow creating buy-one-get-one promotions for gift cards.', 'beltoft-gift-cards-for-woocommerce-pro' )
 		);
 
 		// ── Analytics Section ──
 		add_settings_section(
-			'wcgc_pro_analytics',
-			__( 'Analytics', 'smart-gift-cards-for-woocommerce-pro' ),
+			'bgcw_pro_analytics',
+			__( 'Analytics', 'beltoft-gift-cards-for-woocommerce-pro' ),
 			function () {
-				echo '<p>' . esc_html__( 'Gift card usage reports delivered to your inbox on a schedule.', 'smart-gift-cards-for-woocommerce-pro' ) . '</p>';
+				echo '<p>' . esc_html__( 'Gift card usage reports delivered to your inbox on a schedule.', 'beltoft-gift-cards-for-woocommerce-pro' ) . '</p>';
 			},
 			self::PAGE_SLUG
 		);
 
 		self::add_checkbox(
 			'analytics_enabled',
-			__( 'Enable Analytics', 'smart-gift-cards-for-woocommerce-pro' ),
-			'wcgc_pro_analytics',
-			__( 'Enable analytics dashboard and scheduled email reports.', 'smart-gift-cards-for-woocommerce-pro' )
+			__( 'Enable Analytics', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			'bgcw_pro_analytics',
+			__( 'Enable analytics dashboard and scheduled email reports.', 'beltoft-gift-cards-for-woocommerce-pro' )
 		);
 
-		add_settings_field( 'wcgc_pro_report_frequency', __( 'Report Frequency', 'smart-gift-cards-for-woocommerce-pro' ), function () {
+		add_settings_field( 'bgcw_pro_report_frequency', __( 'Report Frequency', 'beltoft-gift-cards-for-woocommerce-pro' ), function () {
 			$val = Options::get( 'report_frequency' );
 			$choices = [
-				'daily'   => __( 'Daily', 'smart-gift-cards-for-woocommerce-pro' ),
-				'weekly'  => __( 'Weekly', 'smart-gift-cards-for-woocommerce-pro' ),
-				'monthly' => __( 'Monthly', 'smart-gift-cards-for-woocommerce-pro' ),
+				'daily'   => __( 'Daily', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				'weekly'  => __( 'Weekly', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				'monthly' => __( 'Monthly', 'beltoft-gift-cards-for-woocommerce-pro' ),
 			];
 			printf(
-				'<select name="%s[report_frequency]" id="wcgc-pro-report-frequency">',
+				'<select name="%s[report_frequency]" id="bgcw-pro-report-frequency">',
 				esc_attr( Options::OPTION )
 			);
 			foreach ( $choices as $value => $label ) {
@@ -188,9 +188,9 @@ class SettingsPage {
 				);
 			}
 			echo '</select>';
-		}, self::PAGE_SLUG, 'wcgc_pro_analytics' );
+		}, self::PAGE_SLUG, 'bgcw_pro_analytics' );
 
-		add_settings_field( 'wcgc_pro_report_recipients', __( 'Report Recipients', 'smart-gift-cards-for-woocommerce-pro' ), function () {
+		add_settings_field( 'bgcw_pro_report_recipients', __( 'Report Recipients', 'beltoft-gift-cards-for-woocommerce-pro' ), function () {
 			$val = Options::get( 'report_recipients' );
 			printf(
 				'<input type="text" name="%s[report_recipients]" value="%s" class="regular-text" placeholder="%s" />',
@@ -198,22 +198,22 @@ class SettingsPage {
 				esc_attr( $val ),
 				esc_attr( get_option( 'admin_email' ) )
 			);
-			echo '<p class="description">' . esc_html__( 'Comma-separated email addresses. Leave blank to use the site admin email.', 'smart-gift-cards-for-woocommerce-pro' ) . '</p>';
-		}, self::PAGE_SLUG, 'wcgc_pro_analytics' );
+			echo '<p class="description">' . esc_html__( 'Comma-separated email addresses. Leave blank to use the site admin email.', 'beltoft-gift-cards-for-woocommerce-pro' ) . '</p>';
+		}, self::PAGE_SLUG, 'bgcw_pro_analytics' );
 
-		add_settings_field( 'wcgc_pro_report_day_of_week', __( 'Day of Week', 'smart-gift-cards-for-woocommerce-pro' ), function () {
+		add_settings_field( 'bgcw_pro_report_day_of_week', __( 'Day of Week', 'beltoft-gift-cards-for-woocommerce-pro' ), function () {
 			$val  = Options::get( 'report_day_of_week' );
 			$days = [
-				1 => __( 'Monday', 'smart-gift-cards-for-woocommerce-pro' ),
-				2 => __( 'Tuesday', 'smart-gift-cards-for-woocommerce-pro' ),
-				3 => __( 'Wednesday', 'smart-gift-cards-for-woocommerce-pro' ),
-				4 => __( 'Thursday', 'smart-gift-cards-for-woocommerce-pro' ),
-				5 => __( 'Friday', 'smart-gift-cards-for-woocommerce-pro' ),
-				6 => __( 'Saturday', 'smart-gift-cards-for-woocommerce-pro' ),
-				7 => __( 'Sunday', 'smart-gift-cards-for-woocommerce-pro' ),
+				1 => __( 'Monday', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				2 => __( 'Tuesday', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				3 => __( 'Wednesday', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				4 => __( 'Thursday', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				5 => __( 'Friday', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				6 => __( 'Saturday', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				7 => __( 'Sunday', 'beltoft-gift-cards-for-woocommerce-pro' ),
 			];
 			printf(
-				'<select name="%s[report_day_of_week]" id="wcgc-pro-report-day-of-week">',
+				'<select name="%s[report_day_of_week]" id="bgcw-pro-report-day-of-week">',
 				esc_attr( Options::OPTION )
 			);
 			foreach ( $days as $num => $label ) {
@@ -225,13 +225,13 @@ class SettingsPage {
 				);
 			}
 			echo '</select>';
-			echo '<p class="description">' . esc_html__( 'Used for weekly reports.', 'smart-gift-cards-for-woocommerce-pro' ) . '</p>';
-		}, self::PAGE_SLUG, 'wcgc_pro_analytics' );
+			echo '<p class="description">' . esc_html__( 'Used for weekly reports.', 'beltoft-gift-cards-for-woocommerce-pro' ) . '</p>';
+		}, self::PAGE_SLUG, 'bgcw_pro_analytics' );
 
-		add_settings_field( 'wcgc_pro_report_day_of_month', __( 'Day of Month', 'smart-gift-cards-for-woocommerce-pro' ), function () {
+		add_settings_field( 'bgcw_pro_report_day_of_month', __( 'Day of Month', 'beltoft-gift-cards-for-woocommerce-pro' ), function () {
 			$val = Options::get( 'report_day_of_month' );
 			printf(
-				'<select name="%s[report_day_of_month]" id="wcgc-pro-report-day-of-month">',
+				'<select name="%s[report_day_of_month]" id="bgcw-pro-report-day-of-month">',
 				esc_attr( Options::OPTION )
 			);
 			for ( $i = 1; $i <= 28; $i++ ) {
@@ -243,13 +243,13 @@ class SettingsPage {
 				);
 			}
 			echo '</select>';
-			echo '<p class="description">' . esc_html__( 'Used for monthly reports. Limited to 28 to ensure consistent delivery across all months.', 'smart-gift-cards-for-woocommerce-pro' ) . '</p>';
-		}, self::PAGE_SLUG, 'wcgc_pro_analytics' );
+			echo '<p class="description">' . esc_html__( 'Used for monthly reports. Limited to 28 to ensure consistent delivery across all months.', 'beltoft-gift-cards-for-woocommerce-pro' ) . '</p>';
+		}, self::PAGE_SLUG, 'bgcw_pro_analytics' );
 
-		add_settings_field( 'wcgc_pro_report_time_of_day', __( 'Time of Day', 'smart-gift-cards-for-woocommerce-pro' ), function () {
+		add_settings_field( 'bgcw_pro_report_time_of_day', __( 'Time of Day', 'beltoft-gift-cards-for-woocommerce-pro' ), function () {
 			$val = Options::get( 'report_time_of_day' );
 			printf(
-				'<select name="%s[report_time_of_day]" id="wcgc-pro-report-time">',
+				'<select name="%s[report_time_of_day]" id="bgcw-pro-report-time">',
 				esc_attr( Options::OPTION )
 			);
 			for ( $h = 0; $h <= 23; $h++ ) {
@@ -264,25 +264,25 @@ class SettingsPage {
 			echo '<p class="description">';
 			printf(
 				/* translators: %s: WordPress timezone string */
-				esc_html__( 'Uses your site timezone (%s).', 'smart-gift-cards-for-woocommerce-pro' ),
+				esc_html__( 'Uses your site timezone (%s).', 'beltoft-gift-cards-for-woocommerce-pro' ),
 				esc_html( wp_timezone_string() )
 			);
 			echo '</p>';
-		}, self::PAGE_SLUG, 'wcgc_pro_analytics' );
+		}, self::PAGE_SLUG, 'bgcw_pro_analytics' );
 
 		// ── Advanced Section ──
 		add_settings_section(
-			'wcgc_pro_advanced',
-			__( 'Advanced', 'smart-gift-cards-for-woocommerce-pro' ),
+			'bgcw_pro_advanced',
+			__( 'Advanced', 'beltoft-gift-cards-for-woocommerce-pro' ),
 			'__return_null',
 			self::PAGE_SLUG
 		);
 
 		self::add_checkbox(
 			'cleanup_on_uninstall',
-			__( 'Cleanup on Uninstall', 'smart-gift-cards-for-woocommerce-pro' ),
-			'wcgc_pro_advanced',
-			__( 'Delete all Pro plugin data when uninstalled.', 'smart-gift-cards-for-woocommerce-pro' )
+			__( 'Cleanup on Uninstall', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			'bgcw_pro_advanced',
+			__( 'Delete all Pro plugin data when uninstalled.', 'beltoft-gift-cards-for-woocommerce-pro' )
 		);
 	}
 
@@ -299,10 +299,10 @@ class SettingsPage {
 			printf(
 				wp_kses(
 					/* translators: %s: license tab URL */
-					__( 'An active license is required for Pro Settings. <a href="%s">Enter your license key</a> to enable these features.', 'smart-gift-cards-for-woocommerce-pro' ),
+					__( 'An active license is required for Pro Settings. <a href="%s">Enter your license key</a> to enable these features.', 'beltoft-gift-cards-for-woocommerce-pro' ),
 					[ 'a' => [ 'href' => [] ] ]
 				),
-				esc_url( admin_url( 'admin.php?page=wcgc-gift-cards&tab=license' ) )
+				esc_url( admin_url( 'admin.php?page=bgcw-gift-cards&tab=license' ) )
 			);
 			echo '</p></div>';
 			return;
@@ -329,49 +329,49 @@ class SettingsPage {
 	 * Render the email theme customization cards.
 	 */
 	private static function render_theme_customization() {
-		$themes = \GiftCardsPro\EmailThemes\ThemeManager::get_available_themes();
+		$themes = \BgcwPro\EmailThemes\ThemeManager::get_available_themes();
 
 		$defaults = [
-			'classic'     => [ 'heading' => __( "You've received a gift card!", 'smart-gift-cards-for-woocommerce-pro' ), 'color' => '#6B4C9A' ],
-			'birthday'    => [ 'heading' => __( 'Happy Birthday!', 'smart-gift-cards-for-woocommerce-pro' ), 'color' => '#E91E8C' ],
-			'celebration' => [ 'heading' => __( 'Congratulations!', 'smart-gift-cards-for-woocommerce-pro' ), 'color' => '#E88700' ],
-			'thank-you'   => [ 'heading' => __( 'Thank You!', 'smart-gift-cards-for-woocommerce-pro' ), 'color' => '#1A9E8F' ],
-			'holiday'     => [ 'heading' => __( 'Happy Holidays!', 'smart-gift-cards-for-woocommerce-pro' ), 'color' => '#B22222' ],
+			'classic'     => [ 'heading' => __( "You've received a gift card!", 'beltoft-gift-cards-for-woocommerce-pro' ), 'color' => '#6B4C9A' ],
+			'birthday'    => [ 'heading' => __( 'Happy Birthday!', 'beltoft-gift-cards-for-woocommerce-pro' ), 'color' => '#E91E8C' ],
+			'celebration' => [ 'heading' => __( 'Congratulations!', 'beltoft-gift-cards-for-woocommerce-pro' ), 'color' => '#E88700' ],
+			'thank-you'   => [ 'heading' => __( 'Thank You!', 'beltoft-gift-cards-for-woocommerce-pro' ), 'color' => '#1A9E8F' ],
+			'holiday'     => [ 'heading' => __( 'Happy Holidays!', 'beltoft-gift-cards-for-woocommerce-pro' ), 'color' => '#B22222' ],
 		];
 		?>
-		<h2><?php esc_html_e( 'Theme Customization', 'smart-gift-cards-for-woocommerce-pro' ); ?></h2>
-		<p class="description"><?php esc_html_e( 'Customize the heading text and accent color for each email theme. Leave fields blank to use the defaults.', 'smart-gift-cards-for-woocommerce-pro' ); ?></p>
+		<h2><?php esc_html_e( 'Theme Customization', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></h2>
+		<p class="description"><?php esc_html_e( 'Customize the heading text and accent color for each email theme. Leave fields blank to use the defaults.', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></p>
 
-		<div class="wcgc-pro-theme-grid">
+		<div class="bgcw-pro-theme-grid">
 			<?php foreach ( $themes as $slug => $theme ) :
 				$saved_heading = Options::get( 'theme_heading_' . $slug );
 				$saved_color   = Options::get( 'theme_color_' . $slug );
 				$color         = $saved_color ?: $defaults[ $slug ]['color'];
 				$option_name   = Options::OPTION;
 				?>
-				<div class="wcgc-pro-theme-card">
-					<div class="wcgc-pro-theme-card__preview" style="border-top: 3px solid <?php echo esc_attr( $color ); ?>;">
+				<div class="bgcw-pro-theme-card">
+					<div class="bgcw-pro-theme-card__preview" style="border-top: 3px solid <?php echo esc_attr( $color ); ?>;">
 						<span style="display:block;width:120px;height:50px;border-radius:4px;background-color:<?php echo esc_attr( $color ); ?>;margin:0 auto 6px;"></span>
 						<strong><?php echo esc_html( $theme['name'] ); ?></strong>
 						<br />
 						<em style="font-size:12px;color:#666;"><?php echo esc_html( $saved_heading ?: $defaults[ $slug ]['heading'] ); ?></em>
 					</div>
-					<div class="wcgc-pro-theme-card__fields">
+					<div class="bgcw-pro-theme-card__fields">
 						<label>
-							<?php esc_html_e( 'Heading', 'smart-gift-cards-for-woocommerce-pro' ); ?>
+							<?php esc_html_e( 'Heading', 'beltoft-gift-cards-for-woocommerce-pro' ); ?>
 							<input type="text"
 								   name="<?php echo esc_attr( $option_name ); ?>[theme_heading_<?php echo esc_attr( $slug ); ?>]"
 								   value="<?php echo esc_attr( $saved_heading ); ?>"
 								   placeholder="<?php echo esc_attr( $defaults[ $slug ]['heading'] ); ?>"
 								   class="widefat" />
 						</label>
-						<label class="wcgc-pro-theme-card__color">
-							<?php esc_html_e( 'Accent Color', 'smart-gift-cards-for-woocommerce-pro' ); ?>
-							<span class="wcgc-color-setting">
+						<label class="bgcw-pro-theme-card__color">
+							<?php esc_html_e( 'Accent Color', 'beltoft-gift-cards-for-woocommerce-pro' ); ?>
+							<span class="bgcw-color-setting">
 								<input type="color"
 									   name="<?php echo esc_attr( $option_name ); ?>[theme_color_<?php echo esc_attr( $slug ); ?>]"
 									   value="<?php echo esc_attr( $color ); ?>"
-									   class="wcgc-color-picker" />
+									   class="bgcw-color-picker" />
 								<code><?php echo esc_html( $color ); ?></code>
 							</span>
 						</label>
@@ -394,57 +394,57 @@ class SettingsPage {
 		$status = $opts['license_status'];
 		$key    = $opts['license_key'];
 		?>
-		<div class="wcgc-pro-license-section" style="margin-top:16px;max-width:700px;">
-			<h2><?php esc_html_e( 'License Key', 'smart-gift-cards-for-woocommerce-pro' ); ?></h2>
+		<div class="bgcw-pro-license-section" style="margin-top:16px;max-width:700px;">
+			<h2><?php esc_html_e( 'License Key', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></h2>
 
-			<div class="wcgc-pro-license-status" style="margin-bottom:16px;">
+			<div class="bgcw-pro-license-status" style="margin-bottom:16px;">
 				<?php if ( 'valid' === $status ) : ?>
-					<span class="wcgc-pro-license-badge wcgc-pro-license-badge--active"><?php esc_html_e( 'Active', 'smart-gift-cards-for-woocommerce-pro' ); ?></span>
+					<span class="bgcw-pro-license-badge bgcw-pro-license-badge--active"><?php esc_html_e( 'Active', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></span>
 					<?php if ( $opts['license_expires'] && 'lifetime' !== $opts['license_expires'] ) : ?>
-						<span class="wcgc-pro-license-expires">
+						<span class="bgcw-pro-license-expires">
 							<?php
 							printf(
 								/* translators: %s: license expiration date */
-								esc_html__( 'Expires: %s', 'smart-gift-cards-for-woocommerce-pro' ),
+								esc_html__( 'Expires: %s', 'beltoft-gift-cards-for-woocommerce-pro' ),
 								esc_html( date_i18n( get_option( 'date_format' ), strtotime( $opts['license_expires'] ) ) )
 							);
 							?>
 						</span>
 					<?php elseif ( 'lifetime' === $opts['license_expires'] ) : ?>
-						<span class="wcgc-pro-license-expires"><?php esc_html_e( 'Lifetime', 'smart-gift-cards-for-woocommerce-pro' ); ?></span>
+						<span class="bgcw-pro-license-expires"><?php esc_html_e( 'Lifetime', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></span>
 					<?php endif; ?>
 				<?php elseif ( 'expired' === $status ) : ?>
-					<span class="wcgc-pro-license-badge wcgc-pro-license-badge--expired"><?php esc_html_e( 'Expired', 'smart-gift-cards-for-woocommerce-pro' ); ?></span>
+					<span class="bgcw-pro-license-badge bgcw-pro-license-badge--expired"><?php esc_html_e( 'Expired', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></span>
 				<?php else : ?>
-					<span class="wcgc-pro-license-badge wcgc-pro-license-badge--inactive"><?php esc_html_e( 'Inactive', 'smart-gift-cards-for-woocommerce-pro' ); ?></span>
+					<span class="bgcw-pro-license-badge bgcw-pro-license-badge--inactive"><?php esc_html_e( 'Inactive', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></span>
 				<?php endif; ?>
 			</div>
 
 			<table class="form-table">
 				<tr>
 					<th scope="row">
-						<label for="wcgc-pro-license-key"><?php esc_html_e( 'License Key', 'smart-gift-cards-for-woocommerce-pro' ); ?></label>
+						<label for="bgcw-pro-license-key"><?php esc_html_e( 'License Key', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></label>
 					</th>
 					<td>
 						<input type="text"
-							   id="wcgc-pro-license-key"
+							   id="bgcw-pro-license-key"
 							   class="regular-text"
 							   value="<?php echo esc_attr( $key ? str_repeat( "\u{2022}", max( 0, strlen( $key ) - 4 ) ) . substr( $key, -4 ) : '' ); ?>"
 							   <?php echo $key ? 'readonly' : ''; ?>
-							   placeholder="<?php esc_attr_e( 'Enter your license key', 'smart-gift-cards-for-woocommerce-pro' ); ?>"
+							   placeholder="<?php esc_attr_e( 'Enter your license key', 'beltoft-gift-cards-for-woocommerce-pro' ); ?>"
 							   style="margin-bottom:8px;" />
 
 						<?php if ( $key ) : ?>
-							<button type="button" id="wcgc-pro-deactivate-license" class="button">
-								<?php esc_html_e( 'Deactivate', 'smart-gift-cards-for-woocommerce-pro' ); ?>
+							<button type="button" id="bgcw-pro-deactivate-license" class="button">
+								<?php esc_html_e( 'Deactivate', 'beltoft-gift-cards-for-woocommerce-pro' ); ?>
 							</button>
 						<?php else : ?>
-							<button type="button" id="wcgc-pro-activate-license" class="button button-primary">
-								<?php esc_html_e( 'Activate', 'smart-gift-cards-for-woocommerce-pro' ); ?>
+							<button type="button" id="bgcw-pro-activate-license" class="button button-primary">
+								<?php esc_html_e( 'Activate', 'beltoft-gift-cards-for-woocommerce-pro' ); ?>
 							</button>
 						<?php endif; ?>
 
-						<span id="wcgc-pro-license-message" class="wcgc-pro-license-message"></span>
+						<span id="bgcw-pro-license-message" class="bgcw-pro-license-message"></span>
 					</td>
 				</tr>
 			</table>
@@ -454,7 +454,7 @@ class SettingsPage {
 					<?php
 					printf(
 						/* translators: %s: date and time of last license check */
-						esc_html__( 'Last checked: %s', 'smart-gift-cards-for-woocommerce-pro' ),
+						esc_html__( 'Last checked: %s', 'beltoft-gift-cards-for-woocommerce-pro' ),
 						esc_html( date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( $opts['license_last_checked'] ) ) )
 					);
 					?>
@@ -464,18 +464,18 @@ class SettingsPage {
 
 		<script>
 		jQuery(function($) {
-			var nonce = '<?php echo esc_js( wp_create_nonce( 'wcgc_pro_license' ) ); ?>';
+			var nonce = '<?php echo esc_js( wp_create_nonce( 'bgcw_pro_license' ) ); ?>';
 
-			$('#wcgc-pro-activate-license').on('click', function() {
-				var key = $('#wcgc-pro-license-key').val().trim();
+			$('#bgcw-pro-activate-license').on('click', function() {
+				var key = $('#bgcw-pro-license-key').val().trim();
 				if (!key) return;
 
-				var $btn = $(this).prop('disabled', true).text('<?php echo esc_js( __( 'Activating...', 'smart-gift-cards-for-woocommerce-pro' ) ); ?>');
-				var $msg = $('#wcgc-pro-license-message');
+				var $btn = $(this).prop('disabled', true).text('<?php echo esc_js( __( 'Activating...', 'beltoft-gift-cards-for-woocommerce-pro' ) ); ?>');
+				var $msg = $('#bgcw-pro-license-message');
 				$msg.text('');
 
 				$.post(ajaxurl, {
-					action: 'wcgc_pro_activate_license',
+					action: 'bgcw_pro_activate_license',
 					nonce: nonce,
 					license_key: key
 				}).done(function(response) {
@@ -483,36 +483,36 @@ class SettingsPage {
 						$msg.text(response.data.message).css('color', '#00a32a');
 						setTimeout(function() { location.reload(); }, 1000);
 					} else {
-						$msg.text(response.data ? response.data.message : '<?php echo esc_js( __( 'Activation failed.', 'smart-gift-cards-for-woocommerce-pro' ) ); ?>').css('color', '#d63638');
-						$btn.prop('disabled', false).text('<?php echo esc_js( __( 'Activate', 'smart-gift-cards-for-woocommerce-pro' ) ); ?>');
+						$msg.text(response.data ? response.data.message : '<?php echo esc_js( __( 'Activation failed.', 'beltoft-gift-cards-for-woocommerce-pro' ) ); ?>').css('color', '#d63638');
+						$btn.prop('disabled', false).text('<?php echo esc_js( __( 'Activate', 'beltoft-gift-cards-for-woocommerce-pro' ) ); ?>');
 					}
 				}).fail(function() {
-					$msg.text('<?php echo esc_js( __( 'Request failed. Please refresh and try again.', 'smart-gift-cards-for-woocommerce-pro' ) ); ?>').css('color', '#d63638');
-					$btn.prop('disabled', false).text('<?php echo esc_js( __( 'Activate', 'smart-gift-cards-for-woocommerce-pro' ) ); ?>');
+					$msg.text('<?php echo esc_js( __( 'Request failed. Please refresh and try again.', 'beltoft-gift-cards-for-woocommerce-pro' ) ); ?>').css('color', '#d63638');
+					$btn.prop('disabled', false).text('<?php echo esc_js( __( 'Activate', 'beltoft-gift-cards-for-woocommerce-pro' ) ); ?>');
 				});
 			});
 
-			$('#wcgc-pro-deactivate-license').on('click', function() {
-				if (!confirm('<?php echo esc_js( __( 'Are you sure you want to deactivate this license?', 'smart-gift-cards-for-woocommerce-pro' ) ); ?>')) return;
+			$('#bgcw-pro-deactivate-license').on('click', function() {
+				if (!confirm('<?php echo esc_js( __( 'Are you sure you want to deactivate this license?', 'beltoft-gift-cards-for-woocommerce-pro' ) ); ?>')) return;
 
-				var $btn = $(this).prop('disabled', true).text('<?php echo esc_js( __( 'Deactivating...', 'smart-gift-cards-for-woocommerce-pro' ) ); ?>');
-				var $msg = $('#wcgc-pro-license-message');
+				var $btn = $(this).prop('disabled', true).text('<?php echo esc_js( __( 'Deactivating...', 'beltoft-gift-cards-for-woocommerce-pro' ) ); ?>');
+				var $msg = $('#bgcw-pro-license-message');
 				$msg.text('');
 
 				$.post(ajaxurl, {
-					action: 'wcgc_pro_deactivate_license',
+					action: 'bgcw_pro_deactivate_license',
 					nonce: nonce
 				}).done(function(response) {
 					if (response.success) {
 						$msg.text(response.data.message).css('color', '#00a32a');
 						setTimeout(function() { location.reload(); }, 500);
 					} else {
-						$msg.text(response.data ? response.data.message : '<?php echo esc_js( __( 'Deactivation failed.', 'smart-gift-cards-for-woocommerce-pro' ) ); ?>').css('color', '#d63638');
-						$btn.prop('disabled', false).text('<?php echo esc_js( __( 'Deactivate', 'smart-gift-cards-for-woocommerce-pro' ) ); ?>');
+						$msg.text(response.data ? response.data.message : '<?php echo esc_js( __( 'Deactivation failed.', 'beltoft-gift-cards-for-woocommerce-pro' ) ); ?>').css('color', '#d63638');
+						$btn.prop('disabled', false).text('<?php echo esc_js( __( 'Deactivate', 'beltoft-gift-cards-for-woocommerce-pro' ) ); ?>');
 					}
 				}).fail(function() {
-					$msg.text('<?php echo esc_js( __( 'Request failed. Please refresh and try again.', 'smart-gift-cards-for-woocommerce-pro' ) ); ?>').css('color', '#d63638');
-					$btn.prop('disabled', false).text('<?php echo esc_js( __( 'Deactivate', 'smart-gift-cards-for-woocommerce-pro' ) ); ?>');
+					$msg.text('<?php echo esc_js( __( 'Request failed. Please refresh and try again.', 'beltoft-gift-cards-for-woocommerce-pro' ) ); ?>').css('color', '#d63638');
+					$btn.prop('disabled', false).text('<?php echo esc_js( __( 'Deactivate', 'beltoft-gift-cards-for-woocommerce-pro' ) ); ?>');
 				});
 			});
 		});
@@ -529,75 +529,75 @@ class SettingsPage {
 	 */
 	public static function render_bulk_csv_tab() {
 		if ( ! License::is_active() ) {
-			self::render_license_gate( __( 'Bulk generation and CSV tools require an active license.', 'smart-gift-cards-for-woocommerce-pro' ) );
+			self::render_license_gate( __( 'Bulk generation and CSV tools require an active license.', 'beltoft-gift-cards-for-woocommerce-pro' ) );
 			return;
 		}
 		?>
-		<div class="wcgc-pro-settings-wrap">
-			<div class="wcgc-pro-bulk-wrap">
-				<h3><?php esc_html_e( 'Bulk Generate Gift Cards', 'smart-gift-cards-for-woocommerce-pro' ); ?></h3>
+		<div class="bgcw-pro-settings-wrap">
+			<div class="bgcw-pro-bulk-wrap">
+				<h3><?php esc_html_e( 'Bulk Generate Gift Cards', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></h3>
 				<table class="form-table">
 					<tr>
-						<th><label for="wcgc-pro-bulk-quantity"><?php esc_html_e( 'Quantity', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-						<td><input type="number" id="wcgc-pro-bulk-quantity" min="1" max="500" step="1" value="10" class="small-text" /></td>
+						<th><label for="bgcw-pro-bulk-quantity"><?php esc_html_e( 'Quantity', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></label></th>
+						<td><input type="number" id="bgcw-pro-bulk-quantity" min="1" max="500" step="1" value="10" class="small-text" /></td>
 					</tr>
 					<tr>
-						<th><label for="wcgc-pro-bulk-amount"><?php esc_html_e( 'Amount', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-						<td><input type="number" id="wcgc-pro-bulk-amount" min="0.01" step="0.01" class="small-text" /></td>
+						<th><label for="bgcw-pro-bulk-amount"><?php esc_html_e( 'Amount', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></label></th>
+						<td><input type="number" id="bgcw-pro-bulk-amount" min="0.01" step="0.01" class="small-text" /></td>
 					</tr>
 					<tr>
-						<th><label for="wcgc-pro-bulk-prefix"><?php esc_html_e( 'Code Prefix (optional)', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-						<td><input type="text" id="wcgc-pro-bulk-prefix" class="regular-text" /></td>
+						<th><label for="bgcw-pro-bulk-prefix"><?php esc_html_e( 'Code Prefix (optional)', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></label></th>
+						<td><input type="text" id="bgcw-pro-bulk-prefix" class="regular-text" /></td>
 					</tr>
 					<tr>
-						<th><label for="wcgc-pro-bulk-expiry"><?php esc_html_e( 'Expiry (days)', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-						<td><input type="number" id="wcgc-pro-bulk-expiry" min="0" step="1" value="0" class="small-text" /></td>
+						<th><label for="bgcw-pro-bulk-expiry"><?php esc_html_e( 'Expiry (days)', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></label></th>
+						<td><input type="number" id="bgcw-pro-bulk-expiry" min="0" step="1" value="0" class="small-text" /></td>
 					</tr>
 					<tr>
-						<th><label for="wcgc-pro-bulk-name"><?php esc_html_e( 'Recipient Name (optional)', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-						<td><input type="text" id="wcgc-pro-bulk-name" class="regular-text" /></td>
+						<th><label for="bgcw-pro-bulk-name"><?php esc_html_e( 'Recipient Name (optional)', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></label></th>
+						<td><input type="text" id="bgcw-pro-bulk-name" class="regular-text" /></td>
 					</tr>
 					<tr>
-						<th><label for="wcgc-pro-bulk-email"><?php esc_html_e( 'Recipient Email (optional)', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-						<td><input type="email" id="wcgc-pro-bulk-email" class="regular-text" /></td>
+						<th><label for="bgcw-pro-bulk-email"><?php esc_html_e( 'Recipient Email (optional)', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></label></th>
+						<td><input type="email" id="bgcw-pro-bulk-email" class="regular-text" /></td>
 					</tr>
 				</table>
 				<p>
-					<button type="button" class="button button-primary" id="wcgc-pro-bulk-generate-btn"><?php esc_html_e( 'Generate Gift Cards', 'smart-gift-cards-for-woocommerce-pro' ); ?></button>
+					<button type="button" class="button button-primary" id="bgcw-pro-bulk-generate-btn"><?php esc_html_e( 'Generate Gift Cards', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></button>
 				</p>
-				<div class="wcgc-pro-bulk-progress" aria-live="polite">
+				<div class="bgcw-pro-bulk-progress" aria-live="polite">
 					<div class="progress-bar"><div class="progress-bar-fill" style="width:0%;"></div></div>
-					<div class="progress-text"><?php esc_html_e( 'Preparing generation...', 'smart-gift-cards-for-woocommerce-pro' ); ?></div>
+					<div class="progress-text"><?php esc_html_e( 'Preparing generation...', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></div>
 				</div>
 			</div>
 
-			<div class="wcgc-pro-csv-wrap">
-				<div class="wcgc-pro-csv-box">
-					<h3><?php esc_html_e( 'Export Gift Cards (CSV)', 'smart-gift-cards-for-woocommerce-pro' ); ?></h3>
+			<div class="bgcw-pro-csv-wrap">
+				<div class="bgcw-pro-csv-box">
+					<h3><?php esc_html_e( 'Export Gift Cards (CSV)', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></h3>
 					<p>
-						<label for="wcgc-pro-export-status"><?php esc_html_e( 'Filter by status', 'smart-gift-cards-for-woocommerce-pro' ); ?></label><br />
-						<select id="wcgc-pro-export-status">
-							<option value=""><?php esc_html_e( 'All statuses', 'smart-gift-cards-for-woocommerce-pro' ); ?></option>
-							<option value="active"><?php esc_html_e( 'Active', 'smart-gift-cards-for-woocommerce-pro' ); ?></option>
-							<option value="disabled"><?php esc_html_e( 'Disabled', 'smart-gift-cards-for-woocommerce-pro' ); ?></option>
-							<option value="expired"><?php esc_html_e( 'Expired', 'smart-gift-cards-for-woocommerce-pro' ); ?></option>
-							<option value="redeemed"><?php esc_html_e( 'Redeemed', 'smart-gift-cards-for-woocommerce-pro' ); ?></option>
+						<label for="bgcw-pro-export-status"><?php esc_html_e( 'Filter by status', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></label><br />
+						<select id="bgcw-pro-export-status">
+							<option value=""><?php esc_html_e( 'All statuses', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></option>
+							<option value="active"><?php esc_html_e( 'Active', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></option>
+							<option value="disabled"><?php esc_html_e( 'Disabled', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></option>
+							<option value="expired"><?php esc_html_e( 'Expired', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></option>
+							<option value="redeemed"><?php esc_html_e( 'Redeemed', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></option>
 						</select>
 					</p>
 					<p>
-						<button type="button" class="button" id="wcgc-pro-export-csv-btn"><?php esc_html_e( 'Download CSV', 'smart-gift-cards-for-woocommerce-pro' ); ?></button>
+						<button type="button" class="button" id="bgcw-pro-export-csv-btn"><?php esc_html_e( 'Download CSV', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></button>
 					</p>
 				</div>
 
-				<div class="wcgc-pro-csv-box">
-					<h3><?php esc_html_e( 'Import Gift Cards (CSV)', 'smart-gift-cards-for-woocommerce-pro' ); ?></h3>
+				<div class="bgcw-pro-csv-box">
+					<h3><?php esc_html_e( 'Import Gift Cards (CSV)', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></h3>
 					<p>
-						<input type="file" id="wcgc-pro-import-file" accept=".csv,.txt,text/csv,text/plain" />
+						<input type="file" id="bgcw-pro-import-file" accept=".csv,.txt,text/csv,text/plain" />
 					</p>
 					<p>
-						<button type="button" class="button" id="wcgc-pro-import-csv-btn"><?php esc_html_e( 'Import CSV', 'smart-gift-cards-for-woocommerce-pro' ); ?></button>
+						<button type="button" class="button" id="bgcw-pro-import-csv-btn"><?php esc_html_e( 'Import CSV', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></button>
 					</p>
-					<p id="wcgc-pro-import-result" class="description" style="display:none;"></p>
+					<p id="bgcw-pro-import-result" class="description" style="display:none;"></p>
 				</div>
 			</div>
 		</div>
@@ -613,71 +613,71 @@ class SettingsPage {
 	 */
 	public static function render_bogo_tab() {
 		if ( ! License::is_active() ) {
-			self::render_license_gate( __( 'BOGO promotions require an active license.', 'smart-gift-cards-for-woocommerce-pro' ) );
+			self::render_license_gate( __( 'BOGO promotions require an active license.', 'beltoft-gift-cards-for-woocommerce-pro' ) );
 			return;
 		}
 
 		$rules = array_merge( BogoManager::get_rules( 'active' ), BogoManager::get_rules( 'inactive' ) );
 		?>
-		<div class="wcgc-pro-settings-wrap">
-			<div class="wcgc-pro-bogo-rules">
+		<div class="bgcw-pro-settings-wrap">
+			<div class="bgcw-pro-bogo-rules">
 				<p>
-					<button type="button" class="button" id="wcgc-pro-add-bogo-btn"><?php esc_html_e( 'Add Rule', 'smart-gift-cards-for-woocommerce-pro' ); ?></button>
+					<button type="button" class="button" id="bgcw-pro-add-bogo-btn"><?php esc_html_e( 'Add Rule', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></button>
 				</p>
 
-				<div class="wcgc-pro-bogo-form">
-					<input type="hidden" id="wcgc-pro-bogo-id" value="" />
+				<div class="bgcw-pro-bogo-form">
+					<input type="hidden" id="bgcw-pro-bogo-id" value="" />
 					<table class="form-table">
 						<tr>
-							<th><label for="wcgc-pro-bogo-name"><?php esc_html_e( 'Rule Name', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-							<td><input type="text" id="wcgc-pro-bogo-name" class="regular-text" /></td>
+							<th><label for="bgcw-pro-bogo-name"><?php esc_html_e( 'Rule Name', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></label></th>
+							<td><input type="text" id="bgcw-pro-bogo-name" class="regular-text" /></td>
 						</tr>
 						<tr>
-							<th><label for="wcgc-pro-bogo-buy"><?php esc_html_e( 'Buy Amount', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-							<td><input type="number" id="wcgc-pro-bogo-buy" min="0" step="0.01" class="small-text" /></td>
+							<th><label for="bgcw-pro-bogo-buy"><?php esc_html_e( 'Buy Amount', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></label></th>
+							<td><input type="number" id="bgcw-pro-bogo-buy" min="0" step="0.01" class="small-text" /></td>
 						</tr>
 						<tr>
-							<th><label for="wcgc-pro-bogo-get"><?php esc_html_e( 'Get Amount', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-							<td><input type="number" id="wcgc-pro-bogo-get" min="0" step="0.01" class="small-text" /></td>
+							<th><label for="bgcw-pro-bogo-get"><?php esc_html_e( 'Get Amount', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></label></th>
+							<td><input type="number" id="bgcw-pro-bogo-get" min="0" step="0.01" class="small-text" /></td>
 						</tr>
 						<tr>
-							<th><label for="wcgc-pro-bogo-min-qty"><?php esc_html_e( 'Minimum Quantity', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-							<td><input type="number" id="wcgc-pro-bogo-min-qty" min="1" step="1" value="1" class="small-text" /></td>
+							<th><label for="bgcw-pro-bogo-min-qty"><?php esc_html_e( 'Minimum Quantity', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></label></th>
+							<td><input type="number" id="bgcw-pro-bogo-min-qty" min="1" step="1" value="1" class="small-text" /></td>
 						</tr>
 						<tr>
-							<th><label for="wcgc-pro-bogo-max-uses"><?php esc_html_e( 'Maximum Uses (0 = unlimited)', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-							<td><input type="number" id="wcgc-pro-bogo-max-uses" min="0" step="1" value="0" class="small-text" /></td>
+							<th><label for="bgcw-pro-bogo-max-uses"><?php esc_html_e( 'Maximum Uses (0 = unlimited)', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></label></th>
+							<td><input type="number" id="bgcw-pro-bogo-max-uses" min="0" step="1" value="0" class="small-text" /></td>
 						</tr>
 						<tr>
-							<th><label for="wcgc-pro-bogo-starts"><?php esc_html_e( 'Starts At (optional)', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-							<td><input type="datetime-local" id="wcgc-pro-bogo-starts" /></td>
+							<th><label for="bgcw-pro-bogo-starts"><?php esc_html_e( 'Starts At (optional)', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></label></th>
+							<td><input type="datetime-local" id="bgcw-pro-bogo-starts" /></td>
 						</tr>
 						<tr>
-							<th><label for="wcgc-pro-bogo-ends"><?php esc_html_e( 'Ends At (optional)', 'smart-gift-cards-for-woocommerce-pro' ); ?></label></th>
-							<td><input type="datetime-local" id="wcgc-pro-bogo-ends" /></td>
+							<th><label for="bgcw-pro-bogo-ends"><?php esc_html_e( 'Ends At (optional)', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></label></th>
+							<td><input type="datetime-local" id="bgcw-pro-bogo-ends" /></td>
 						</tr>
 					</table>
 					<p>
-						<button type="button" class="button button-primary" id="wcgc-pro-save-bogo-btn"><?php esc_html_e( 'Save Rule', 'smart-gift-cards-for-woocommerce-pro' ); ?></button>
+						<button type="button" class="button button-primary" id="bgcw-pro-save-bogo-btn"><?php esc_html_e( 'Save Rule', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></button>
 					</p>
 				</div>
 
 				<table class="widefat striped">
 					<thead>
 						<tr>
-							<th><?php esc_html_e( 'Name', 'smart-gift-cards-for-woocommerce-pro' ); ?></th>
-							<th><?php esc_html_e( 'Buy', 'smart-gift-cards-for-woocommerce-pro' ); ?></th>
-							<th><?php esc_html_e( 'Get', 'smart-gift-cards-for-woocommerce-pro' ); ?></th>
-							<th><?php esc_html_e( 'Min Qty', 'smart-gift-cards-for-woocommerce-pro' ); ?></th>
-							<th><?php esc_html_e( 'Uses', 'smart-gift-cards-for-woocommerce-pro' ); ?></th>
-							<th><?php esc_html_e( 'Status', 'smart-gift-cards-for-woocommerce-pro' ); ?></th>
-							<th><?php esc_html_e( 'Actions', 'smart-gift-cards-for-woocommerce-pro' ); ?></th>
+							<th><?php esc_html_e( 'Name', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></th>
+							<th><?php esc_html_e( 'Buy', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></th>
+							<th><?php esc_html_e( 'Get', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></th>
+							<th><?php esc_html_e( 'Min Qty', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></th>
+							<th><?php esc_html_e( 'Uses', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></th>
+							<th><?php esc_html_e( 'Status', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></th>
+							<th><?php esc_html_e( 'Actions', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></th>
 						</tr>
 					</thead>
 					<tbody>
 					<?php if ( empty( $rules ) ) : ?>
 						<tr>
-							<td colspan="7"><?php esc_html_e( 'No BOGO rules yet.', 'smart-gift-cards-for-woocommerce-pro' ); ?></td>
+							<td colspan="7"><?php esc_html_e( 'No BOGO rules yet.', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></td>
 						</tr>
 					<?php else : ?>
 						<?php foreach ( $rules as $rule ) : ?>
@@ -697,8 +697,8 @@ class SettingsPage {
 								</td>
 								<td><?php echo esc_html( $rule->status ); ?></td>
 								<td>
-									<button type="button" class="button-link-delete wcgc-pro-delete-bogo" data-id="<?php echo esc_attr( (int) $rule->id ); ?>">
-										<?php esc_html_e( 'Delete', 'smart-gift-cards-for-woocommerce-pro' ); ?>
+									<button type="button" class="button-link-delete bgcw-pro-delete-bogo" data-id="<?php echo esc_attr( (int) $rule->id ); ?>">
+										<?php esc_html_e( 'Delete', 'beltoft-gift-cards-for-woocommerce-pro' ); ?>
 									</button>
 								</td>
 							</tr>
@@ -721,8 +721,8 @@ class SettingsPage {
 		printf(
 			'%s <a href="%s">%s</a>',
 			esc_html( $message ),
-			esc_url( admin_url( 'admin.php?page=wcgc-gift-cards&tab=license' ) ),
-			esc_html__( 'Activate your license', 'smart-gift-cards-for-woocommerce-pro' )
+			esc_url( admin_url( 'admin.php?page=bgcw-gift-cards&tab=license' ) ),
+			esc_html__( 'Activate your license', 'beltoft-gift-cards-for-woocommerce-pro' )
 		);
 		echo '</p></div>';
 	}
@@ -740,7 +740,7 @@ class SettingsPage {
 	 * @param string $desc    Description text.
 	 */
 	private static function add_checkbox( $key, $label, $section, $desc = '' ) {
-		add_settings_field( "wcgc_pro_{$key}", $label, function () use ( $key, $desc ) {
+		add_settings_field( "bgcw_pro_{$key}", $label, function () use ( $key, $desc ) {
 			$val = Options::get( $key );
 			printf(
 				'<input type="checkbox" name="%s[%s]" value="1" %s />',
@@ -763,7 +763,7 @@ class SettingsPage {
 	 * @param array  $choices Associative array of value => display text.
 	 */
 	private static function add_select( $key, $label, $section, $choices ) {
-		add_settings_field( "wcgc_pro_{$key}", $label, function () use ( $key, $choices ) {
+		add_settings_field( "bgcw_pro_{$key}", $label, function () use ( $key, $choices ) {
 			$val = Options::get( $key );
 			printf( '<select name="%s[%s]">', esc_attr( Options::OPTION ), esc_attr( $key ) );
 			foreach ( $choices as $value => $text ) {

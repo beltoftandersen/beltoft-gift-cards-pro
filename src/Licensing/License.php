@@ -1,25 +1,25 @@
 <?php
 
-namespace GiftCardsPro\Licensing;
+namespace BgcwPro\Licensing;
 
-use GiftCardsPro\Support\Options;
+use BgcwPro\Support\Options;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Self-hosted license validation.
  *
- * Valid license keys are stored in wp_option `wcgc_pro_licenses` as an array:
+ * Valid license keys are stored in wp_option `bgcw_pro_licenses` as an array:
  *   [ 'XXXX-XXXX-XXXX-XXXX' => [ 'expires' => '2027-12-31', 'status' => 'active', 'created' => '...' ], ... ]
  *
  * Generate keys via WP-CLI:
- *   wp wcgc-pro license:generate --expires=2027-12-31 --allow-root
- *   wp wcgc-pro license:list --allow-root
- *   wp wcgc-pro license:revoke --key=XXXX-XXXX-XXXX-XXXX --allow-root
+ *   wp bgcw-pro license:generate --expires=2027-12-31 --allow-root
+ *   wp bgcw-pro license:list --allow-root
+ *   wp bgcw-pro license:revoke --key=XXXX-XXXX-XXXX-XXXX --allow-root
  */
 class License {
 
-	const LICENSES_OPTION = 'wcgc_pro_licenses';
+	const LICENSES_OPTION = 'bgcw_pro_licenses';
 
 	/** @var int Grace period in days after license expiry. */
 	const GRACE_DAYS = 7;
@@ -28,16 +28,16 @@ class License {
 	 * Register hooks.
 	 */
 	public static function init() {
-		add_action( 'wcgc_pro_license_check', [ __CLASS__, 'cron_check' ] );
+		add_action( 'bgcw_pro_license_check', [ __CLASS__, 'cron_check' ] );
 		add_action( 'admin_notices', [ __CLASS__, 'admin_notices' ] );
 
 		// AJAX handlers.
-		add_action( 'wp_ajax_wcgc_pro_activate_license', [ __CLASS__, 'ajax_activate' ] );
-		add_action( 'wp_ajax_wcgc_pro_deactivate_license', [ __CLASS__, 'ajax_deactivate' ] );
+		add_action( 'wp_ajax_bgcw_pro_activate_license', [ __CLASS__, 'ajax_activate' ] );
+		add_action( 'wp_ajax_bgcw_pro_deactivate_license', [ __CLASS__, 'ajax_deactivate' ] );
 
 		// WP-CLI commands.
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			\WP_CLI::add_command( 'wcgc-pro', [ __CLASS__, 'cli_dispatch' ] );
+			\WP_CLI::add_command( 'bgcw-pro', [ __CLASS__, 'cli_dispatch' ] );
 		}
 	}
 
@@ -72,25 +72,25 @@ class License {
 		$key = strtoupper( trim( $key ) );
 
 		if ( empty( $key ) ) {
-			return [ 'success' => false, 'message' => __( 'Please enter a license key.', 'smart-gift-cards-for-woocommerce-pro' ) ];
+			return [ 'success' => false, 'message' => __( 'Please enter a license key.', 'beltoft-gift-cards-for-woocommerce-pro' ) ];
 		}
 
 		$licenses = get_option( self::LICENSES_OPTION, [] );
 
 		if ( ! isset( $licenses[ $key ] ) ) {
-			return [ 'success' => false, 'message' => __( 'This license key is invalid.', 'smart-gift-cards-for-woocommerce-pro' ) ];
+			return [ 'success' => false, 'message' => __( 'This license key is invalid.', 'beltoft-gift-cards-for-woocommerce-pro' ) ];
 		}
 
 		$license = $licenses[ $key ];
 
 		if ( ( $license['status'] ?? '' ) === 'revoked' ) {
-			return [ 'success' => false, 'message' => __( 'This license key has been revoked.', 'smart-gift-cards-for-woocommerce-pro' ) ];
+			return [ 'success' => false, 'message' => __( 'This license key has been revoked.', 'beltoft-gift-cards-for-woocommerce-pro' ) ];
 		}
 
 		// Check expiry.
 		$expires = $license['expires'] ?? 'lifetime';
 		if ( 'lifetime' !== $expires && strtotime( $expires ) < time() ) {
-			return [ 'success' => false, 'message' => __( 'This license key has expired.', 'smart-gift-cards-for-woocommerce-pro' ) ];
+			return [ 'success' => false, 'message' => __( 'This license key has expired.', 'beltoft-gift-cards-for-woocommerce-pro' ) ];
 		}
 
 		// Mark as activated.
@@ -106,7 +106,7 @@ class License {
 			'license_grace_until'  => '',
 		] );
 
-		return [ 'success' => true, 'message' => __( 'License activated successfully.', 'smart-gift-cards-for-woocommerce-pro' ) ];
+		return [ 'success' => true, 'message' => __( 'License activated successfully.', 'beltoft-gift-cards-for-woocommerce-pro' ) ];
 	}
 
 	/**
@@ -117,7 +117,7 @@ class License {
 	public static function deactivate(): array {
 		$key = Options::get( 'license_key' );
 		if ( empty( $key ) ) {
-			return [ 'success' => false, 'message' => __( 'No license key to deactivate.', 'smart-gift-cards-for-woocommerce-pro' ) ];
+			return [ 'success' => false, 'message' => __( 'No license key to deactivate.', 'beltoft-gift-cards-for-woocommerce-pro' ) ];
 		}
 
 		Options::set( [
@@ -128,7 +128,7 @@ class License {
 			'license_grace_until'  => '',
 		] );
 
-		return [ 'success' => true, 'message' => __( 'License deactivated successfully.', 'smart-gift-cards-for-woocommerce-pro' ) ];
+		return [ 'success' => true, 'message' => __( 'License deactivated successfully.', 'beltoft-gift-cards-for-woocommerce-pro' ) ];
 	}
 
 	/**
@@ -192,12 +192,12 @@ class License {
 		$key    = Options::get( 'license_key' );
 
 		if ( empty( $key ) && empty( $status ) ) {
-			$url = admin_url( 'admin.php?page=wcgc-gift-cards&tab=license' );
+			$url = admin_url( 'admin.php?page=bgcw-gift-cards&tab=license' );
 			echo '<div class="notice notice-warning"><p>';
 			printf(
 				wp_kses(
 					/* translators: %s: license settings page URL */
-					__( 'Smart Gift Cards Pro: Please <a href="%s">enter your license key</a> to enable Pro features.', 'smart-gift-cards-for-woocommerce-pro' ),
+					__( 'Beltoft Gift Cards Pro: Please <a href="%s">enter your license key</a> to enable Pro features.', 'beltoft-gift-cards-for-woocommerce-pro' ),
 					[ 'a' => [ 'href' => [] ] ]
 				),
 				esc_url( $url )
@@ -213,13 +213,13 @@ class License {
 				echo '<div class="notice notice-warning"><p>';
 				printf(
 					/* translators: %d: number of days remaining in grace period */
-					esc_html__( 'Smart Gift Cards Pro: Your license has expired. Pro features will be disabled in %d day(s).', 'smart-gift-cards-for-woocommerce-pro' ),
+					esc_html__( 'Beltoft Gift Cards Pro: Your license has expired. Pro features will be disabled in %d day(s).', 'beltoft-gift-cards-for-woocommerce-pro' ),
 					(int) $days_left
 				);
 				echo '</p></div>';
 			} else {
 				echo '<div class="notice notice-error"><p>';
-				esc_html_e( 'Smart Gift Cards Pro: Your license has expired. Pro features are disabled.', 'smart-gift-cards-for-woocommerce-pro' );
+				esc_html_e( 'Beltoft Gift Cards Pro: Your license has expired. Pro features are disabled.', 'beltoft-gift-cards-for-woocommerce-pro' );
 				echo '</p></div>';
 			}
 		}
@@ -229,15 +229,15 @@ class License {
 	 * AJAX: Activate license.
 	 */
 	public static function ajax_activate() {
-		check_ajax_referer( 'wcgc_pro_license', 'nonce' );
+		check_ajax_referer( 'bgcw_pro_license', 'nonce' );
 
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			wp_send_json_error( [ 'message' => __( 'Permission denied.', 'smart-gift-cards-for-woocommerce-pro' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Permission denied.', 'beltoft-gift-cards-for-woocommerce-pro' ) ] );
 		}
 
 		$key = isset( $_POST['license_key'] ) ? sanitize_text_field( wp_unslash( $_POST['license_key'] ) ) : '';
 		if ( empty( $key ) ) {
-			wp_send_json_error( [ 'message' => __( 'Please enter a license key.', 'smart-gift-cards-for-woocommerce-pro' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Please enter a license key.', 'beltoft-gift-cards-for-woocommerce-pro' ) ] );
 		}
 
 		$result = self::activate( $key );
@@ -252,10 +252,10 @@ class License {
 	 * AJAX: Deactivate license.
 	 */
 	public static function ajax_deactivate() {
-		check_ajax_referer( 'wcgc_pro_license', 'nonce' );
+		check_ajax_referer( 'bgcw_pro_license', 'nonce' );
 
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			wp_send_json_error( [ 'message' => __( 'Permission denied.', 'smart-gift-cards-for-woocommerce-pro' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Permission denied.', 'beltoft-gift-cards-for-woocommerce-pro' ) ] );
 		}
 
 		$result = self::deactivate();
@@ -275,10 +275,10 @@ class License {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     wp wcgc-pro license:generate --expires=2027-12-31
-	 *     wp wcgc-pro license:list
-	 *     wp wcgc-pro license:revoke --key=XXXX-XXXX-XXXX-XXXX
-	 *     wp wcgc-pro license:status
+	 *     wp bgcw-pro license:generate --expires=2027-12-31
+	 *     wp bgcw-pro license:list
+	 *     wp bgcw-pro license:revoke --key=XXXX-XXXX-XXXX-XXXX
+	 *     wp bgcw-pro license:status
 	 *
 	 * @param array $args       Positional arguments.
 	 * @param array $assoc_args Named arguments.
@@ -343,7 +343,7 @@ class License {
 		$licenses = get_option( self::LICENSES_OPTION, [] );
 
 		if ( empty( $licenses ) ) {
-			\WP_CLI::log( 'No license keys found. Generate one with: wp wcgc-pro license:generate' );
+			\WP_CLI::log( 'No license keys found. Generate one with: wp bgcw-pro license:generate' );
 			return;
 		}
 

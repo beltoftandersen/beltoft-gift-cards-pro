@@ -1,9 +1,9 @@
 <?php
 
-namespace GiftCardsPro\ScheduledDelivery;
+namespace BgcwPro\ScheduledDelivery;
 
-use GiftCardsPro\Support\Options;
-use GiftCards\GiftCard\Repository;
+use BgcwPro\Support\Options;
+use Bgcw\GiftCard\Repository;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -13,9 +13,9 @@ class Scheduler {
 	 * Initialize hooks.
 	 */
 	public static function init() {
-		add_filter( 'wcgc_should_send_email_now', [ __CLASS__, 'maybe_defer' ], 10, 3 );
-		add_action( 'wcgc_gift_card_created', [ __CLASS__, 'schedule_delivery' ], 10, 2 );
-		add_action( 'wcgc_pro_process_scheduled_deliveries', [ __CLASS__, 'process_scheduled' ] );
+		add_filter( 'bgcw_should_send_email_now', [ __CLASS__, 'maybe_defer' ], 10, 3 );
+		add_action( 'bgcw_gift_card_created', [ __CLASS__, 'schedule_delivery' ], 10, 2 );
+		add_action( 'bgcw_pro_process_scheduled_deliveries', [ __CLASS__, 'process_scheduled' ] );
 	}
 
 	/**
@@ -89,7 +89,7 @@ class Scheduler {
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom table with no WP API.
 		$wpdb->insert(
-			$wpdb->prefix . 'wcgc_scheduled_deliveries',
+			$wpdb->prefix . 'bgcw_scheduled_deliveries',
 			[
 				'gift_card_id'   => $gc_id,
 				'order_id'       => $order->get_id(),
@@ -119,7 +119,7 @@ class Scheduler {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table, cron job.
 		$pending = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT * FROM {$wpdb->prefix}wcgc_scheduled_deliveries WHERE status = %s AND scheduled_date <= %s ORDER BY scheduled_date ASC LIMIT 50",
+				"SELECT * FROM {$wpdb->prefix}bgcw_scheduled_deliveries WHERE status = %s AND scheduled_date <= %s ORDER BY scheduled_date ASC LIMIT 50",
 				'pending',
 				$now_utc
 			)
@@ -137,7 +137,7 @@ class Scheduler {
 				// Mark as failed if the gift card or order no longer exists.
 				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table.
 				$wpdb->update(
-					$wpdb->prefix . 'wcgc_scheduled_deliveries',
+					$wpdb->prefix . 'bgcw_scheduled_deliveries',
 					[ 'status' => 'failed' ],
 					[ 'id' => $row->id ],
 					[ '%s' ],
@@ -152,12 +152,12 @@ class Scheduler {
 			 * The maybe_defer filter will not block this because
 			 * the scheduled_date has already passed.
 			 */
-			do_action( 'wcgc_gift_card_created', (int) $row->gift_card_id, $order );
+			do_action( 'bgcw_gift_card_created', (int) $row->gift_card_id, $order );
 
 			// Mark as sent.
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table.
 			$wpdb->update(
-				$wpdb->prefix . 'wcgc_scheduled_deliveries',
+				$wpdb->prefix . 'bgcw_scheduled_deliveries',
 				[ 'status' => 'sent' ],
 				[ 'id' => $row->id ],
 				[ '%s' ],
@@ -169,7 +169,7 @@ class Scheduler {
 	/**
 	 * Get the delivery date and hour from the order item that created a specific gift card.
 	 *
-	 * Looks through the order items to find one with a `_wcgc_delivery_date` meta
+	 * Looks through the order items to find one with a `_bgcw_delivery_date` meta
 	 * that corresponds to the given gift card.
 	 *
 	 * @param int       $gc_id Gift card ID.
@@ -190,7 +190,7 @@ class Scheduler {
 				continue;
 			}
 
-			$delivery_date = $item->get_meta( '_wcgc_delivery_date' );
+			$delivery_date = $item->get_meta( '_bgcw_delivery_date' );
 			if ( empty( $delivery_date ) ) {
 				continue;
 			}
@@ -200,7 +200,7 @@ class Scheduler {
 				continue;
 			}
 
-			$delivery_hour = $item->get_meta( '_wcgc_delivery_hour' );
+			$delivery_hour = $item->get_meta( '_bgcw_delivery_hour' );
 			$hour          = ( '' !== $delivery_hour && is_numeric( $delivery_hour ) ) ? absint( $delivery_hour ) : 9;
 			$hour          = min( 23, $hour );
 
@@ -269,7 +269,7 @@ class Scheduler {
 	private static function item_matches_gift_card( $item, $gift_card ) {
 		$has_signal = false;
 
-		$item_amount = (float) $item->get_meta( '_wcgc_amount' );
+		$item_amount = (float) $item->get_meta( '_bgcw_amount' );
 		if ( $item_amount > 0 ) {
 			$has_signal = true;
 			if ( abs( $item_amount - (float) $gift_card->initial_amount ) > 0.00001 ) {
@@ -278,11 +278,11 @@ class Scheduler {
 		}
 
 		$pairs = [
-			[ (string) $item->get_meta( '_wcgc_recipient_email' ), (string) $gift_card->recipient_email ],
-			[ (string) $item->get_meta( '_wcgc_recipient_name' ), (string) $gift_card->recipient_name ],
-			[ (string) $item->get_meta( '_wcgc_sender_email' ), (string) $gift_card->sender_email ],
-			[ (string) $item->get_meta( '_wcgc_sender_name' ), (string) $gift_card->sender_name ],
-			[ (string) $item->get_meta( '_wcgc_message' ), (string) $gift_card->message ],
+			[ (string) $item->get_meta( '_bgcw_recipient_email' ), (string) $gift_card->recipient_email ],
+			[ (string) $item->get_meta( '_bgcw_recipient_name' ), (string) $gift_card->recipient_name ],
+			[ (string) $item->get_meta( '_bgcw_sender_email' ), (string) $gift_card->sender_email ],
+			[ (string) $item->get_meta( '_bgcw_sender_name' ), (string) $gift_card->sender_name ],
+			[ (string) $item->get_meta( '_bgcw_message' ), (string) $gift_card->message ],
 		];
 
 		foreach ( $pairs as $pair ) {

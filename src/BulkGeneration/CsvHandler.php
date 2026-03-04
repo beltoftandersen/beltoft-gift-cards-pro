@@ -1,11 +1,11 @@
 <?php
 
-namespace GiftCardsPro\BulkGeneration;
+namespace BgcwPro\BulkGeneration;
 
-use GiftCardsPro\Support\CsvUtil;
-use GiftCards\GiftCard\CodeGenerator;
-use GiftCards\GiftCard\Repository;
-use GiftCards\GiftCard\TransactionRepository;
+use BgcwPro\Support\CsvUtil;
+use Bgcw\GiftCard\CodeGenerator;
+use Bgcw\GiftCard\Repository;
+use Bgcw\GiftCard\TransactionRepository;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -25,18 +25,18 @@ class CsvHandler {
 	 * Initialize hooks.
 	 */
 	public static function init() {
-		add_action( 'wp_ajax_wcgc_pro_export_csv', [ __CLASS__, 'handle_export' ] );
-		add_action( 'wp_ajax_wcgc_pro_import_csv', [ __CLASS__, 'handle_import' ] );
+		add_action( 'wp_ajax_bgcw_pro_export_csv', [ __CLASS__, 'handle_export' ] );
+		add_action( 'wp_ajax_bgcw_pro_import_csv', [ __CLASS__, 'handle_import' ] );
 	}
 
 	/**
 	 * AJAX handler: export gift cards as CSV.
 	 */
 	public static function handle_export() {
-		check_ajax_referer( 'wcgc_pro_admin', 'nonce' );
+		check_ajax_referer( 'bgcw_pro_admin', 'nonce' );
 
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'smart-gift-cards-for-woocommerce-pro' ), 403 );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'beltoft-gift-cards-for-woocommerce-pro' ), 403 );
 		}
 
 		$status = isset( $_GET['status'] ) ? sanitize_key( wp_unslash( $_GET['status'] ) ) : '';
@@ -66,7 +66,7 @@ class CsvHandler {
 		$output = fopen( 'php://output', 'w' );
 
 		if ( ! $output ) {
-			wp_die( esc_html__( 'Unable to open output stream.', 'smart-gift-cards-for-woocommerce-pro' ) );
+			wp_die( esc_html__( 'Unable to open output stream.', 'beltoft-gift-cards-for-woocommerce-pro' ) );
 		}
 
 		// CSV header row — use English tokens so exported files can be re-imported
@@ -106,11 +106,11 @@ class CsvHandler {
 	 * AJAX handler: import gift cards from CSV.
 	 */
 	public static function handle_import() {
-		check_ajax_referer( 'wcgc_pro_admin', 'nonce' );
+		check_ajax_referer( 'bgcw_pro_admin', 'nonce' );
 
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
 			wp_send_json_error(
-				[ 'message' => __( 'You do not have permission to perform this action.', 'smart-gift-cards-for-woocommerce-pro' ) ],
+				[ 'message' => __( 'You do not have permission to perform this action.', 'beltoft-gift-cards-for-woocommerce-pro' ) ],
 				403
 			);
 		}
@@ -118,7 +118,7 @@ class CsvHandler {
 		// Validate uploaded file.
 		if ( empty( $_FILES['csv_file'] ) || empty( $_FILES['csv_file']['tmp_name'] ) ) {
 			wp_send_json_error(
-				[ 'message' => __( 'No file was uploaded.', 'smart-gift-cards-for-woocommerce-pro' ) ]
+				[ 'message' => __( 'No file was uploaded.', 'beltoft-gift-cards-for-woocommerce-pro' ) ]
 			);
 		}
 
@@ -127,7 +127,7 @@ class CsvHandler {
 		// Check for upload errors.
 		if ( ! empty( $file['error'] ) && UPLOAD_ERR_OK !== (int) $file['error'] ) {
 			wp_send_json_error(
-				[ 'message' => __( 'File upload error. Please try again.', 'smart-gift-cards-for-woocommerce-pro' ) ]
+				[ 'message' => __( 'File upload error. Please try again.', 'beltoft-gift-cards-for-woocommerce-pro' ) ]
 			);
 		}
 
@@ -137,7 +137,7 @@ class CsvHandler {
 				[
 					'message' => sprintf(
 						/* translators: %d: maximum file size in megabytes */
-						__( 'File too large. Maximum size is %d MB.', 'smart-gift-cards-for-woocommerce-pro' ),
+						__( 'File too large. Maximum size is %d MB.', 'beltoft-gift-cards-for-woocommerce-pro' ),
 						self::MAX_UPLOAD_SIZE / ( 1024 * 1024 )
 					),
 				]
@@ -148,14 +148,14 @@ class CsvHandler {
 		$extension = strtolower( pathinfo( $file['name'], PATHINFO_EXTENSION ) );
 		if ( ! in_array( $extension, [ 'csv', 'txt' ], true ) ) {
 			wp_send_json_error(
-				[ 'message' => __( 'Invalid file type. Please upload a CSV or TXT file.', 'smart-gift-cards-for-woocommerce-pro' ) ]
+				[ 'message' => __( 'Invalid file type. Please upload a CSV or TXT file.', 'beltoft-gift-cards-for-woocommerce-pro' ) ]
 			);
 		}
 
 		// Verify the temp file is a real upload.
 		if ( ! is_uploaded_file( $file['tmp_name'] ) ) {
 			wp_send_json_error(
-				[ 'message' => __( 'Invalid upload. Please try again.', 'smart-gift-cards-for-woocommerce-pro' ) ]
+				[ 'message' => __( 'Invalid upload. Please try again.', 'beltoft-gift-cards-for-woocommerce-pro' ) ]
 			);
 		}
 
@@ -165,7 +165,7 @@ class CsvHandler {
 
 		if ( ! $handle ) {
 			wp_send_json_error(
-				[ 'message' => __( 'Unable to read the uploaded file.', 'smart-gift-cards-for-woocommerce-pro' ) ]
+				[ 'message' => __( 'Unable to read the uploaded file.', 'beltoft-gift-cards-for-woocommerce-pro' ) ]
 			);
 		}
 
@@ -175,7 +175,7 @@ class CsvHandler {
 			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- Closing temp file.
 			fclose( $handle );
 			wp_send_json_error(
-				[ 'message' => __( 'CSV file is empty or unreadable.', 'smart-gift-cards-for-woocommerce-pro' ) ]
+				[ 'message' => __( 'CSV file is empty or unreadable.', 'beltoft-gift-cards-for-woocommerce-pro' ) ]
 			);
 		}
 
@@ -192,7 +192,7 @@ class CsvHandler {
 			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- Closing temp file.
 			fclose( $handle );
 			wp_send_json_error(
-				[ 'message' => __( 'CSV must contain an "amount" or "initial_amount" column.', 'smart-gift-cards-for-woocommerce-pro' ) ]
+				[ 'message' => __( 'CSV must contain an "amount" or "initial_amount" column.', 'beltoft-gift-cards-for-woocommerce-pro' ) ]
 			);
 		}
 
@@ -217,7 +217,7 @@ class CsvHandler {
 				if ( count( $errors ) < self::MAX_ERROR_REPORT ) {
 					$errors[] = sprintf(
 						/* translators: %d: CSV row number */
-						__( 'Row %d: Invalid or missing amount.', 'smart-gift-cards-for-woocommerce-pro' ),
+						__( 'Row %d: Invalid or missing amount.', 'beltoft-gift-cards-for-woocommerce-pro' ),
 						$row_num
 					);
 				}
@@ -271,7 +271,7 @@ class CsvHandler {
 				if ( count( $errors ) < self::MAX_ERROR_REPORT ) {
 					$errors[] = sprintf(
 						/* translators: %d: CSV row number */
-						__( 'Row %d: Failed to create gift card.', 'smart-gift-cards-for-woocommerce-pro' ),
+						__( 'Row %d: Failed to create gift card.', 'beltoft-gift-cards-for-woocommerce-pro' ),
 						$row_num
 					);
 				}
@@ -283,7 +283,7 @@ class CsvHandler {
 				'type'          => 'credit',
 				'amount'        => $amount,
 				'balance_after' => $amount,
-				'note'          => __( 'Imported from CSV', 'smart-gift-cards-for-woocommerce-pro' ),
+				'note'          => __( 'Imported from CSV', 'beltoft-gift-cards-for-woocommerce-pro' ),
 			] );
 
 			if ( ! empty( $recipient_email ) ) {
@@ -293,7 +293,7 @@ class CsvHandler {
 				 * @param int  $gc_id Gift card ID.
 				 * @param null $order No order for imported cards.
 				 */
-				do_action( 'wcgc_gift_card_created', $gc_id, null );
+				do_action( 'bgcw_gift_card_created', $gc_id, null );
 			}
 
 			++$imported;
@@ -308,7 +308,7 @@ class CsvHandler {
 			'errors'   => $errors,
 			'message'  => sprintf(
 				/* translators: 1: imported count, 2: skipped count */
-				__( '%1$d gift card(s) imported, %2$d skipped.', 'smart-gift-cards-for-woocommerce-pro' ),
+				__( '%1$d gift card(s) imported, %2$d skipped.', 'beltoft-gift-cards-for-woocommerce-pro' ),
 				$imported,
 				$skipped
 			),

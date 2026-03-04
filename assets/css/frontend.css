@@ -1,35 +1,35 @@
 /**
- * Smart Gift Cards Pro - Frontend Styles
+ * Beltoft Gift Cards Pro - Frontend Styles
  */
 
 /* ── Delivery Date & Time Picker ────────────── */
-.wcgc-scheduled-delivery {
+.bgcw-scheduled-delivery {
 	margin: 12px 0;
 }
 
-.wcgc-scheduled-delivery label {
+.bgcw-scheduled-delivery label {
 	display: block;
 	font-weight: 600;
 	margin-bottom: 6px;
 }
 
-.wcgc-delivery-datetime-row {
+.bgcw-delivery-datetime-row {
 	display: flex;
 	gap: 8px;
 	align-items: center;
 }
 
-.wcgc-delivery-date {
+.bgcw-delivery-date {
 	flex: 1;
 	max-width: 200px;
 }
 
-.wcgc-delivery-hour {
+.bgcw-delivery-hour {
 	width: auto;
 	min-width: 90px;
 }
 
-.wcgc-delivery-date-note {
+.bgcw-delivery-date-note {
 	font-size: 12px;
 	color: #787c82;
 	margin-top: 4px;
@@ -37,22 +37,22 @@
 }
 
 /* ── Theme Picker ───────────────────────────── */
-.wcgc-theme-picker {
+.bgcw-theme-picker {
 	margin: 12px 0;
 }
 
-.wcgc-theme-picker h4 {
+.bgcw-theme-picker h4 {
 	font-weight: 600;
 	margin-bottom: 8px;
 }
 
-.wcgc-theme-options {
+.bgcw-theme-options {
 	display: flex;
 	gap: 10px;
 	flex-wrap: wrap;
 }
 
-.wcgc-theme-option {
+.bgcw-theme-option {
 	cursor: pointer;
 	text-align: center;
 	padding: 5px;
@@ -63,28 +63,28 @@
 	width: 90px;
 }
 
-.wcgc-theme-option:hover {
+.bgcw-theme-option:hover {
 	border-color: #c3c4c7;
 }
 
-.wcgc-theme-option input[type="radio"] {
+.bgcw-theme-option input[type="radio"] {
 	display: none;
 }
 
-.wcgc-theme-option.selected {
-	border-color: var(--wcgc-amount-focus-color, #7f54b3);
-	box-shadow: 0 0 0 1px var(--wcgc-amount-focus-color, #7f54b3);
+.bgcw-theme-option.selected {
+	border-color: var(--bgcw-amount-focus-color, #7f54b3);
+	box-shadow: 0 0 0 1px var(--bgcw-amount-focus-color, #7f54b3);
 }
 
 /* Mini email preview card */
-.wcgc-theme-preview {
+.bgcw-theme-preview {
 	display: block;
 	border-radius: 4px;
 	overflow: hidden;
 	border: 1px solid #e8e8e8;
 }
 
-.wcgc-theme-preview-header {
+.bgcw-theme-preview-header {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -93,7 +93,7 @@
 	text-align: center;
 }
 
-.wcgc-theme-preview-heading {
+.bgcw-theme-preview-heading {
 	font-size: 8px;
 	font-weight: 700;
 	color: #fff;
@@ -101,7 +101,7 @@
 	line-height: 1.2;
 }
 
-.wcgc-theme-preview-body {
+.bgcw-theme-preview-body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -110,13 +110,13 @@
 	background: #fff;
 }
 
-.wcgc-theme-preview-amount {
+.bgcw-theme-preview-amount {
 	font-size: 12px;
 	font-weight: 700;
 	line-height: 1;
 }
 
-.wcgc-theme-preview-code {
+.bgcw-theme-preview-code {
 	font-size: 7px;
 	font-family: monospace;
 	letter-spacing: 1px;
@@ -127,14 +127,14 @@
 	line-height: 1;
 }
 
-.wcgc-theme-preview-btn {
+.bgcw-theme-preview-btn {
 	display: block;
 	width: 40px;
 	height: 8px;
 	border-radius: 2px;
 }
 
-.wcgc-theme-label {
+.bgcw-theme-label {
 	display: block;
 	font-size: 11px;
 	margin-top: 4px;

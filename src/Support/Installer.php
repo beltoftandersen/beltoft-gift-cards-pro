@@ -1,6 +1,6 @@
 <?php
 
-namespace GiftCardsPro\Support;
+namespace BgcwPro\Support;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -20,22 +20,22 @@ class Installer {
 	 * Run on plugin deactivation.
 	 */
 	public static function deactivate() {
-		wp_clear_scheduled_hook( 'wcgc_pro_license_check' );
-		wp_clear_scheduled_hook( 'wcgc_pro_process_scheduled_deliveries' );
-		wp_clear_scheduled_hook( 'wcgc_pro_send_report' );
-		wp_clear_scheduled_hook( 'wcgc_pro_cleanup_old_reports' );
+		wp_clear_scheduled_hook( 'bgcw_pro_license_check' );
+		wp_clear_scheduled_hook( 'bgcw_pro_process_scheduled_deliveries' );
+		wp_clear_scheduled_hook( 'bgcw_pro_send_report' );
+		wp_clear_scheduled_hook( 'bgcw_pro_cleanup_old_reports' );
 	}
 
 	/**
 	 * Check and run migrations if needed.
 	 */
 	public static function maybe_upgrade() {
-		$installed = get_option( 'wcgc_pro_version', '0' );
-		if ( version_compare( $installed, WCGC_PRO_VER, '<' ) ) {
+		$installed = get_option( 'bgcw_pro_version', '0' );
+		if ( version_compare( $installed, BGCW_PRO_VER, '<' ) ) {
 			self::create_tables();
 			self::schedule_crons();
 			self::create_files();
-			update_option( 'wcgc_pro_version', WCGC_PRO_VER );
+			update_option( 'bgcw_pro_version', BGCW_PRO_VER );
 		}
 	}
 
@@ -50,7 +50,7 @@ class Installer {
 		$sqls = [];
 
 		// Scheduled deliveries table.
-		$sqls[] = "CREATE TABLE {$wpdb->prefix}wcgc_scheduled_deliveries (
+		$sqls[] = "CREATE TABLE {$wpdb->prefix}bgcw_scheduled_deliveries (
 			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			gift_card_id bigint(20) unsigned NOT NULL,
 			order_id bigint(20) unsigned NOT NULL DEFAULT 0,
@@ -63,7 +63,7 @@ class Installer {
 		) {$charset_collate};";
 
 		// Store credits table.
-		$sqls[] = "CREATE TABLE {$wpdb->prefix}wcgc_store_credits (
+		$sqls[] = "CREATE TABLE {$wpdb->prefix}bgcw_store_credits (
 			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			gift_card_id bigint(20) unsigned NOT NULL,
 			original_order_id bigint(20) unsigned NOT NULL DEFAULT 0,
@@ -76,7 +76,7 @@ class Installer {
 		) {$charset_collate};";
 
 		// BOGO rules table.
-		$sqls[] = "CREATE TABLE {$wpdb->prefix}wcgc_bogo_rules (
+		$sqls[] = "CREATE TABLE {$wpdb->prefix}bgcw_bogo_rules (
 			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			name varchar(255) NOT NULL DEFAULT '',
 			buy_amount decimal(10,2) NOT NULL DEFAULT 0.00,
@@ -97,7 +97,7 @@ class Installer {
 			dbDelta( $sql );
 		}
 
-		update_option( 'wcgc_pro_db_version', '1.0.0' );
+		update_option( 'bgcw_pro_db_version', '1.0.0' );
 	}
 
 	/**
@@ -113,17 +113,17 @@ class Installer {
 	 * Schedule cron events.
 	 */
 	private static function schedule_crons() {
-		if ( ! wp_next_scheduled( 'wcgc_pro_license_check' ) ) {
-			wp_schedule_event( time(), 'daily', 'wcgc_pro_license_check' );
+		if ( ! wp_next_scheduled( 'bgcw_pro_license_check' ) ) {
+			wp_schedule_event( time(), 'daily', 'bgcw_pro_license_check' );
 		}
-		if ( ! wp_next_scheduled( 'wcgc_pro_process_scheduled_deliveries' ) ) {
-			wp_schedule_event( time(), 'hourly', 'wcgc_pro_process_scheduled_deliveries' );
+		if ( ! wp_next_scheduled( 'bgcw_pro_process_scheduled_deliveries' ) ) {
+			wp_schedule_event( time(), 'hourly', 'bgcw_pro_process_scheduled_deliveries' );
 		}
-		if ( ! wp_next_scheduled( 'wcgc_pro_send_report' ) ) {
-			wp_schedule_event( time(), 'hourly', 'wcgc_pro_send_report' );
+		if ( ! wp_next_scheduled( 'bgcw_pro_send_report' ) ) {
+			wp_schedule_event( time(), 'hourly', 'bgcw_pro_send_report' );
 		}
-		if ( ! wp_next_scheduled( 'wcgc_pro_cleanup_old_reports' ) ) {
-			wp_schedule_event( time(), 'daily', 'wcgc_pro_cleanup_old_reports' );
+		if ( ! wp_next_scheduled( 'bgcw_pro_cleanup_old_reports' ) ) {
+			wp_schedule_event( time(), 'daily', 'bgcw_pro_cleanup_old_reports' );
 		}
 	}
 
@@ -135,22 +135,22 @@ class Installer {
 
 		$files = [
 			[
-				'base'    => $upload_dir['basedir'] . '/wcgc-pro-reports',
+				'base'    => $upload_dir['basedir'] . '/bgcw-pro-reports',
 				'file'    => '.htaccess',
 				'content' => "Order deny,allow\nDeny from all\n<IfModule mod_authz_core.c>\nRequire all denied\n</IfModule>\n",
 			],
 			[
-				'base'    => $upload_dir['basedir'] . '/wcgc-pro-reports',
+				'base'    => $upload_dir['basedir'] . '/bgcw-pro-reports',
 				'file'    => 'index.html',
 				'content' => '',
 			],
 			[
-				'base'    => $upload_dir['basedir'] . '/wcgc-pro-reports',
+				'base'    => $upload_dir['basedir'] . '/bgcw-pro-reports',
 				'file'    => 'index.php',
 				'content' => "<?php\n// Silence is golden.\n",
 			],
 			[
-				'base'    => $upload_dir['basedir'] . '/wcgc-pro-reports',
+				'base'    => $upload_dir['basedir'] . '/bgcw-pro-reports',
 				'file'    => 'web.config',
 				'content' => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<configuration>\n\t<system.webServer>\n\t\t<authorization>\n\t\t\t<remove users=\"*\" roles=\"\" verbs=\"\" />\n\t\t\t<add accessType=\"Deny\" users=\"*\" />\n\t\t</authorization>\n\t</system.webServer>\n</configuration>\n",
 			],

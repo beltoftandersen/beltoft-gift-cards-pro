@@ -1,8 +1,8 @@
 <?php
 
-namespace GiftCardsPro\EmailThemes;
+namespace BgcwPro\EmailThemes;
 
-use GiftCardsPro\Support\Options;
+use BgcwPro\Support\Options;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -12,7 +12,7 @@ class ThemeManager {
 	 * Initialize hooks.
 	 */
 	public static function init() {
-		add_filter( 'wcgc_email_template_html', [ __CLASS__, 'swap_template' ], 10, 2 );
+		add_filter( 'bgcw_email_template_html', [ __CLASS__, 'swap_template' ], 10, 2 );
 	}
 
 	/**
@@ -23,39 +23,39 @@ class ThemeManager {
 	public static function get_available_themes() {
 		$themes = [
 			'classic'     => [
-				'name'        => __( 'Classic', 'smart-gift-cards-for-woocommerce-pro' ),
+				'name'        => __( 'Classic', 'beltoft-gift-cards-for-woocommerce-pro' ),
 				'color'       => '#6B4C9A',
 				'color_light' => '#8B6CB3',
 				'bg'          => '#F3EEFC',
-				'heading'     => __( "You've received a gift card!", 'smart-gift-cards-for-woocommerce-pro' ),
+				'heading'     => __( "You've received a gift card!", 'beltoft-gift-cards-for-woocommerce-pro' ),
 			],
 			'birthday'    => [
-				'name'        => __( 'Birthday', 'smart-gift-cards-for-woocommerce-pro' ),
+				'name'        => __( 'Birthday', 'beltoft-gift-cards-for-woocommerce-pro' ),
 				'color'       => '#E91E8C',
 				'color_light' => '#F06AB5',
 				'bg'          => '#FDE7F3',
-				'heading'     => __( 'Happy Birthday!', 'smart-gift-cards-for-woocommerce-pro' ),
+				'heading'     => __( 'Happy Birthday!', 'beltoft-gift-cards-for-woocommerce-pro' ),
 			],
 			'celebration' => [
-				'name'        => __( 'Celebration', 'smart-gift-cards-for-woocommerce-pro' ),
+				'name'        => __( 'Celebration', 'beltoft-gift-cards-for-woocommerce-pro' ),
 				'color'       => '#E88700',
 				'color_light' => '#F5A623',
 				'bg'          => '#FFF3E0',
-				'heading'     => __( 'Congratulations!', 'smart-gift-cards-for-woocommerce-pro' ),
+				'heading'     => __( 'Congratulations!', 'beltoft-gift-cards-for-woocommerce-pro' ),
 			],
 			'thank-you'   => [
-				'name'        => __( 'Thank You', 'smart-gift-cards-for-woocommerce-pro' ),
+				'name'        => __( 'Thank You', 'beltoft-gift-cards-for-woocommerce-pro' ),
 				'color'       => '#1A9E8F',
 				'color_light' => '#3BBFB0',
 				'bg'          => '#E6F7F5',
-				'heading'     => __( 'Thank You!', 'smart-gift-cards-for-woocommerce-pro' ),
+				'heading'     => __( 'Thank You!', 'beltoft-gift-cards-for-woocommerce-pro' ),
 			],
 			'holiday'     => [
-				'name'        => __( 'Holiday', 'smart-gift-cards-for-woocommerce-pro' ),
+				'name'        => __( 'Holiday', 'beltoft-gift-cards-for-woocommerce-pro' ),
 				'color'       => '#B22222',
 				'color_light' => '#D94444',
 				'bg'          => '#FDEAEA',
-				'heading'     => __( 'Happy Holidays!', 'smart-gift-cards-for-woocommerce-pro' ),
+				'heading'     => __( 'Happy Holidays!', 'beltoft-gift-cards-for-woocommerce-pro' ),
 			],
 		];
 
@@ -78,7 +78,7 @@ class ThemeManager {
 	/**
 	 * Swap the email template path when a theme is selected.
 	 *
-	 * Hooks into `wcgc_email_template_html` to redirect to a themed template
+	 * Hooks into `bgcw_email_template_html` to redirect to a themed template
 	 * in the Pro plugin. Uses a one-time `woocommerce_locate_template` filter
 	 * to ensure WooCommerce resolves the template from the Pro templates directory.
 	 *
@@ -107,7 +107,7 @@ class ThemeManager {
 		}
 
 		$themed_template = 'emails/themes/' . $theme_slug . '.php';
-		$full_path       = WCGC_PRO_PATH . 'templates/' . $themed_template;
+		$full_path       = BGCW_PRO_PATH . 'templates/' . $themed_template;
 
 		if ( ! file_exists( $full_path ) ) {
 			return $template;
@@ -133,7 +133,7 @@ class ThemeManager {
 	 * Look up the design theme for a gift card by finding the originating order item.
 	 *
 	 * Retrieves the order, iterates its line items, and checks for the
-	 * `_wcgc_design_theme` meta on items that match the gift card's recipient email.
+	 * `_bgcw_design_theme` meta on items that match the gift card's recipient email.
 	 *
 	 * @param object $gift_card Gift card data object (must have order_id).
 	 * @return string Theme slug, or empty string if not found.
@@ -151,14 +151,14 @@ class ThemeManager {
 			}
 
 			// Match by recipient email if available, otherwise take the first gift-card item.
-			$item_recipient = $item->get_meta( '_wcgc_recipient_email' );
+			$item_recipient = $item->get_meta( '_bgcw_recipient_email' );
 			if ( ! empty( $gift_card->recipient_email ) && ! empty( $item_recipient ) ) {
 				if ( strtolower( $item_recipient ) !== strtolower( $gift_card->recipient_email ) ) {
 					continue;
 				}
 			}
 
-			$theme = $item->get_meta( '_wcgc_design_theme' );
+			$theme = $item->get_meta( '_bgcw_design_theme' );
 			if ( ! empty( $theme ) ) {
 				return sanitize_key( $theme );
 			}

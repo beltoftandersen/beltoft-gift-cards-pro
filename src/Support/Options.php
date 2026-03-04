@@ -1,12 +1,12 @@
 <?php
 
-namespace GiftCardsPro\Support;
+namespace BgcwPro\Support;
 
 defined( 'ABSPATH' ) || exit;
 
 class Options {
 
-	const OPTION = 'wcgc_pro_options';
+	const OPTION = 'bgcw_pro_options';
 
 	/**
 	 * In-memory cache to avoid repeated get_option + wp_parse_args.

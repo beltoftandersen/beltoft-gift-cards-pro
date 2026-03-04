@@ -1,6 +1,6 @@
-# Smart Gift Cards for WooCommerce - Pro
+# Beltoft Gift Cards for WooCommerce - Pro
 
-Premium add-on for [Smart Gift Cards for WooCommerce](https://wordpress.org/plugins/smart-gift-cards-for-woocommerce/). Scheduled delivery, email themes, store credit, bulk generation, BOGO promotions, and analytics.
+Premium add-on for [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards-for-woocommerce/). Scheduled delivery, email themes, store credit, bulk generation, BOGO promotions, and analytics.
 
 ## Features
 
@@ -18,12 +18,12 @@ Premium add-on for [Smart Gift Cards for WooCommerce](https://wordpress.org/plug
 - WordPress 5.8+
 - WooCommerce 6.0+
 - PHP 7.4+
-- [Smart Gift Cards for WooCommerce](https://wordpress.org/plugins/smart-gift-cards-for-woocommerce/) (free) 1.2.0+
+- [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards-for-woocommerce/) (free) 1.2.0+
 
 ## Installation
 
-1. Install and activate the free "Smart Gift Cards for WooCommerce" plugin.
-2. Upload the `smart-gift-cards-for-woocommerce-pro` folder to `/wp-content/plugins/`.
+1. Install and activate the free "Beltoft Gift Cards for WooCommerce" plugin.
+2. Upload the `beltoft-gift-cards-for-woocommerce-pro` folder to `/wp-content/plugins/`.
 3. Activate the plugin through the Plugins menu.
 4. Go to **WooCommerce > Gift Cards > License** and enter your license key.
 5. Configure features under the **Pro Settings** tab.
@@ -32,16 +32,16 @@ Premium add-on for [Smart Gift Cards for WooCommerce](https://wordpress.org/plug
 
 ```bash
 # Generate a new license key
-wp wcgc-pro license:generate --expires=2027-12-31
+wp bgcw-pro license:generate --expires=2027-12-31
 
 # List all license keys
-wp wcgc-pro license:list
+wp bgcw-pro license:list
 
 # Revoke a license key
-wp wcgc-pro license:revoke --key=XXXX-XXXX-XXXX-XXXX
+wp bgcw-pro license:revoke --key=XXXX-XXXX-XXXX-XXXX
 
 # Check current license status
-wp wcgc-pro license:status
+wp bgcw-pro license:status
 ```
 
 ## Changelog

@@ -1,4 +1,4 @@
-=== Smart Gift Cards for WooCommerce - Pro ===
+=== Beltoft Gift Cards for WooCommerce - Pro ===
 Contributors: chimkinsit
 Tags: woocommerce, gift cards, gift certificate, store credit, voucher
 Requires at least: 5.8
@@ -10,11 +10,11 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Premium add-on for Smart Gift Cards for WooCommerce. Scheduled delivery, email themes, store credit, bulk generation, BOGO promotions, and analytics.
+Premium add-on for Beltoft Gift Cards for WooCommerce. Adds scheduled delivery, email themes, store credit, bulk generation, and more.
 
 == Description ==
 
-**Smart Gift Cards for WooCommerce - Pro** is a premium add-on that extends the free [Smart Gift Cards for WooCommerce](https://wordpress.org/plugins/smart-gift-cards-for-woocommerce/) plugin with advanced features for gift card management.
+**Beltoft Gift Cards for WooCommerce - Pro** is a premium add-on that extends the free [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards-for-woocommerce/) plugin with advanced features for gift card management.
 
 = Features =
 
@@ -32,12 +32,12 @@ Premium add-on for Smart Gift Cards for WooCommerce. Scheduled delivery, email t
 * WordPress 5.8+
 * WooCommerce 6.0+
 * PHP 7.4+
-* [Smart Gift Cards for WooCommerce](https://wordpress.org/plugins/smart-gift-cards-for-woocommerce/) (free) 1.2.0+
+* [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards-for-woocommerce/) (free) 1.2.0+
 
 == Installation ==
 
-1. Install and activate the free "Smart Gift Cards for WooCommerce" plugin.
-2. Upload the `smart-gift-cards-for-woocommerce-pro` folder to `/wp-content/plugins/`.
+1. Install and activate the free "Beltoft Gift Cards for WooCommerce" plugin.
+2. Upload the `beltoft-gift-cards-for-woocommerce-pro` folder to `/wp-content/plugins/`.
 3. Activate the plugin through the Plugins menu.
 4. Go to WooCommerce > Gift Cards > License and enter your license key.
 5. Configure features under the "Pro Settings" tab.
@@ -46,7 +46,7 @@ Premium add-on for Smart Gift Cards for WooCommerce. Scheduled delivery, email t
 
 = Do I need the free plugin? =
 
-Yes. Smart Gift Cards for WooCommerce (free) must be installed and activated. The Pro add-on extends the free plugin's functionality.
+Yes. Beltoft Gift Cards for WooCommerce (free) must be installed and activated. The Pro add-on extends the free plugin's functionality.
 
 = How do I get a license key? =
 
