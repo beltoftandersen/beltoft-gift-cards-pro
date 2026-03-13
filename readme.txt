@@ -6,7 +6,7 @@ Tested up to: 6.9
 Requires PHP: 7.4
 WC requires at least: 6.0
 WC tested up to: 9.6
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,6 +66,14 @@ When Store Credit is enabled and an order paid with a gift card is refunded, the
 
 == Changelog ==
 
+= 1.2.0 =
+* Replaced local license validation with remote license server (beltoft.net).
+* Added auto-updater with deferred signed download URLs.
+* License reactivates on plugin reactivation, frees slot on deactivation.
+* Added `Requires Plugins` header for WooCommerce and free plugin dependency.
+* Updated license tab UI with domain mismatch, invalid key, and update available notices.
+* Removed WP-CLI license commands (now managed via license server).
+
 = 1.1.0 =
 * Renamed plugin slug and folder to `beltoft-gift-cards-pro`.
 * Renamed text domain to `beltoft-gift-cards-pro`.
@@ -84,4 +92,4 @@ When Store Credit is enabled and an order paid with a gift card is refunded, the
 * BOGO promotion rules with date ranges and usage limits.
 * Analytics dashboard with Pro stat cards and date range filtering.
 * Scheduled CSV reports (daily/weekly/monthly) via email.
-* Self-hosted license system with WP-CLI management.
+* License system with activation and validation.

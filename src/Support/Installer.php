@@ -14,12 +14,31 @@ class Installer {
 		self::create_tables();
 		self::schedule_crons();
 		self::create_files();
+		self::reactivate_license();
+	}
+
+	/**
+	 * Re-activate the license on the remote server after plugin reactivation.
+	 *
+	 * When the plugin is deactivated, remote_deactivate() frees the activation
+	 * slot. On reactivation we must re-register the domain so downloads and
+	 * updates work again.
+	 */
+	private static function reactivate_license() {
+		$key = Options::get( 'license_key' );
+		if ( empty( $key ) ) {
+			return;
+		}
+
+		\BgcwPro\Licensing\License::activate( $key );
 	}
 
 	/**
 	 * Run on plugin deactivation.
 	 */
 	public static function deactivate() {
+		\BgcwPro\Licensing\License::remote_deactivate();
+
 		wp_clear_scheduled_hook( 'bgcw_pro_license_check' );
 		wp_clear_scheduled_hook( 'bgcw_pro_process_scheduled_deliveries' );
 		wp_clear_scheduled_hook( 'bgcw_pro_send_report' );

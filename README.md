@@ -2,7 +2,7 @@
 
 Premium add-on for [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards/) — scheduled delivery, email themes, store credit, bulk generation, BOGO promotions, and analytics.
 
-- Stable version: 1.1.0
+- Stable version: 1.2.0
 - Requires: WordPress 5.8+, PHP 7.4+, WooCommerce 6.0+
 - Requires: Beltoft Gift Cards for WooCommerce (free) 1.2.0+
 - Author: beltoft.net
@@ -40,23 +40,16 @@ A valid license key is required to activate Pro features.
 4. Go to **WooCommerce > Gift Cards > License** and enter your license key.
 5. Configure features under the **Pro Settings** tab.
 
-## WP-CLI Commands
-
-```bash
-# Generate a new license key
-wp bgcw-pro license:generate --expires=2027-12-31
-
-# List all license keys
-wp bgcw-pro license:list
-
-# Revoke a license key
-wp bgcw-pro license:revoke --key=XXXX-XXXX-XXXX-XXXX
-
-# Check current license status
-wp bgcw-pro license:status
-```
-
 ## Changelog
+
+### 1.2.0
+
+- Replaced local license validation with remote license server (beltoft.net).
+- Added auto-updater with deferred signed download URLs.
+- License reactivates on plugin reactivation, frees slot on deactivation.
+- Added `Requires Plugins` header for WooCommerce and free plugin dependency.
+- Updated license tab UI with domain mismatch, invalid key, and update available notices.
+- Removed WP-CLI license commands (now managed via license server).
 
 ### 1.1.0
 
@@ -77,4 +70,4 @@ wp bgcw-pro license:status
 - BOGO promotion rules with date ranges and usage limits.
 - Analytics dashboard with Pro stat cards and date range filtering.
 - Scheduled CSV reports (daily/weekly/monthly) via email.
-- Self-hosted license system with WP-CLI management.
+- License system with activation and validation.

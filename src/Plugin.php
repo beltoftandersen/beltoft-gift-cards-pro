@@ -3,6 +3,7 @@
 namespace BgcwPro;
 
 use BgcwPro\Licensing\License;
+use BgcwPro\Licensing\Updater;
 use BgcwPro\Admin\SettingsPage;
 use BgcwPro\ScheduledDelivery\Scheduler;
 use BgcwPro\ScheduledDelivery\ProductFields as ScheduledProductFields;
@@ -24,8 +25,9 @@ class Plugin {
 	 * Initialize the Pro plugin.
 	 */
 	public static function init() {
-		// Always load licensing + admin settings (even without active license).
+		// Always load licensing + updater + admin settings (even without active license).
 		License::init();
+		Updater::init();
 
 		if ( is_admin() ) {
 			SettingsPage::init();

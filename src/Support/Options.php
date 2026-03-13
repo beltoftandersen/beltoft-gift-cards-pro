@@ -26,8 +26,9 @@ class Options {
 			'license_key'          => '',
 			'license_status'       => '',
 			'license_expires'      => '',
-			'license_last_checked' => '',
-			'license_grace_until'  => '',
+			'license_last_checked'    => '',
+			'license_remote_version'  => '',
+			'license_max_activations' => '',
 
 			// Scheduled Delivery.
 			'scheduled_delivery' => '1',

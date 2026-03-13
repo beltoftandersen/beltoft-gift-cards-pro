@@ -7,22 +7,16 @@ use BgcwPro\Support\Options;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Self-hosted license validation.
+ * Remote license validation via the license server at beltoft.net.
  *
- * Valid license keys are stored in wp_option `bgcw_pro_licenses` as an array:
- *   [ 'XXXX-XXXX-XXXX-XXXX' => [ 'expires' => '2027-12-31', 'status' => 'active', 'created' => '...' ], ... ]
- *
- * Generate keys via WP-CLI:
- *   wp bgcw-pro license:generate --expires=2027-12-31 --allow-root
- *   wp bgcw-pro license:list --allow-root
- *   wp bgcw-pro license:revoke --key=XXXX-XXXX-XXXX-XXXX --allow-root
+ * License statuses:
+ *   'valid'           - Active license. Features + updates enabled.
+ *   'inactive'        - Expired/revoked on server. Features work, updates disabled.
+ *   'domain_mismatch' - Not activated on this domain. Features disabled.
+ *   'invalid_key'     - Key not found on server. Features disabled.
+ *   ''                - No key entered yet. Features disabled.
  */
 class License {
-
-	const LICENSES_OPTION = 'bgcw_pro_licenses';
-
-	/** @var int Grace period in days after license expiry. */
-	const GRACE_DAYS = 7;
 
 	/**
 	 * Register hooks.
@@ -34,105 +28,223 @@ class License {
 		// AJAX handlers.
 		add_action( 'wp_ajax_bgcw_pro_activate_license', [ __CLASS__, 'ajax_activate' ] );
 		add_action( 'wp_ajax_bgcw_pro_deactivate_license', [ __CLASS__, 'ajax_deactivate' ] );
-
-		// WP-CLI commands.
-		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			\WP_CLI::add_command( 'bgcw-pro', [ __CLASS__, 'cli_dispatch' ] );
-		}
 	}
 
 	/**
-	 * Check if the license is currently active (including grace period).
+	 * Whether Pro features should be enabled.
+	 *
+	 * Returns true for 'valid' (active) and 'inactive' (expired) licenses.
+	 * Returns false when there is no license or the key is invalid.
 	 */
 	public static function is_active(): bool {
-		$status = Options::get( 'license_status' );
-
-		if ( 'valid' === $status ) {
-			return true;
-		}
-
-		// Check grace period.
-		if ( 'expired' === $status || 'grace' === $status ) {
-			$grace_until = Options::get( 'license_grace_until' );
-			if ( $grace_until && strtotime( $grace_until ) > time() ) {
-				return true;
-			}
-		}
-
-		return false;
+		return in_array( Options::get( 'license_status' ), [ 'valid', 'inactive' ], true );
 	}
 
 	/**
-	 * Activate a license key by checking it against locally stored valid keys.
+	 * Whether the license is eligible for updates.
 	 *
-	 * @param string $key License key.
-	 * @return array { success: bool, message: string }
+	 * Only 'valid' (active, non-expired) licenses receive updates.
+	 */
+	public static function is_valid_for_updates(): bool {
+		return 'valid' === Options::get( 'license_status' );
+	}
+
+	/**
+	 * Activate a license key via the remote license server.
+	 *
+	 * @param string $key License key to activate.
+	 * @return array {success:bool,message:string}
 	 */
 	public static function activate( string $key ): array {
 		$key = strtoupper( trim( $key ) );
 
 		if ( empty( $key ) ) {
-			return [ 'success' => false, 'message' => __( 'Please enter a license key.', 'beltoft-gift-cards-pro' ) ];
+			return [
+				'success' => false,
+				'message' => __( 'Please enter a license key.', 'beltoft-gift-cards-pro' ),
+			];
 		}
 
-		$licenses = get_option( self::LICENSES_OPTION, [] );
+		$domain   = self::get_domain();
+		$response = self::api_request(
+			'/license/activate',
+			[
+				'license_key' => $key,
+				'domain'      => $domain,
+			]
+		);
 
-		if ( ! isset( $licenses[ $key ] ) ) {
-			return [ 'success' => false, 'message' => __( 'This license key is invalid.', 'beltoft-gift-cards-pro' ) ];
+		if ( is_wp_error( $response ) ) {
+			return [
+				'success' => false,
+				'message' => __( 'Could not connect to license server. Please try again.', 'beltoft-gift-cards-pro' ),
+			];
 		}
 
-		$license = $licenses[ $key ];
+		$http_code = $response['_http_code'] ?? 200;
 
-		if ( ( $license['status'] ?? '' ) === 'revoked' ) {
-			return [ 'success' => false, 'message' => __( 'This license key has been revoked.', 'beltoft-gift-cards-pro' ) ];
+		// 404 - distinguish "key not found" from "endpoint not found".
+		if ( 404 === $http_code ) {
+			if ( self::is_license_not_found_response( $response ) ) {
+				return [
+					'success' => false,
+					'message' => __( 'License key not found. Please check and try again.', 'beltoft-gift-cards-pro' ),
+				];
+			}
+
+			return [
+				'success' => false,
+				'message' => __( 'License endpoint unavailable. Please try again in a moment.', 'beltoft-gift-cards-pro' ),
+			];
 		}
 
-		// Check expiry.
-		$expires = $license['expires'] ?? 'lifetime';
-		if ( 'lifetime' !== $expires && strtotime( $expires ) < time() ) {
-			return [ 'success' => false, 'message' => __( 'This license key has expired.', 'beltoft-gift-cards-pro' ) ];
+		// 403 - not active, expired, or domain mismatch.
+		if ( 403 === $http_code ) {
+			$server_msg = ! empty( $response['message'] ) ? sanitize_text_field( $response['message'] ) : '';
+
+			// Detect domain mismatch from server message.
+			if ( false !== stripos( $server_msg, 'not activated on this domain' ) ) {
+				Options::set(
+					[
+						'license_key'    => $key,
+						'license_status' => 'domain_mismatch',
+					]
+				);
+			} else {
+				Options::set(
+					[
+						'license_key'    => $key,
+						'license_status' => 'inactive',
+					]
+				);
+			}
+
+			return [
+				'success' => false,
+				'message' => $server_msg ? $server_msg : __( 'License activation failed.', 'beltoft-gift-cards-pro' ),
+			];
 		}
 
-		// Mark as activated.
-		$licenses[ $key ]['activated_site'] = home_url();
-		$licenses[ $key ]['activated_at']   = current_time( 'mysql' );
-		update_option( self::LICENSES_OPTION, $licenses );
+		if ( empty( $response['success'] ) ) {
+			return [
+				'success' => false,
+				'message' => ! empty( $response['message'] )
+					? sanitize_text_field( $response['message'] )
+					: __( 'License activation failed.', 'beltoft-gift-cards-pro' ),
+			];
+		}
 
-		Options::set( [
+		// Activation succeeded - fetch full details via validate.
+		$validate = self::api_request(
+			'/license/validate',
+			[
+				'license_key' => $key,
+				'domain'      => $domain,
+			]
+		);
+
+		$license_data = [
 			'license_key'          => $key,
 			'license_status'       => 'valid',
-			'license_expires'      => $expires,
 			'license_last_checked' => current_time( 'mysql' ),
-			'license_grace_until'  => '',
-		] );
+		];
 
-		return [ 'success' => true, 'message' => __( 'License activated successfully.', 'beltoft-gift-cards-pro' ) ];
+		if ( ! is_wp_error( $validate ) && ! empty( $validate['valid'] ) ) {
+			$license_data['license_expires']         = ! empty( $validate['expires_at'] ) ? sanitize_text_field( $validate['expires_at'] ) : '';
+			$license_data['license_remote_version']  = ! empty( $validate['current_version'] ) ? sanitize_text_field( $validate['current_version'] ) : '';
+			$license_data['license_max_activations'] = isset( $validate['max_activations'] ) ? absint( $validate['max_activations'] ) : '';
+		}
+
+		Options::set( $license_data );
+
+		return [
+			'success' => true,
+			'message' => __( 'License activated successfully.', 'beltoft-gift-cards-pro' ),
+		];
 	}
 
 	/**
-	 * Deactivate the license key.
+	 * Deactivate the license on the remote server.
 	 *
-	 * @return array { success: bool, message: string }
+	 * Keeps license_key in options so re-activation is seamless.
+	 *
+	 * @return array {success:bool,message:string}
 	 */
 	public static function deactivate(): array {
 		$key = Options::get( 'license_key' );
 		if ( empty( $key ) ) {
-			return [ 'success' => false, 'message' => __( 'No license key to deactivate.', 'beltoft-gift-cards-pro' ) ];
+			return [
+				'success' => false,
+				'message' => __( 'No license key to deactivate.', 'beltoft-gift-cards-pro' ),
+			];
 		}
 
-		Options::set( [
-			'license_key'          => '',
-			'license_status'       => '',
-			'license_expires'      => '',
-			'license_last_checked' => '',
-			'license_grace_until'  => '',
-		] );
+		$response = self::api_request(
+			'/license/deactivate',
+			[
+				'license_key' => $key,
+				'domain'      => self::get_domain(),
+			]
+		);
 
-		return [ 'success' => true, 'message' => __( 'License deactivated successfully.', 'beltoft-gift-cards-pro' ) ];
+		$remote_unconfirmed = false;
+		if ( is_wp_error( $response ) ) {
+			$remote_unconfirmed = true;
+		} else {
+			$http_code = isset( $response['_http_code'] ) ? (int) $response['_http_code'] : 0;
+			if ( 0 === $http_code || 429 === $http_code || $http_code >= 500 ) {
+				$remote_unconfirmed = true;
+			}
+		}
+
+		// Clear activation state but keep the key for easy re-activation.
+		Options::set(
+			[
+				'license_status'          => '',
+				'license_expires'         => '',
+				'license_last_checked'    => '',
+				'license_remote_version'  => '',
+				'license_max_activations' => '',
+			]
+		);
+
+		return [
+			'success' => true,
+			'message' => $remote_unconfirmed
+				? __( 'License deactivated locally. Remote deactivation could not be confirmed right now.', 'beltoft-gift-cards-pro' )
+				: __( 'License deactivated successfully.', 'beltoft-gift-cards-pro' ),
+		];
+	}
+
+	/**
+	 * Deactivate on the remote server only (used during plugin deactivation).
+	 *
+	 * Frees the activation slot without clearing local options.
+	 */
+	public static function remote_deactivate() {
+		$key = Options::get( 'license_key' );
+		if ( empty( $key ) ) {
+			return;
+		}
+
+		self::api_request(
+			'/license/deactivate',
+			[
+				'license_key' => $key,
+				'domain'      => self::get_domain(),
+			]
+		);
 	}
 
 	/**
 	 * Check license status (called daily by cron).
+	 *
+	 * Handles HTTP status codes:
+	 *   200        - valid response, update status from body
+	 *   403        - expired/inactive/domain mismatch
+	 *   404        - key not found
+	 *   429 / 5xx  - transient error, keep last known state
+	 *   WP_Error   - network failure, keep last known state
 	 */
 	public static function cron_check() {
 		$key = Options::get( 'license_key' );
@@ -140,42 +252,92 @@ class License {
 			return;
 		}
 
-		$licenses = get_option( self::LICENSES_OPTION, [] );
-		Options::set( 'license_last_checked', current_time( 'mysql' ) );
+		$response = self::api_request(
+			'/license/validate',
+			[
+				'license_key' => $key,
+				'domain'      => self::get_domain(),
+			]
+		);
 
-		// Key no longer exists or was revoked.
-		if ( ! isset( $licenses[ $key ] ) || ( $licenses[ $key ]['status'] ?? '' ) === 'revoked' ) {
-			self::start_grace_or_expire();
+		// Network failure - keep cached status.
+		if ( is_wp_error( $response ) ) {
+			Options::set( 'license_last_checked', current_time( 'mysql' ) );
 			return;
 		}
 
-		$expires = $licenses[ $key ]['expires'] ?? 'lifetime';
+		$http_code = $response['_http_code'] ?? 200;
 
-		if ( 'lifetime' === $expires || strtotime( $expires ) >= time() ) {
-			Options::set( [
-				'license_status'      => 'valid',
-				'license_expires'     => $expires,
-				'license_grace_until' => '',
-			] );
+		// 429 / 5xx - transient, keep last known state.
+		if ( 429 === $http_code || $http_code >= 500 ) {
+			Options::set( 'license_last_checked', current_time( 'mysql' ) );
 			return;
 		}
 
-		// License expired.
-		self::start_grace_or_expire();
-	}
+		// 404 - key not found on server (not endpoint-not-found).
+		if ( 404 === $http_code ) {
+			if ( ! self::is_license_not_found_response( $response ) ) {
+				// Treat endpoint-level 404s as transient infrastructure issues.
+				Options::set( 'license_last_checked', current_time( 'mysql' ) );
+				return;
+			}
 
-	/**
-	 * Start grace period on first expiry detection, or mark fully expired.
-	 */
-	private static function start_grace_or_expire() {
-		$current_status = Options::get( 'license_status' );
+			Options::set(
+				[
+					'license_status'       => 'invalid_key',
+					'license_last_checked' => current_time( 'mysql' ),
+				]
+			);
+			return;
+		}
 
-		if ( 'valid' === $current_status ) {
-			$grace_until = gmdate( 'Y-m-d H:i:s', time() + ( self::GRACE_DAYS * DAY_IN_SECONDS ) );
-			Options::set( [
-				'license_status'      => 'expired',
-				'license_grace_until' => $grace_until,
-			] );
+		// 403 - expired, inactive, or domain mismatch.
+		if ( 403 === $http_code ) {
+			$server_msg = ! empty( $response['message'] ) ? $response['message'] : '';
+
+			if ( false !== stripos( $server_msg, 'not activated on this domain' ) ) {
+				$new_status = 'domain_mismatch';
+			} else {
+				$new_status = 'inactive';
+			}
+
+			Options::set(
+				[
+					'license_status'       => $new_status,
+					'license_last_checked' => current_time( 'mysql' ),
+				]
+			);
+			return;
+		}
+
+		// 200 - check response body.
+		if ( ! empty( $response['valid'] ) && ! empty( $response['license_active'] ) ) {
+			// License is valid and active.
+			Options::set(
+				[
+					'license_status'          => 'valid',
+					'license_expires'         => ! empty( $response['expires_at'] ) ? sanitize_text_field( $response['expires_at'] ) : '',
+					'license_last_checked'    => current_time( 'mysql' ),
+					'license_remote_version'  => ! empty( $response['current_version'] ) ? sanitize_text_field( $response['current_version'] ) : '',
+					'license_max_activations' => isset( $response['max_activations'] ) ? absint( $response['max_activations'] ) : '',
+				]
+			);
+		} elseif ( ! empty( $response['valid'] ) ) {
+			// Valid key but not active (expired/suspended on server).
+			Options::set(
+				[
+					'license_status'       => 'inactive',
+					'license_last_checked' => current_time( 'mysql' ),
+				]
+			);
+		} else {
+			// Invalid response.
+			Options::set(
+				[
+					'license_status'       => 'inactive',
+					'license_last_checked' => current_time( 'mysql' ),
+				]
+			);
 		}
 	}
 
@@ -190,14 +352,15 @@ class License {
 
 		$status = Options::get( 'license_status' );
 		$key    = Options::get( 'license_key' );
+		$url    = admin_url( 'admin.php?page=bgcw-gift-cards&tab=license' );
 
+		// No key entered.
 		if ( empty( $key ) && empty( $status ) ) {
-			$url = admin_url( 'admin.php?page=bgcw-gift-cards&tab=license' );
 			echo '<div class="notice notice-warning"><p>';
 			printf(
 				wp_kses(
 					/* translators: %s: license settings page URL */
-					__( 'Beltoft Gift Cards Pro: Please <a href="%s">enter your license key</a> to enable Pro features.', 'beltoft-gift-cards-pro' ),
+					__( 'Gift Cards Pro: Please <a href="%s">enter your license key</a> to enable Pro features.', 'beltoft-gift-cards-pro' ),
 					[ 'a' => [ 'href' => [] ] ]
 				),
 				esc_url( $url )
@@ -206,22 +369,63 @@ class License {
 			return;
 		}
 
-		if ( 'expired' === $status ) {
-			$grace = Options::get( 'license_grace_until' );
-			if ( $grace && strtotime( $grace ) > time() ) {
-				$days_left = max( 1, (int) ceil( ( strtotime( $grace ) - time() ) / DAY_IN_SECONDS ) );
-				echo '<div class="notice notice-warning"><p>';
-				printf(
-					/* translators: %d: number of days remaining in grace period */
-					esc_html__( 'Beltoft Gift Cards Pro: Your license has expired. Pro features will be disabled in %d day(s).', 'beltoft-gift-cards-pro' ),
-					(int) $days_left
-				);
-				echo '</p></div>';
-			} else {
-				echo '<div class="notice notice-error"><p>';
-				esc_html_e( 'Beltoft Gift Cards Pro: Your license has expired. Pro features are disabled.', 'beltoft-gift-cards-pro' );
-				echo '</p></div>';
-			}
+		// Key exists, but it's not activated on this site yet.
+		if ( ! empty( $key ) && empty( $status ) ) {
+			echo '<div class="notice notice-warning"><p>';
+			printf(
+				wp_kses(
+					/* translators: %s: license settings page URL */
+					__( 'Gift Cards Pro: License is not activated. <a href="%s">Activate your license</a> to enable Pro features and updates.', 'beltoft-gift-cards-pro' ),
+					[ 'a' => [ 'href' => [] ] ]
+				),
+				esc_url( $url )
+			);
+			echo '</p></div>';
+			return;
+		}
+
+		// Inactive (expired/revoked) - features work, no updates.
+		if ( 'inactive' === $status ) {
+			echo '<div class="notice notice-warning"><p>';
+			printf(
+				wp_kses(
+					/* translators: %s: license settings page URL */
+					__( 'Gift Cards Pro: License inactive. <a href="%s">Renew your license</a> to receive updates.', 'beltoft-gift-cards-pro' ),
+					[ 'a' => [ 'href' => [] ] ]
+				),
+				esc_url( $url )
+			);
+			echo '</p></div>';
+			return;
+		}
+
+		// Domain mismatch.
+		if ( 'domain_mismatch' === $status ) {
+			echo '<div class="notice notice-error"><p>';
+			printf(
+				wp_kses(
+					/* translators: %s: license settings page URL */
+					__( 'Gift Cards Pro: License is not activated on this domain. <a href="%s">Deactivate your old domain</a> and reactivate here.', 'beltoft-gift-cards-pro' ),
+					[ 'a' => [ 'href' => [] ] ]
+				),
+				esc_url( $url )
+			);
+			echo '</p></div>';
+			return;
+		}
+
+		// Invalid key.
+		if ( 'invalid_key' === $status ) {
+			echo '<div class="notice notice-error"><p>';
+			printf(
+				wp_kses(
+					/* translators: %s: license settings page URL */
+					__( 'Gift Cards Pro: License key not found. Please <a href="%s">check your license key</a>.', 'beltoft-gift-cards-pro' ),
+					[ 'a' => [ 'href' => [] ] ]
+				),
+				esc_url( $url )
+			);
+			echo '</p></div>';
 		}
 	}
 
@@ -266,156 +470,102 @@ class License {
 		}
 	}
 
-	// ──────────────────────────────────────────────
-	// WP-CLI Commands
-	// ──────────────────────────────────────────────
-
 	/**
-	 * Dispatch WP-CLI subcommands.
+	 * Send a request to the license server API.
 	 *
-	 * ## EXAMPLES
-	 *
-	 *     wp bgcw-pro license:generate --expires=2027-12-31
-	 *     wp bgcw-pro license:list
-	 *     wp bgcw-pro license:revoke --key=XXXX-XXXX-XXXX-XXXX
-	 *     wp bgcw-pro license:status
-	 *
-	 * @param array $args       Positional arguments.
-	 * @param array $assoc_args Named arguments.
+	 * @param string $endpoint API endpoint path (e.g., '/license/validate').
+	 * @param array  $body     Request body.
+	 * @return array|\WP_Error Decoded JSON response with '_http_code', or WP_Error on failure.
 	 */
-	public static function cli_dispatch( $args, $assoc_args ) {
-		$subcommand = $args[0] ?? '';
-
-		switch ( $subcommand ) {
-			case 'license:generate':
-				self::cli_generate( $assoc_args );
-				break;
-			case 'license:list':
-				self::cli_list();
-				break;
-			case 'license:revoke':
-				self::cli_revoke( $assoc_args );
-				break;
-			case 'license:status':
-				self::cli_status();
-				break;
-			default:
-				\WP_CLI::log( 'Available subcommands: license:generate, license:list, license:revoke, license:status' );
-				break;
-		}
+	public static function api_request( string $endpoint, array $body ) {
+		return self::send_api_request( $endpoint, $body );
 	}
 
 	/**
-	 * Generate a new license key.
+	 * Perform the HTTP request and normalize response metadata.
 	 *
-	 * @param array $assoc_args Named arguments.
+	 * @param string $endpoint API endpoint path.
+	 * @param array  $body     Request body.
+	 * @return array|\WP_Error
 	 */
-	private static function cli_generate( array $assoc_args ) {
-		$expires = $assoc_args['expires'] ?? 'lifetime';
+	private static function send_api_request( string $endpoint, array $body ) {
+		$body['plugin_slug'] = dirname( plugin_basename( BGCW_PRO_FILE ) );
+		$url = BGCW_PRO_LICENSE_SERVER . $endpoint;
 
-		if ( 'lifetime' !== $expires && ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $expires ) ) {
-			\WP_CLI::error( 'Invalid --expires format. Use YYYY-MM-DD or "lifetime".' );
-			return;
+		$response = wp_remote_post(
+			$url,
+			[
+				'body'    => wp_json_encode( $body ),
+				'headers' => [ 'Content-Type' => 'application/json' ],
+				'timeout' => 15,
+			]
+		);
+
+		if ( is_wp_error( $response ) ) {
+			return $response;
 		}
 
-		$key = self::generate_key();
+		$raw_body = (string) wp_remote_retrieve_body( $response );
+		$decoded  = json_decode( $raw_body, true );
 
-		$licenses = get_option( self::LICENSES_OPTION, [] );
-		$licenses[ $key ] = [
-			'expires' => $expires,
-			'status'  => 'active',
-			'created' => current_time( 'mysql' ),
-		];
-		update_option( self::LICENSES_OPTION, $licenses );
+		if ( ! is_array( $decoded ) ) {
+			$decoded = [];
+		}
 
-		\WP_CLI::success( 'License key generated:' );
-		\WP_CLI::log( '' );
-		\WP_CLI::log( "  Key:     {$key}" );
-		\WP_CLI::log( "  Expires: {$expires}" );
-		\WP_CLI::log( '' );
-		\WP_CLI::log( 'Enter this key at: WooCommerce > Gift Cards > License tab' );
+		$decoded['_http_code'] = (int) wp_remote_retrieve_response_code( $response );
+		$decoded['_raw_body']  = $raw_body;
+
+		return $decoded;
 	}
 
 	/**
-	 * List all license keys.
-	 */
-	private static function cli_list() {
-		$licenses = get_option( self::LICENSES_OPTION, [] );
-
-		if ( empty( $licenses ) ) {
-			\WP_CLI::log( 'No license keys found. Generate one with: wp bgcw-pro license:generate' );
-			return;
-		}
-
-		$items = [];
-		foreach ( $licenses as $key => $data ) {
-			$items[] = [
-				'Key'       => $key,
-				'Status'    => $data['status'] ?? 'active',
-				'Expires'   => $data['expires'] ?? 'lifetime',
-				'Created'   => $data['created'] ?? '-',
-				'Activated' => $data['activated_site'] ?? '-',
-			];
-		}
-
-		\WP_CLI\Utils\format_items( 'table', $items, [ 'Key', 'Status', 'Expires', 'Created', 'Activated' ] );
-	}
-
-	/**
-	 * Revoke a license key.
+	 * Check whether a 404 corresponds to a missing license key (not a missing route).
 	 *
-	 * @param array $assoc_args Named arguments.
+	 * @param array $response Decoded response payload from api_request().
+	 * @return bool
 	 */
-	private static function cli_revoke( array $assoc_args ) {
-		$key = strtoupper( trim( $assoc_args['key'] ?? '' ) );
-		if ( empty( $key ) ) {
-			\WP_CLI::error( 'Please provide --key=XXXX-XXXX-XXXX-XXXX' );
-			return;
+	private static function is_license_not_found_response( array $response ): bool {
+		$http_code = isset( $response['_http_code'] ) ? (int) $response['_http_code'] : 0;
+		if ( 404 !== $http_code ) {
+			return false;
 		}
 
-		$licenses = get_option( self::LICENSES_OPTION, [] );
+		$message = self::extract_response_message( $response );
 
-		if ( ! isset( $licenses[ $key ] ) ) {
-			\WP_CLI::error( "Key not found: {$key}" );
-			return;
-		}
-
-		$licenses[ $key ]['status'] = 'revoked';
-		update_option( self::LICENSES_OPTION, $licenses );
-
-		\WP_CLI::success( "License key revoked: {$key}" );
+		return false !== strpos( $message, 'license not found' )
+			|| false !== strpos( $message, 'license key not found' );
 	}
 
 	/**
-	 * Show current activation status.
+	 * Extract a lower-cased text message from decoded API response.
+	 *
+	 * @param array $response Decoded response payload.
+	 * @return string
 	 */
-	private static function cli_status() {
-		$opts = Options::get();
-		\WP_CLI::log( 'License Status:' );
-		\WP_CLI::log( '  Key:          ' . ( $opts['license_key'] ?: '(none)' ) );
-		\WP_CLI::log( '  Status:       ' . ( $opts['license_status'] ?: '(inactive)' ) );
-		\WP_CLI::log( '  Expires:      ' . ( $opts['license_expires'] ?: '-' ) );
-		\WP_CLI::log( '  Last Checked: ' . ( $opts['license_last_checked'] ?: '-' ) );
-		\WP_CLI::log( '  Is Active:    ' . ( self::is_active() ? 'Yes' : 'No' ) );
+	private static function extract_response_message( array $response ): string {
+		$parts = [];
+
+		if ( isset( $response['message'] ) && is_scalar( $response['message'] ) ) {
+			$parts[] = (string) $response['message'];
+		}
+
+		if ( isset( $response['error'] ) && is_scalar( $response['error'] ) ) {
+			$parts[] = (string) $response['error'];
+		}
+
+		if ( isset( $response['_raw_body'] ) && is_string( $response['_raw_body'] ) ) {
+			$parts[] = $response['_raw_body'];
+		}
+
+		return strtolower( trim( implode( ' ', $parts ) ) );
 	}
 
 	/**
-	 * Generate a formatted license key (XXXX-XXXX-XXXX-XXXX).
+	 * Get the normalized site domain for activation tracking.
 	 *
 	 * @return string
 	 */
-	private static function generate_key(): string {
-		$chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-		$parts = [];
-
-		for ( $i = 0; $i < 4; $i++ ) {
-			$segment = '';
-			for ( $j = 0; $j < 4; $j++ ) {
-				$segment .= $chars[ wp_rand( 0, strlen( $chars ) - 1 ) ];
-			}
-			$parts[] = $segment;
-		}
-
-		return implode( '-', $parts );
+	private static function get_domain(): string {
+		return untrailingslashit( home_url() );
 	}
 }

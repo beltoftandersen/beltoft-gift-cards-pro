@@ -459,13 +459,20 @@ class SettingsPage {
 							);
 							?>
 						</span>
-					<?php elseif ( 'lifetime' === $opts['license_expires'] ) : ?>
-						<span class="bgcw-pro-license-expires"><?php esc_html_e( 'Lifetime', 'beltoft-gift-cards-pro' ); ?></span>
+					<?php else : ?>
+						<span class="bgcw-pro-license-expires"><?php esc_html_e( 'Managed by active subscription', 'beltoft-gift-cards-pro' ); ?></span>
 					<?php endif; ?>
-				<?php elseif ( 'expired' === $status ) : ?>
-					<span class="bgcw-pro-license-badge bgcw-pro-license-badge--expired"><?php esc_html_e( 'Expired', 'beltoft-gift-cards-pro' ); ?></span>
+				<?php elseif ( 'inactive' === $status ) : ?>
+					<span class="bgcw-pro-license-badge bgcw-pro-license-badge--expired"><?php esc_html_e( 'Inactive', 'beltoft-gift-cards-pro' ); ?></span>
+					<span class="bgcw-pro-license-expires" style="color:#d63638;"><?php esc_html_e( 'Renew to receive updates', 'beltoft-gift-cards-pro' ); ?></span>
+				<?php elseif ( 'domain_mismatch' === $status ) : ?>
+					<span class="bgcw-pro-license-badge bgcw-pro-license-badge--expired"><?php esc_html_e( 'Domain Mismatch', 'beltoft-gift-cards-pro' ); ?></span>
+					<span class="bgcw-pro-license-expires" style="color:#d63638;"><?php esc_html_e( 'Deactivate your old domain and reactivate here', 'beltoft-gift-cards-pro' ); ?></span>
+				<?php elseif ( 'invalid_key' === $status ) : ?>
+					<span class="bgcw-pro-license-badge bgcw-pro-license-badge--expired"><?php esc_html_e( 'Invalid Key', 'beltoft-gift-cards-pro' ); ?></span>
+					<span class="bgcw-pro-license-expires" style="color:#d63638;"><?php esc_html_e( 'Please check and re-enter your license key', 'beltoft-gift-cards-pro' ); ?></span>
 				<?php else : ?>
-					<span class="bgcw-pro-license-badge bgcw-pro-license-badge--inactive"><?php esc_html_e( 'Inactive', 'beltoft-gift-cards-pro' ); ?></span>
+					<span class="bgcw-pro-license-badge bgcw-pro-license-badge--inactive"><?php esc_html_e( 'Not Activated', 'beltoft-gift-cards-pro' ); ?></span>
 				<?php endif; ?>
 			</div>
 
@@ -475,15 +482,24 @@ class SettingsPage {
 						<label for="bgcw-pro-license-key"><?php esc_html_e( 'License Key', 'beltoft-gift-cards-pro' ); ?></label>
 					</th>
 					<td>
+						<?php
+						// Only mask and lock the input when the license is actively valid.
+						$is_locked  = $key && 'valid' === $status;
+						$mask_value = '';
+						if ( $is_locked && strlen( $key ) >= 4 ) {
+							$mask_value = str_repeat( "\u{2022}", strlen( $key ) - 4 ) . substr( $key, -4 );
+						} elseif ( $is_locked ) {
+							$mask_value = str_repeat( "\u{2022}", strlen( $key ) );
+						}
+						?>
 						<input type="text"
 							   id="bgcw-pro-license-key"
 							   class="regular-text"
-							   value="<?php echo esc_attr( $key ? str_repeat( "\u{2022}", max( 0, strlen( $key ) - 4 ) ) . substr( $key, -4 ) : '' ); ?>"
-							   <?php echo $key ? 'readonly' : ''; ?>
-							   placeholder="<?php esc_attr_e( 'Enter your license key', 'beltoft-gift-cards-pro' ); ?>"
-							   class="bgcw-pro-license-input" />
+							   value="<?php echo esc_attr( $is_locked ? $mask_value : '' ); ?>"
+							   <?php echo $is_locked ? 'readonly' : ''; ?>
+							   placeholder="<?php esc_attr_e( 'Enter your license key', 'beltoft-gift-cards-pro' ); ?>" />
 
-						<?php if ( $key ) : ?>
+						<?php if ( $is_locked ) : ?>
 							<button type="button" id="bgcw-pro-deactivate-license" class="button">
 								<?php esc_html_e( 'Deactivate', 'beltoft-gift-cards-pro' ); ?>
 							</button>
@@ -497,6 +513,43 @@ class SettingsPage {
 					</td>
 				</tr>
 			</table>
+
+			<?php
+			// Activations info.
+			$max_activations = $opts['license_max_activations'] ?? '';
+			if ( 'valid' === $status && '' !== $max_activations ) :
+				?>
+				<p class="description">
+					<?php
+					if ( 0 === (int) $max_activations ) {
+						esc_html_e( 'Activations: Unlimited', 'beltoft-gift-cards-pro' );
+					} else {
+						printf(
+							/* translators: %d: maximum number of site activations */
+							esc_html__( 'Activations: Up to %d sites', 'beltoft-gift-cards-pro' ),
+							(int) $max_activations
+						);
+					}
+					?>
+				</p>
+			<?php endif; ?>
+
+			<?php
+			// Update available notice.
+			$remote_ver = $opts['license_remote_version'] ?? '';
+			if ( $remote_ver && version_compare( BGCW_PRO_VER, $remote_ver, '<' ) ) :
+				?>
+				<p class="description" style="color:#d63638;">
+					<?php
+					printf(
+						/* translators: 1: new version number, 2: current version number */
+						esc_html__( 'Update: Version %1$s available (you have %2$s)', 'beltoft-gift-cards-pro' ),
+						esc_html( $remote_ver ),
+						esc_html( BGCW_PRO_VER )
+					);
+					?>
+				</p>
+			<?php endif; ?>
 
 			<?php if ( $opts['license_last_checked'] ) : ?>
 				<p class="description">

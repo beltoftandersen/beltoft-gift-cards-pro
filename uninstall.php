@@ -15,9 +15,27 @@ if ( empty( $bgcw_pro_options['cleanup_on_uninstall'] ) || '1' !== $bgcw_pro_opt
 	return;
 }
 
+// Free activation slot on remote license server.
+$bgcw_pro_license_key = $bgcw_pro_options['license_key'] ?? '';
+if ( ! empty( $bgcw_pro_license_key ) ) {
+	wp_remote_post(
+		'https://beltoft.net/license/deactivate',
+		[
+			'body'    => wp_json_encode(
+				[
+					'license_key' => $bgcw_pro_license_key,
+					'domain'      => untrailingslashit( home_url() ),
+				]
+			),
+			'headers'  => [ 'Content-Type' => 'application/json' ],
+			'timeout'  => 5,
+			'blocking' => false,
+		]
+	);
+}
+
 // Delete options.
 delete_option( 'bgcw_pro_options' );
-delete_option( 'bgcw_pro_licenses' );
 delete_option( 'bgcw_pro_version' );
 delete_option( 'bgcw_pro_db_version' );
 
