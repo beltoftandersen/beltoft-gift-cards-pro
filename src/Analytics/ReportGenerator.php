@@ -82,14 +82,14 @@ class ReportGenerator {
 
 		$subject = sprintf(
 			/* translators: 1: site name, 2: date */
-			__( '[%1$s] Gift Card Report - %2$s', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			__( '[%1$s] Gift Card Report - %2$s', 'beltoft-gift-cards-pro' ),
 			$site_name,
 			$date
 		);
 
 		$body = sprintf(
 			/* translators: 1: site name, 2: date */
-			__( 'Please find attached the gift card report for %1$s generated on %2$s.', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			__( 'Please find attached the gift card report for %1$s generated on %2$s.', 'beltoft-gift-cards-pro' ),
 			$site_name,
 			$date
 		);
@@ -155,14 +155,14 @@ class ReportGenerator {
 
 		// CSV headers.
 		$headers = [
-			__( 'Code', 'beltoft-gift-cards-for-woocommerce-pro' ),
-			__( 'Initial Amount', 'beltoft-gift-cards-for-woocommerce-pro' ),
-			__( 'Balance', 'beltoft-gift-cards-for-woocommerce-pro' ),
-			__( 'Status', 'beltoft-gift-cards-for-woocommerce-pro' ),
-			__( 'Recipient', 'beltoft-gift-cards-for-woocommerce-pro' ),
-			__( 'Created', 'beltoft-gift-cards-for-woocommerce-pro' ),
-			__( 'Expires', 'beltoft-gift-cards-for-woocommerce-pro' ),
-			__( 'Transactions Count', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			__( 'Code', 'beltoft-gift-cards-pro' ),
+			__( 'Initial Amount', 'beltoft-gift-cards-pro' ),
+			__( 'Balance', 'beltoft-gift-cards-pro' ),
+			__( 'Status', 'beltoft-gift-cards-pro' ),
+			__( 'Recipient', 'beltoft-gift-cards-pro' ),
+			__( 'Created', 'beltoft-gift-cards-pro' ),
+			__( 'Expires', 'beltoft-gift-cards-pro' ),
+			__( 'Transactions Count', 'beltoft-gift-cards-pro' ),
 		];
 
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fwrite -- CSV writing via fputcsv.
@@ -213,8 +213,7 @@ class ReportGenerator {
 
 		foreach ( $files as $file ) {
 			if ( is_file( $file ) && filemtime( $file ) < $one_day_ago ) {
-				// phpcs:ignore WordPress.WP.AlternativeFunctions.unlink_unlink -- Deleting expired report files.
-				unlink( $file );
+				wp_delete_file( $file );
 			}
 		}
 	}

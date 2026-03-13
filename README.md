@@ -1,6 +1,6 @@
 # Beltoft Gift Cards for WooCommerce - Pro
 
-Premium add-on for [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards-for-woocommerce/). Scheduled delivery, email themes, store credit, bulk generation, BOGO promotions, and analytics.
+Premium add-on for [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards/). Scheduled delivery, email themes, store credit, bulk generation, BOGO promotions, and analytics.
 
 ## Features
 
@@ -18,12 +18,12 @@ Premium add-on for [Beltoft Gift Cards for WooCommerce](https://wordpress.org/pl
 - WordPress 5.8+
 - WooCommerce 6.0+
 - PHP 7.4+
-- [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards-for-woocommerce/) (free) 1.2.0+
+- [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards/) (free) 1.2.0+
 
 ## Installation
 
 1. Install and activate the free "Beltoft Gift Cards for WooCommerce" plugin.
-2. Upload the `beltoft-gift-cards-for-woocommerce-pro` folder to `/wp-content/plugins/`.
+2. Upload the `beltoft-gift-cards-pro` folder to `/wp-content/plugins/`.
 3. Activate the plugin through the Plugins menu.
 4. Go to **WooCommerce > Gift Cards > License** and enter your license key.
 5. Configure features under the **Pro Settings** tab.
@@ -45,6 +45,15 @@ wp bgcw-pro license:status
 ```
 
 ## Changelog
+
+### 1.1.0
+
+- Renamed plugin slug and folder to `beltoft-gift-cards-pro`.
+- Renamed text domain to `beltoft-gift-cards-pro`.
+- Replaced inline license tab script with `wp_add_inline_script()`.
+- Moved inline styles to external CSS.
+- Replaced `unlink()` with `wp_delete_file()` in report cleanup.
+- Updated author to beltoft.net.
 
 ### 1.0.0
 - Initial release.

@@ -23,7 +23,7 @@ class BogoManager {
 		check_ajax_referer( 'bgcw_pro_admin', 'nonce' );
 
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			wp_send_json_error( [ 'message' => __( 'Permission denied.', 'beltoft-gift-cards-for-woocommerce-pro' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Permission denied.', 'beltoft-gift-cards-pro' ) ] );
 		}
 
 		$data = [
@@ -43,7 +43,7 @@ class BogoManager {
 		if ( $result ) {
 			wp_send_json_success( [ 'id' => $result ] );
 		} else {
-			wp_send_json_error( [ 'message' => __( 'Failed to save rule.', 'beltoft-gift-cards-for-woocommerce-pro' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Failed to save rule.', 'beltoft-gift-cards-pro' ) ] );
 		}
 	}
 
@@ -54,12 +54,12 @@ class BogoManager {
 		check_ajax_referer( 'bgcw_pro_admin', 'nonce' );
 
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			wp_send_json_error( [ 'message' => __( 'Permission denied.', 'beltoft-gift-cards-for-woocommerce-pro' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Permission denied.', 'beltoft-gift-cards-pro' ) ] );
 		}
 
 		$id = isset( $_POST['id'] ) ? absint( $_POST['id'] ) : 0;
 		if ( ! $id ) {
-			wp_send_json_error( [ 'message' => __( 'Invalid rule ID.', 'beltoft-gift-cards-for-woocommerce-pro' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Invalid rule ID.', 'beltoft-gift-cards-pro' ) ] );
 		}
 
 		$result = self::delete_rule( $id );
@@ -67,7 +67,7 @@ class BogoManager {
 		if ( $result ) {
 			wp_send_json_success();
 		} else {
-			wp_send_json_error( [ 'message' => __( 'Failed to delete rule.', 'beltoft-gift-cards-for-woocommerce-pro' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Failed to delete rule.', 'beltoft-gift-cards-pro' ) ] );
 		}
 	}
 

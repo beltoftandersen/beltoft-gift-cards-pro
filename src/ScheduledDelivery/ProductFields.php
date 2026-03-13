@@ -34,7 +34,7 @@ class ProductFields {
 		<div class="bgcw-scheduled-delivery">
 			<p class="form-row form-row-wide">
 				<label for="bgcw_delivery_date">
-					<?php esc_html_e( 'Delivery Date & Time (optional)', 'beltoft-gift-cards-for-woocommerce-pro' ); ?>
+					<?php esc_html_e( 'Delivery Date & Time (optional)', 'beltoft-gift-cards-pro' ); ?>
 				</label>
 				<span class="bgcw-delivery-datetime-row">
 					<input
@@ -45,7 +45,7 @@ class ProductFields {
 						min="<?php echo esc_attr( $today ); ?>"
 					/>
 					<select name="bgcw_delivery_hour" id="bgcw_delivery_hour" class="input-text bgcw-delivery-hour" disabled>
-						<option value=""><?php esc_html_e( 'Hour', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></option>
+						<option value=""><?php esc_html_e( 'Hour', 'beltoft-gift-cards-pro' ); ?></option>
 						<?php for ( $h = 0; $h < 24; $h++ ) : ?>
 							<option value="<?php echo esc_attr( $h ); ?>"<?php selected( $h, 9 ); ?>>
 								<?php echo esc_html( sprintf( '%02d:00', $h ) ); ?>
@@ -54,7 +54,7 @@ class ProductFields {
 					</select>
 				</span>
 				<span class="bgcw-delivery-date-note">
-					<?php esc_html_e( 'Leave empty to send the gift card immediately.', 'beltoft-gift-cards-for-woocommerce-pro' ); ?>
+					<?php esc_html_e( 'Leave empty to send the gift card immediately.', 'beltoft-gift-cards-pro' ); ?>
 				</span>
 			</p>
 		</div>
@@ -109,20 +109,20 @@ class ProductFields {
 
 		// Validate date format (YYYY-MM-DD).
 		if ( ! preg_match( '/^(\d{4})-(\d{2})-(\d{2})$/', $date, $m ) ) {
-			wc_add_notice( __( 'Please enter a valid delivery date.', 'beltoft-gift-cards-for-woocommerce-pro' ), 'error' );
+			wc_add_notice( __( 'Please enter a valid delivery date.', 'beltoft-gift-cards-pro' ), 'error' );
 			return false;
 		}
 
 		// Reject impossible calendar dates like 2026-02-31.
 		if ( ! checkdate( (int) $m[2], (int) $m[3], (int) $m[1] ) ) {
-			wc_add_notice( __( 'Please enter a valid delivery date.', 'beltoft-gift-cards-for-woocommerce-pro' ), 'error' );
+			wc_add_notice( __( 'Please enter a valid delivery date.', 'beltoft-gift-cards-pro' ), 'error' );
 			return false;
 		}
 
 		$today = wp_date( 'Y-m-d' );
 
 		if ( $date < $today ) {
-			wc_add_notice( __( 'The delivery date cannot be in the past.', 'beltoft-gift-cards-for-woocommerce-pro' ), 'error' );
+			wc_add_notice( __( 'The delivery date cannot be in the past.', 'beltoft-gift-cards-pro' ), 'error' );
 			return false;
 		}
 
@@ -147,7 +147,7 @@ class ProductFields {
 		$formatted .= ' ' . sprintf( '%02d:00', $hour );
 
 		$item_data[] = [
-			'key'   => __( 'Delivery Date', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			'key'   => __( 'Delivery Date', 'beltoft-gift-cards-pro' ),
 			'value' => esc_html( $formatted ),
 		];
 

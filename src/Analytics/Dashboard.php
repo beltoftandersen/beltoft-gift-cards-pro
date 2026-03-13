@@ -35,24 +35,24 @@ class Dashboard {
 			: 0;
 
 		$cards = [
-			__( 'Revenue', 'beltoft-gift-cards-for-woocommerce-pro' )              => wp_strip_all_tags( wc_price( $total_initial ) ),
-			__( 'Redemption Rate', 'beltoft-gift-cards-for-woocommerce-pro' )      => $redemption_pct . '%',
-			__( 'Scheduled Pending', 'beltoft-gift-cards-for-woocommerce-pro' )    => number_format_i18n( (int) $stats['scheduled_pending'] ),
-			__( 'Store Credits Issued', 'beltoft-gift-cards-for-woocommerce-pro' ) => number_format_i18n( (int) $stats['store_credits_count'] ),
-			__( 'BOGO Bonuses', 'beltoft-gift-cards-for-woocommerce-pro' )         => number_format_i18n( (int) $stats['bogo_uses'] ),
+			__( 'Revenue', 'beltoft-gift-cards-pro' )              => wp_strip_all_tags( wc_price( $total_initial ) ),
+			__( 'Redemption Rate', 'beltoft-gift-cards-pro' )      => $redemption_pct . '%',
+			__( 'Scheduled Pending', 'beltoft-gift-cards-pro' )    => number_format_i18n( (int) $stats['scheduled_pending'] ),
+			__( 'Store Credits Issued', 'beltoft-gift-cards-pro' ) => number_format_i18n( (int) $stats['store_credits_count'] ),
+			__( 'BOGO Bonuses', 'beltoft-gift-cards-pro' )         => number_format_i18n( (int) $stats['bogo_uses'] ),
 		];
 
 		// Date range filter links.
 		$base_url = admin_url( 'admin.php?page=bgcw-gift-cards&tab=dashboard' );
 		$ranges   = [
-			7   => __( '7d', 'beltoft-gift-cards-for-woocommerce-pro' ),
-			30  => __( '30d', 'beltoft-gift-cards-for-woocommerce-pro' ),
-			90  => __( '90d', 'beltoft-gift-cards-for-woocommerce-pro' ),
-			0   => __( 'All Time', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			7   => __( '7d', 'beltoft-gift-cards-pro' ),
+			30  => __( '30d', 'beltoft-gift-cards-pro' ),
+			90  => __( '90d', 'beltoft-gift-cards-pro' ),
+			0   => __( 'All Time', 'beltoft-gift-cards-pro' ),
 		];
 		?>
 		<div class="bgcw-pro-analytics-header">
-			<h3><?php esc_html_e( 'Pro Analytics', 'beltoft-gift-cards-for-woocommerce-pro' ); ?></h3>
+			<h3><?php esc_html_e( 'Pro Analytics', 'beltoft-gift-cards-pro' ); ?></h3>
 			<div class="bgcw-pro-range-filter">
 				<?php foreach ( $ranges as $days => $label ) :
 					$url       = $days > 0 ? add_query_arg( 'bgcw_range', $days, $base_url ) : remove_query_arg( 'bgcw_range', $base_url );

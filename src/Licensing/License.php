@@ -72,25 +72,25 @@ class License {
 		$key = strtoupper( trim( $key ) );
 
 		if ( empty( $key ) ) {
-			return [ 'success' => false, 'message' => __( 'Please enter a license key.', 'beltoft-gift-cards-for-woocommerce-pro' ) ];
+			return [ 'success' => false, 'message' => __( 'Please enter a license key.', 'beltoft-gift-cards-pro' ) ];
 		}
 
 		$licenses = get_option( self::LICENSES_OPTION, [] );
 
 		if ( ! isset( $licenses[ $key ] ) ) {
-			return [ 'success' => false, 'message' => __( 'This license key is invalid.', 'beltoft-gift-cards-for-woocommerce-pro' ) ];
+			return [ 'success' => false, 'message' => __( 'This license key is invalid.', 'beltoft-gift-cards-pro' ) ];
 		}
 
 		$license = $licenses[ $key ];
 
 		if ( ( $license['status'] ?? '' ) === 'revoked' ) {
-			return [ 'success' => false, 'message' => __( 'This license key has been revoked.', 'beltoft-gift-cards-for-woocommerce-pro' ) ];
+			return [ 'success' => false, 'message' => __( 'This license key has been revoked.', 'beltoft-gift-cards-pro' ) ];
 		}
 
 		// Check expiry.
 		$expires = $license['expires'] ?? 'lifetime';
 		if ( 'lifetime' !== $expires && strtotime( $expires ) < time() ) {
-			return [ 'success' => false, 'message' => __( 'This license key has expired.', 'beltoft-gift-cards-for-woocommerce-pro' ) ];
+			return [ 'success' => false, 'message' => __( 'This license key has expired.', 'beltoft-gift-cards-pro' ) ];
 		}
 
 		// Mark as activated.
@@ -106,7 +106,7 @@ class License {
 			'license_grace_until'  => '',
 		] );
 
-		return [ 'success' => true, 'message' => __( 'License activated successfully.', 'beltoft-gift-cards-for-woocommerce-pro' ) ];
+		return [ 'success' => true, 'message' => __( 'License activated successfully.', 'beltoft-gift-cards-pro' ) ];
 	}
 
 	/**
@@ -117,7 +117,7 @@ class License {
 	public static function deactivate(): array {
 		$key = Options::get( 'license_key' );
 		if ( empty( $key ) ) {
-			return [ 'success' => false, 'message' => __( 'No license key to deactivate.', 'beltoft-gift-cards-for-woocommerce-pro' ) ];
+			return [ 'success' => false, 'message' => __( 'No license key to deactivate.', 'beltoft-gift-cards-pro' ) ];
 		}
 
 		Options::set( [
@@ -128,7 +128,7 @@ class License {
 			'license_grace_until'  => '',
 		] );
 
-		return [ 'success' => true, 'message' => __( 'License deactivated successfully.', 'beltoft-gift-cards-for-woocommerce-pro' ) ];
+		return [ 'success' => true, 'message' => __( 'License deactivated successfully.', 'beltoft-gift-cards-pro' ) ];
 	}
 
 	/**
@@ -197,7 +197,7 @@ class License {
 			printf(
 				wp_kses(
 					/* translators: %s: license settings page URL */
-					__( 'Beltoft Gift Cards Pro: Please <a href="%s">enter your license key</a> to enable Pro features.', 'beltoft-gift-cards-for-woocommerce-pro' ),
+					__( 'Beltoft Gift Cards Pro: Please <a href="%s">enter your license key</a> to enable Pro features.', 'beltoft-gift-cards-pro' ),
 					[ 'a' => [ 'href' => [] ] ]
 				),
 				esc_url( $url )
@@ -213,13 +213,13 @@ class License {
 				echo '<div class="notice notice-warning"><p>';
 				printf(
 					/* translators: %d: number of days remaining in grace period */
-					esc_html__( 'Beltoft Gift Cards Pro: Your license has expired. Pro features will be disabled in %d day(s).', 'beltoft-gift-cards-for-woocommerce-pro' ),
+					esc_html__( 'Beltoft Gift Cards Pro: Your license has expired. Pro features will be disabled in %d day(s).', 'beltoft-gift-cards-pro' ),
 					(int) $days_left
 				);
 				echo '</p></div>';
 			} else {
 				echo '<div class="notice notice-error"><p>';
-				esc_html_e( 'Beltoft Gift Cards Pro: Your license has expired. Pro features are disabled.', 'beltoft-gift-cards-for-woocommerce-pro' );
+				esc_html_e( 'Beltoft Gift Cards Pro: Your license has expired. Pro features are disabled.', 'beltoft-gift-cards-pro' );
 				echo '</p></div>';
 			}
 		}
@@ -232,12 +232,12 @@ class License {
 		check_ajax_referer( 'bgcw_pro_license', 'nonce' );
 
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			wp_send_json_error( [ 'message' => __( 'Permission denied.', 'beltoft-gift-cards-for-woocommerce-pro' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Permission denied.', 'beltoft-gift-cards-pro' ) ] );
 		}
 
 		$key = isset( $_POST['license_key'] ) ? sanitize_text_field( wp_unslash( $_POST['license_key'] ) ) : '';
 		if ( empty( $key ) ) {
-			wp_send_json_error( [ 'message' => __( 'Please enter a license key.', 'beltoft-gift-cards-for-woocommerce-pro' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Please enter a license key.', 'beltoft-gift-cards-pro' ) ] );
 		}
 
 		$result = self::activate( $key );
@@ -255,7 +255,7 @@ class License {
 		check_ajax_referer( 'bgcw_pro_license', 'nonce' );
 
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			wp_send_json_error( [ 'message' => __( 'Permission denied.', 'beltoft-gift-cards-for-woocommerce-pro' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Permission denied.', 'beltoft-gift-cards-pro' ) ] );
 		}
 
 		$result = self::deactivate();

@@ -1,12 +1,12 @@
 === Beltoft Gift Cards for WooCommerce - Pro ===
-Contributors: chimkinsit
+Contributors: christian198521
 Tags: woocommerce, gift cards, gift certificate, store credit, voucher
 Requires at least: 5.8
 Tested up to: 6.9
 Requires PHP: 7.4
 WC requires at least: 6.0
 WC tested up to: 9.6
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +14,7 @@ Premium add-on for Beltoft Gift Cards for WooCommerce. Adds scheduled delivery, 
 
 == Description ==
 
-**Beltoft Gift Cards for WooCommerce - Pro** is a premium add-on that extends the free [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards-for-woocommerce/) plugin with advanced features for gift card management.
+**Beltoft Gift Cards for WooCommerce - Pro** is a premium add-on that extends the free [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards/) plugin with advanced features for gift card management.
 
 = Features =
 
@@ -32,12 +32,12 @@ Premium add-on for Beltoft Gift Cards for WooCommerce. Adds scheduled delivery, 
 * WordPress 5.8+
 * WooCommerce 6.0+
 * PHP 7.4+
-* [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards-for-woocommerce/) (free) 1.2.0+
+* [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards/) (free) 1.2.0+
 
 == Installation ==
 
 1. Install and activate the free "Beltoft Gift Cards for WooCommerce" plugin.
-2. Upload the `beltoft-gift-cards-for-woocommerce-pro` folder to `/wp-content/plugins/`.
+2. Upload the `beltoft-gift-cards-pro` folder to `/wp-content/plugins/`.
 3. Activate the plugin through the Plugins menu.
 4. Go to WooCommerce > Gift Cards > License and enter your license key.
 5. Configure features under the "Pro Settings" tab.
@@ -65,6 +65,14 @@ When Email Themes is enabled, a visual theme picker appears on the product page.
 When Store Credit is enabled and an order paid with a gift card is refunded, the refund amount is issued as a new store credit gift card assigned to the customer, instead of restoring the original card balance.
 
 == Changelog ==
+
+= 1.1.0 =
+* Renamed plugin slug and folder to `beltoft-gift-cards-pro`.
+* Renamed text domain to `beltoft-gift-cards-pro`.
+* Replaced inline license tab script with `wp_add_inline_script()`.
+* Moved inline styles to external CSS.
+* Replaced `unlink()` with `wp_delete_file()` in report cleanup.
+* Updated author to beltoft.net.
 
 = 1.0.0 =
 * Initial release.

@@ -109,7 +109,7 @@ class CartHandler {
 				'recipient_email' => $buyer_email,
 				'message'         => sprintf(
 					/* translators: %s: BOGO rule name */
-					__( 'Bonus gift card from promotion: %s', 'beltoft-gift-cards-for-woocommerce-pro' ),
+					__( 'Bonus gift card from promotion: %s', 'beltoft-gift-cards-pro' ),
 					$rule->name
 				),
 				'order_id'        => $order_id,
@@ -131,7 +131,7 @@ class CartHandler {
 				'balance_after' => $get_amount,
 				'note'          => sprintf(
 					/* translators: %s: BOGO rule name */
-					__( 'BOGO bonus from rule: %s', 'beltoft-gift-cards-for-woocommerce-pro' ),
+					__( 'BOGO bonus from rule: %s', 'beltoft-gift-cards-pro' ),
 					$rule->name
 				),
 			] );

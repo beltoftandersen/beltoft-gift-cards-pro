@@ -1,16 +1,16 @@
 <?php
 /**
  * Plugin Name:       Beltoft Gift Cards for WooCommerce - Pro
- * Plugin URI:        https://chimkins.com/beltoft-gift-cards-pro
+ * Plugin URI:        https://beltoft.net/beltoft-gift-cards-pro
  * Description:       Premium add-on for Beltoft Gift Cards for WooCommerce — scheduled delivery, email themes, store credit, bulk generation, BOGO promotions, and analytics. Requires the free core plugin.
- * Version:           1.0.0
+ * Version:           1.1.0
  * Requires at least: 5.8
  * Requires PHP:      7.4
- * Author:            Chimkins IT
- * Author URI:        https://chimkins.com
+ * Author:            beltoft.net
+ * Author URI:        https://beltoft.net
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       beltoft-gift-cards-for-woocommerce-pro
+ * Text Domain:       beltoft-gift-cards-pro
  * Domain Path:       /languages
  * WC requires at least: 6.0
  * WC tested up to:   9.6
@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) || exit;
 
 define( 'BGCW_PRO_PATH', plugin_dir_path( __FILE__ ) );
 define( 'BGCW_PRO_URL', plugin_dir_url( __FILE__ ) );
-define( 'BGCW_PRO_VER', '1.0.0' );
+define( 'BGCW_PRO_VER', '1.1.0' );
 define( 'BGCW_PRO_FILE', __FILE__ );
 
 /**
@@ -45,7 +45,7 @@ register_activation_hook( __FILE__, function () {
 	if ( ! defined( 'BGCW_VERSION' ) ) {
 		deactivate_plugins( plugin_basename( __FILE__ ) );
 		wp_die(
-			esc_html__( 'Beltoft Gift Cards for WooCommerce - Pro requires the free "Beltoft Gift Cards for WooCommerce" plugin to be installed and activated.', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			esc_html__( 'Beltoft Gift Cards for WooCommerce - Pro requires the free "Beltoft Gift Cards for WooCommerce" plugin to be installed and activated.', 'beltoft-gift-cards-pro' ),
 			'Plugin dependency check',
 			[ 'back_link' => true ]
 		);
@@ -75,7 +75,7 @@ add_action( 'plugins_loaded', function () {
 	if ( ! class_exists( 'WooCommerce' ) ) {
 		add_action( 'admin_notices', function () {
 			echo '<div class="notice notice-error"><p>';
-			esc_html_e( 'Beltoft Gift Cards for WooCommerce - Pro requires WooCommerce to be installed and activated.', 'beltoft-gift-cards-for-woocommerce-pro' );
+			esc_html_e( 'Beltoft Gift Cards for WooCommerce - Pro requires WooCommerce to be installed and activated.', 'beltoft-gift-cards-pro' );
 			echo '</p></div>';
 		} );
 		return;
@@ -85,7 +85,7 @@ add_action( 'plugins_loaded', function () {
 	if ( ! defined( 'BGCW_VERSION' ) ) {
 		add_action( 'admin_notices', function () {
 			echo '<div class="notice notice-error"><p>';
-			esc_html_e( 'Beltoft Gift Cards for WooCommerce - Pro requires the free "Beltoft Gift Cards for WooCommerce" plugin to be installed and activated.', 'beltoft-gift-cards-for-woocommerce-pro' );
+			esc_html_e( 'Beltoft Gift Cards for WooCommerce - Pro requires the free "Beltoft Gift Cards for WooCommerce" plugin to be installed and activated.', 'beltoft-gift-cards-pro' );
 			echo '</p></div>';
 		} );
 		return;
@@ -95,7 +95,7 @@ add_action( 'plugins_loaded', function () {
 	if ( version_compare( BGCW_VERSION, '1.2.0', '<' ) ) {
 		add_action( 'admin_notices', function () {
 			echo '<div class="notice notice-warning"><p>';
-			esc_html_e( 'Beltoft Gift Cards for WooCommerce - Pro requires version 1.2.0 or higher of the free plugin. Please update.', 'beltoft-gift-cards-for-woocommerce-pro' );
+			esc_html_e( 'Beltoft Gift Cards for WooCommerce - Pro requires version 1.2.0 or higher of the free plugin. Please update.', 'beltoft-gift-cards-pro' );
 			echo '</p></div>';
 		} );
 		return;
@@ -110,6 +110,6 @@ add_action( 'plugins_loaded', function () {
  */
 add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), function ( $links ) {
 	$url = admin_url( 'admin.php?page=bgcw-gift-cards&tab=license' );
-	array_unshift( $links, '<a href="' . esc_url( $url ) . '">' . esc_html__( 'Settings', 'beltoft-gift-cards-for-woocommerce-pro' ) . '</a>' );
+	array_unshift( $links, '<a href="' . esc_url( $url ) . '">' . esc_html__( 'Settings', 'beltoft-gift-cards-pro' ) . '</a>' );
 	return $links;
 } );

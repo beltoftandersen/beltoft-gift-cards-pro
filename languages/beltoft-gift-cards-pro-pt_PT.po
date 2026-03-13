@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Smart Gift Cards for WooCommerce - Pro 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/beltoft-gift-cards-for-woocommerce-pro\n"
-"Last-Translator: Chimkins IT <support@chimkins.com>\n"
+"Last-Translator: beltoft.net <support@beltoft.net>\n"
 "Language-Team: Portuguese (Portugal)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Language: pt_PT\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Domain: beltoft-gift-cards-for-woocommerce-pro\n"
+"X-Domain: beltoft-gift-cards-pro\n"
 
 #. Plugin Name of the plugin
 #: beltoft-gift-cards-for-woocommerce-pro.php
@@ -21,8 +21,8 @@ msgstr "Smart Gift Cards for WooCommerce - Pro"
 
 #. Plugin URI of the plugin
 #: beltoft-gift-cards-for-woocommerce-pro.php
-msgid "https://chimkins.com/beltoft-gift-cards-pro"
-msgstr "https://chimkins.com/beltoft-gift-cards-pro"
+msgid "https://beltoft.net/beltoft-gift-cards-pro"
+msgstr "https://beltoft.net/beltoft-gift-cards-pro"
 
 #. Description of the plugin
 #: beltoft-gift-cards-for-woocommerce-pro.php
@@ -31,13 +31,13 @@ msgstr "Extensão premium para o Smart Gift Cards for WooCommerce — entrega ag
 
 #. Author of the plugin
 #: beltoft-gift-cards-for-woocommerce-pro.php
-msgid "Chimkins IT"
-msgstr "Chimkins IT"
+msgid "beltoft.net"
+msgstr "beltoft.net"
 
 #. Author URI of the plugin
 #: beltoft-gift-cards-for-woocommerce-pro.php
-msgid "https://chimkins.com"
-msgstr "https://chimkins.com"
+msgid "https://beltoft.net"
+msgstr "https://beltoft.net"
 
 #: beltoft-gift-cards-for-woocommerce-pro.php:48
 #: beltoft-gift-cards-for-woocommerce-pro.php:88

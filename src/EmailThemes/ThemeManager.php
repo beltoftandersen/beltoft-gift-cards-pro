@@ -23,39 +23,39 @@ class ThemeManager {
 	public static function get_available_themes() {
 		$themes = [
 			'classic'     => [
-				'name'        => __( 'Classic', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				'name'        => __( 'Classic', 'beltoft-gift-cards-pro' ),
 				'color'       => '#6B4C9A',
 				'color_light' => '#8B6CB3',
 				'bg'          => '#F3EEFC',
-				'heading'     => __( "You've received a gift card!", 'beltoft-gift-cards-for-woocommerce-pro' ),
+				'heading'     => __( "You've received a gift card!", 'beltoft-gift-cards-pro' ),
 			],
 			'birthday'    => [
-				'name'        => __( 'Birthday', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				'name'        => __( 'Birthday', 'beltoft-gift-cards-pro' ),
 				'color'       => '#E91E8C',
 				'color_light' => '#F06AB5',
 				'bg'          => '#FDE7F3',
-				'heading'     => __( 'Happy Birthday!', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				'heading'     => __( 'Happy Birthday!', 'beltoft-gift-cards-pro' ),
 			],
 			'celebration' => [
-				'name'        => __( 'Celebration', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				'name'        => __( 'Celebration', 'beltoft-gift-cards-pro' ),
 				'color'       => '#E88700',
 				'color_light' => '#F5A623',
 				'bg'          => '#FFF3E0',
-				'heading'     => __( 'Congratulations!', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				'heading'     => __( 'Congratulations!', 'beltoft-gift-cards-pro' ),
 			],
 			'thank-you'   => [
-				'name'        => __( 'Thank You', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				'name'        => __( 'Thank You', 'beltoft-gift-cards-pro' ),
 				'color'       => '#1A9E8F',
 				'color_light' => '#3BBFB0',
 				'bg'          => '#E6F7F5',
-				'heading'     => __( 'Thank You!', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				'heading'     => __( 'Thank You!', 'beltoft-gift-cards-pro' ),
 			],
 			'holiday'     => [
-				'name'        => __( 'Holiday', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				'name'        => __( 'Holiday', 'beltoft-gift-cards-pro' ),
 				'color'       => '#B22222',
 				'color_light' => '#D94444',
 				'bg'          => '#FDEAEA',
-				'heading'     => __( 'Happy Holidays!', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				'heading'     => __( 'Happy Holidays!', 'beltoft-gift-cards-pro' ),
 			],
 		];
 

@@ -38,6 +38,19 @@
 	font-size: 13px;
 }
 
+.bgcw-pro-license-section {
+	margin-top: 16px;
+	max-width: 700px;
+}
+
+.bgcw-pro-license-status {
+	margin-bottom: 16px;
+}
+
+.bgcw-pro-license-input {
+	margin-bottom: 8px;
+}
+
 /* ── Pro Settings Tab ───────────────────────── */
 .bgcw-pro-settings-wrap {
 	margin-top: 16px;

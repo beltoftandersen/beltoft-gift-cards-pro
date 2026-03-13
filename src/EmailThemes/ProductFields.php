@@ -40,7 +40,7 @@ class ProductFields {
 		?>
 		<div class="bgcw-theme-picker">
 			<h4>
-				<?php esc_html_e( 'Choose a Design', 'beltoft-gift-cards-for-woocommerce-pro' ); ?>
+				<?php esc_html_e( 'Choose a Design', 'beltoft-gift-cards-pro' ); ?>
 			</h4>
 			<div class="bgcw-theme-options">
 				<?php foreach ( $themes as $slug => $theme ) : ?>
@@ -110,7 +110,7 @@ class ProductFields {
 		}
 
 		$item_data[] = [
-			'key'   => __( 'Design', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			'key'   => __( 'Design', 'beltoft-gift-cards-pro' ),
 			'value' => esc_html( $themes[ $slug ]['name'] ),
 		];
 

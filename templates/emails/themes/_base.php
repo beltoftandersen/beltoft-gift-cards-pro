@@ -27,7 +27,7 @@ do_action( 'woocommerce_email_header', $email_heading, $email );
 	<?php
 	printf(
 		/* translators: %s: sender name */
-		esc_html__( 'From: %s', 'beltoft-gift-cards-for-woocommerce-pro' ),
+		esc_html__( 'From: %s', 'beltoft-gift-cards-pro' ),
 		'<strong>' . esc_html( $gift_card->sender_name ) . '</strong>'
 	);
 	?>
@@ -77,7 +77,7 @@ do_action( 'woocommerce_email_header', $email_heading, $email );
 								<td align="center">
 									<a href="<?php echo esc_url( add_query_arg( 'bgcw_apply', rawurlencode( $gift_card->code ), wc_get_page_permalink( 'shop' ) ) ); ?>"
 									   style="display: inline-block; background: <?php echo esc_attr( $bgcw_theme_color ); ?>; color: #ffffff; padding: 12px 32px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 15px;">
-										<?php esc_html_e( 'Shop Now', 'beltoft-gift-cards-for-woocommerce-pro' ); ?>
+										<?php esc_html_e( 'Shop Now', 'beltoft-gift-cards-pro' ); ?>
 									</a>
 								</td>
 							</tr>
@@ -88,7 +88,7 @@ do_action( 'woocommerce_email_header', $email_heading, $email );
 								<?php
 								printf(
 									/* translators: %s: expiry date */
-									esc_html__( 'Expires: %s', 'beltoft-gift-cards-for-woocommerce-pro' ),
+									esc_html__( 'Expires: %s', 'beltoft-gift-cards-pro' ),
 									esc_html( date_i18n( get_option( 'date_format' ), strtotime( $gift_card->expires_at ) ) )
 								);
 								?>
@@ -102,7 +102,7 @@ do_action( 'woocommerce_email_header', $email_heading, $email );
 </table>
 
 <p style="font-size: 12px; color: #999; text-align: center; margin: 16px 0 0;">
-	<?php esc_html_e( 'Click "Shop Now" to apply your gift card automatically, or enter the code at checkout in the coupon/gift card field.', 'beltoft-gift-cards-for-woocommerce-pro' ); ?>
+	<?php esc_html_e( 'Click "Shop Now" to apply your gift card automatically, or enter the code at checkout in the coupon/gift card field.', 'beltoft-gift-cards-pro' ); ?>
 </p>
 
 <?php

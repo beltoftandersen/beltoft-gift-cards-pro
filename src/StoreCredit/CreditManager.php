@@ -36,11 +36,11 @@ class CreditManager {
 			'initial_amount'  => $amount,
 			'balance'         => $amount,
 			'currency'        => get_woocommerce_currency(),
-			'sender_name'     => __( 'Store Credit', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			'sender_name'     => __( 'Store Credit', 'beltoft-gift-cards-pro' ),
 			'sender_email'    => get_option( 'admin_email' ),
 			'recipient_name'  => $user->display_name,
 			'recipient_email' => $user->user_email,
-			'message'         => __( 'Store credit from refund', 'beltoft-gift-cards-for-woocommerce-pro' ),
+			'message'         => __( 'Store credit from refund', 'beltoft-gift-cards-pro' ),
 			'order_id'        => $order_id,
 			'customer_id'     => $customer_id,
 			'status'          => 'active',
@@ -60,7 +60,7 @@ class CreditManager {
 			'balance_after' => $amount,
 			'note'          => sprintf(
 				/* translators: %d: order ID */
-				__( 'Store credit issued from refund on order #%d', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				__( 'Store credit issued from refund on order #%d', 'beltoft-gift-cards-pro' ),
 				$order_id
 			),
 		] );

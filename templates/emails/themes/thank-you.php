@@ -12,6 +12,6 @@ $bgcw_theme_color_light = '#3BBFB0';
 $bgcw_theme_bg          = '#E6F7F5';
 // translators: Thank you greeting shown in email header.
 $bgcw_theme_heading = BgcwPro\Support\Options::get( 'theme_heading_thank-you' )
-	?: __( 'Thank You!', 'beltoft-gift-cards-for-woocommerce-pro' );
+	?: __( 'Thank You!', 'beltoft-gift-cards-pro' );
 
 require __DIR__ . '/_base.php';

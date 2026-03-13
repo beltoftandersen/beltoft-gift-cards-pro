@@ -94,13 +94,13 @@ class Plugin {
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'nonce'    => wp_create_nonce( 'bgcw_pro_admin' ),
 			'i18n'     => [
-				'generation_failed'  => __( 'Generation failed.', 'beltoft-gift-cards-for-woocommerce-pro' ),
-				'request_failed'     => __( 'Request failed.', 'beltoft-gift-cards-for-woocommerce-pro' ),
-				'select_csv'         => __( 'Please select a CSV file.', 'beltoft-gift-cards-for-woocommerce-pro' ),
-				'importing'          => __( 'Importing...', 'beltoft-gift-cards-for-woocommerce-pro' ),
-				'import_failed'      => __( 'Import failed.', 'beltoft-gift-cards-for-woocommerce-pro' ),
-				'save_failed'        => __( 'Save failed.', 'beltoft-gift-cards-for-woocommerce-pro' ),
-				'confirm_delete_rule' => __( 'Delete this rule?', 'beltoft-gift-cards-for-woocommerce-pro' ),
+				'generation_failed'  => __( 'Generation failed.', 'beltoft-gift-cards-pro' ),
+				'request_failed'     => __( 'Request failed.', 'beltoft-gift-cards-pro' ),
+				'select_csv'         => __( 'Please select a CSV file.', 'beltoft-gift-cards-pro' ),
+				'importing'          => __( 'Importing...', 'beltoft-gift-cards-pro' ),
+				'import_failed'      => __( 'Import failed.', 'beltoft-gift-cards-pro' ),
+				'save_failed'        => __( 'Save failed.', 'beltoft-gift-cards-pro' ),
+				'confirm_delete_rule' => __( 'Delete this rule?', 'beltoft-gift-cards-pro' ),
 			],
 		] );
 	}
