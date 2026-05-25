@@ -2,11 +2,11 @@
 Contributors: christian198521
 Tags: woocommerce, gift cards, gift certificate, store credit, voucher
 Requires at least: 5.8
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
 WC requires at least: 6.0
 WC tested up to: 9.6
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,9 @@ When Email Themes is enabled, a visual theme picker appears on the product page.
 When Store Credit is enabled and an order paid with a gift card is refunded, the refund amount is issued as a new store credit gift card assigned to the customer, instead of restoring the original card balance.
 
 == Changelog ==
+
+= 1.2.1 =
+- Tested with WordPress 7.0.
 
 = 1.2.0 =
 * Replaced local license validation with remote license server (beltoft.net).

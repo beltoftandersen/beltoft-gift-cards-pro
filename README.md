@@ -2,8 +2,8 @@
 
 Premium add-on for [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards/) — scheduled delivery, email themes, store credit, bulk generation, BOGO promotions, and analytics.
 
-- Stable version: 1.2.0
-- Requires: WordPress 5.8+, PHP 7.4+, WooCommerce 6.0+
+- Stable version: 1.2.1
+- Requires: WordPress 5.8+, PHP 7.4+, WooCommerce 6.0+ (tested up to WordPress 7.0)
 - Requires: Beltoft Gift Cards for WooCommerce (free) 1.2.0+
 - Author: beltoft.net
 - License: GPLv2 or later
@@ -41,6 +41,10 @@ A valid license key is required to activate Pro features.
 5. Configure features under the **Pro Settings** tab.
 
 ## Changelog
+
+### 1.2.1
+
+- Tested with WordPress 7.0.
 
 ### 1.2.0
 
