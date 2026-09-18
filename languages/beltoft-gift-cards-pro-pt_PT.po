@@ -929,3 +929,15 @@ msgstr "Obrigado!"
 #: templates/emails/themes/holiday.php:15
 msgid "Happy Holidays!"
 msgstr "Boas Festas!"
+
+#: src/Admin/SettingsPage.php
+msgid "Source"
+msgstr "Origem"
+
+#: src/Admin/SettingsPage.php
+msgid "Paid offline counts as a paid card at redemption; promotion and compensation count as free."
+msgstr "Pago fora da loja conta como cartão pago na utilização; promoção e compensação contam como grátis."
+
+#: beltoft-gift-cards-pro.php
+msgid "Beltoft Gift Cards for WooCommerce - Pro requires version 1.5.0 or higher of the free plugin. Please update."
+msgstr "Beltoft Gift Cards for WooCommerce - Pro requer a versão 1.5.0 ou superior do plugin gratuito. Por favor atualize."

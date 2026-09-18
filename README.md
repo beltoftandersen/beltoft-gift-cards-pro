@@ -2,9 +2,9 @@
 
 Premium add-on for [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards/) — scheduled delivery, email themes, store credit, bulk generation, BOGO promotions, and analytics.
 
-- Stable version: 1.2.1
-- Requires: WordPress 5.8+, PHP 7.4+, WooCommerce 6.0+ (tested up to WordPress 7.0)
-- Requires: Beltoft Gift Cards for WooCommerce (free) 1.2.0+
+- Stable version: 1.3.0
+- Requires: WordPress 5.8+, PHP 7.4+, WooCommerce 6.0+ (tested up to WordPress 7.1)
+- Requires: Beltoft Gift Cards for WooCommerce (free) 1.5.0+
 - Author: beltoft.net
 - License: GPLv2 or later
 
@@ -41,6 +41,13 @@ A valid license key is required to activate Pro features.
 5. Configure features under the **Pro Settings** tab.
 
 ## Changelog
+
+### 1.3.0
+
+- Requires the free plugin 1.5.0 or newer.
+- Added: Every Pro-created gift card now records its source. Store credit from refunds is `paid_offline` (paid), BOGO bonus cards are `promotion` (free).
+- Added: Source dropdown on Bulk Generate (Paid offline / Promotion / Compensation) and an optional `source` column on CSV import; CSV export includes the source.
+- Changed: On upgrade, existing store-credit cards are reclassified as `paid_offline`. Existing BOGO bonus cards were classified as `order` by the free plugin's backfill; correct them via the free plugin's REST API (`PATCH /wc-bgcw/v1/gift-cards/{id}` with `source=promotion`) if needed.
 
 ### 1.2.1
 

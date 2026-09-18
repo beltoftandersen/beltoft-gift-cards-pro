@@ -81,6 +81,7 @@ class CsvHandler {
 			'Currency',
 			'Created',
 			'Expires',
+			'Source',
 		] );
 
 		foreach ( $cards as $card ) {
@@ -94,6 +95,7 @@ class CsvHandler {
 				CsvUtil::escape_cell( $card->currency ),
 				CsvUtil::escape_cell( $card->created_at ),
 				CsvUtil::escape_cell( $card->expires_at ?? '' ),
+				CsvUtil::escape_cell( $card->source ?? '' ),
 			] );
 		}
 
@@ -248,6 +250,12 @@ class CsvHandler {
 				}
 			}
 
+			// Optional "source" column; unknown or missing values default to promotion (free).
+			$source = sanitize_key( self::get_col_value( $row, $col_map['source'] ) );
+			if ( ! in_array( $source, \Bgcw\GiftCard\Source::manual_sources(), true ) ) {
+				$source = \Bgcw\GiftCard\Source::PROMOTION;
+			}
+
 			$code = CodeGenerator::generate();
 
 			$gc_id = Repository::insert( [
@@ -263,6 +271,7 @@ class CsvHandler {
 				'order_id'        => null,
 				'customer_id'     => null,
 				'status'          => 'active',
+				'source'          => $source,
 				'expires_at'      => $expires_at,
 			] );
 
@@ -329,6 +338,7 @@ class CsvHandler {
 			'message'         => false,
 			'expiry_days'     => false,
 			'expires_at'      => false,
+			'source'          => false,
 		];
 
 		foreach ( $headers as $index => $header ) {
@@ -368,6 +378,10 @@ class CsvHandler {
 				case 'expires_at':
 				case 'expires at':
 					$map['expires_at'] = $index;
+					break;
+
+				case 'source':
+					$map['source'] = $index;
 					break;
 			}
 		}

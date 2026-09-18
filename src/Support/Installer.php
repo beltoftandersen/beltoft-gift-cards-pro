@@ -46,6 +46,24 @@ class Installer {
 	}
 
 	/**
+	 * 1.3.0: the free plugin's 1.5.0 backfill labels every card with an order ID as
+	 * "order" (paid). Store credits issued from refunds carry the refunded order's ID,
+	 * so they were mislabelled; they replace money already received and are paid_offline.
+	 * The free plugin's version gate guarantees the source column exists before this runs.
+	 */
+	private static function reclassify_store_credit_source() {
+		global $wpdb;
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- One-off migration across two custom tables.
+		$wpdb->query(
+			"UPDATE {$wpdb->prefix}bgcw_gift_cards gc
+			 INNER JOIN {$wpdb->prefix}bgcw_store_credits sc ON sc.gift_card_id = gc.id
+			 SET gc.source = 'paid_offline'
+			 WHERE gc.source <> 'paid_offline'"
+		);
+	}
+
+	/**
 	 * Check and run migrations if needed.
 	 */
 	public static function maybe_upgrade() {
@@ -54,6 +72,11 @@ class Installer {
 			self::create_tables();
 			self::schedule_crons();
 			self::create_files();
+
+			if ( version_compare( $installed, '1.3.0', '<' ) ) {
+				self::reclassify_store_credit_source();
+			}
+
 			update_option( 'bgcw_pro_version', BGCW_PRO_VER );
 		}
 	}

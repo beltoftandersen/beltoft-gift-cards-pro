@@ -592,6 +592,17 @@ class SettingsPage {
 						<td><input type="number" id="bgcw-pro-bulk-amount" min="0.01" step="0.01" class="small-text" /></td>
 					</tr>
 					<tr>
+						<th><label for="bgcw-pro-bulk-source"><?php esc_html_e( 'Source', 'beltoft-gift-cards-pro' ); ?></label></th>
+						<td>
+							<select id="bgcw-pro-bulk-source">
+								<?php foreach ( \Bgcw\GiftCard\Source::manual_sources() as $bgcw_pro_source ) : ?>
+									<option value="<?php echo esc_attr( $bgcw_pro_source ); ?>" <?php selected( $bgcw_pro_source, \Bgcw\GiftCard\Source::PROMOTION ); ?>><?php echo esc_html( \Bgcw\GiftCard\Source::label( $bgcw_pro_source ) ); ?></option>
+								<?php endforeach; ?>
+							</select>
+							<p class="description"><?php esc_html_e( 'Paid offline counts as a paid card at redemption; promotion and compensation count as free.', 'beltoft-gift-cards-pro' ); ?></p>
+						</td>
+					</tr>
+					<tr>
 						<th><label for="bgcw-pro-bulk-prefix"><?php esc_html_e( 'Code Prefix (optional)', 'beltoft-gift-cards-pro' ); ?></label></th>
 						<td><input type="text" id="bgcw-pro-bulk-prefix" class="regular-text" /></td>
 					</tr>

@@ -26,6 +26,7 @@
 			amount: $('#bgcw-pro-bulk-amount').val(),
 			prefix: $('#bgcw-pro-bulk-prefix').val(),
 			expiry_days: $('#bgcw-pro-bulk-expiry').val(),
+			source: $('#bgcw-pro-bulk-source').val(),
 			recipient_email: $('#bgcw-pro-bulk-email').val(),
 			recipient_name: $('#bgcw-pro-bulk-name').val()
 		}, function (response) {

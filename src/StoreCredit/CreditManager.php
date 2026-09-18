@@ -44,6 +44,8 @@ class CreditManager {
 			'order_id'        => $order_id,
 			'customer_id'     => $customer_id,
 			'status'          => 'active',
+			// Store credit replaces money already received: a paid liability, not a discount.
+			'source'          => \Bgcw\GiftCard\Source::PAID_OFFLINE,
 			'expires_at'      => null,
 		] );
 

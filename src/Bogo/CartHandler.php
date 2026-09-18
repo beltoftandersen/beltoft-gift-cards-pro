@@ -115,6 +115,7 @@ class CartHandler {
 				'order_id'        => $order_id,
 				'customer_id'     => $order->get_customer_id(),
 				'status'          => 'active',
+				'source'          => \Bgcw\GiftCard\Source::PROMOTION,
 				'expires_at'      => null,
 			] );
 

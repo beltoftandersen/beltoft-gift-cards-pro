@@ -37,6 +37,10 @@ class Generator {
 		$expiry_days     = isset( $_POST['expiry_days'] ) ? absint( $_POST['expiry_days'] ) : 0;
 		$recipient_email = isset( $_POST['recipient_email'] ) ? sanitize_email( wp_unslash( $_POST['recipient_email'] ) ) : '';
 		$recipient_name  = isset( $_POST['recipient_name'] ) ? sanitize_text_field( wp_unslash( $_POST['recipient_name'] ) ) : '';
+		$source          = isset( $_POST['source'] ) ? sanitize_key( wp_unslash( $_POST['source'] ) ) : '';
+		if ( ! in_array( $source, \Bgcw\GiftCard\Source::manual_sources(), true ) ) {
+			$source = \Bgcw\GiftCard\Source::PROMOTION;
+		}
 
 		// Validate quantity: 1-500.
 		if ( $quantity < 1 || $quantity > 500 ) {
@@ -90,6 +94,7 @@ class Generator {
 				'order_id'        => null,
 				'customer_id'     => null,
 				'status'          => 'active',
+				'source'          => $source,
 				'expires_at'      => $expires_at,
 			] );
 
