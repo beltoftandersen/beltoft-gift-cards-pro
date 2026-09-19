@@ -7,8 +7,11 @@ use BgcwPro\Licensing\Updater;
 use BgcwPro\Admin\SettingsPage;
 use BgcwPro\ScheduledDelivery\Scheduler;
 use BgcwPro\ScheduledDelivery\ProductFields as ScheduledProductFields;
-use BgcwPro\EmailThemes\ThemeManager;
-use BgcwPro\EmailThemes\ProductFields as ThemeProductFields;
+use BgcwPro\Pdf\CardRenderer;
+use BgcwPro\Pdf\PdfGenerator;
+use BgcwPro\Pdf\EmailAttachment;
+use BgcwPro\Pdf\Download;
+use BgcwPro\Pdf\ProductPreview;
 use BgcwPro\StoreCredit\OrderHandler;
 use BgcwPro\BulkGeneration\Generator;
 use BgcwPro\BulkGeneration\CsvHandler;
@@ -44,9 +47,11 @@ class Plugin {
 		Scheduler::init();
 		ScheduledProductFields::init();
 
-		// Email themes.
-		ThemeManager::init();
-		ThemeProductFields::init();
+		// PDF gift cards.
+		PdfGenerator::init();
+		EmailAttachment::init();
+		Download::init();
+		ProductPreview::init();
 
 		// Store credit on refund.
 		OrderHandler::init();
@@ -108,7 +113,7 @@ class Plugin {
 	}
 
 	/**
-	 * Frontend assets for Pro features (date picker, theme picker).
+	 * Frontend assets for Pro features (date picker, live card preview).
 	 */
 	public static function enqueue_frontend_assets() {
 		if ( ! is_product() ) {
@@ -135,6 +140,11 @@ class Plugin {
 			self::asset_version( 'assets/js/frontend.js' ),
 			true
 		);
+
+		if ( EmailAttachment::enabled() ) {
+			wp_add_inline_style( 'bgcw-pro-frontend', CardRenderer::css( CardRenderer::MODE_PREVIEW ) );
+			wp_localize_script( 'bgcw-pro-frontend', 'bgcw_pro_pdf', ProductPreview::script_params() );
+		}
 	}
 
 	/**
