@@ -90,6 +90,13 @@ class Options {
 	}
 
 	/**
+	 * Drop the request-scoped cache so the next get() re-reads the option.
+	 */
+	public static function invalidate_cache(): void {
+		self::$cache = null;
+	}
+
+	/**
 	 * Update a single key or merge an array.
 	 *
 	 * @param string|array $key   Option key or array of key-value pairs.
