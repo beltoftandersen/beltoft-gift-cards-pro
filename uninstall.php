@@ -45,7 +45,22 @@ global $wpdb;
 $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}bgcw_scheduled_deliveries" );
 $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}bgcw_store_credits" );
 $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}bgcw_bogo_rules" );
+$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}bgcw_pro_pdf" );
 // phpcs:enable
+
+// Remove generated PDF files.
+$bgcw_pro_upload = wp_upload_dir();
+$bgcw_pro_pdf_dir = trailingslashit( $bgcw_pro_upload['basedir'] ) . 'bgcw-pdf';
+if ( is_dir( $bgcw_pro_pdf_dir ) ) {
+	global $wp_filesystem;
+	if ( ! $wp_filesystem ) {
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		WP_Filesystem();
+	}
+	if ( $wp_filesystem ) {
+		$wp_filesystem->delete( $bgcw_pro_pdf_dir, true );
+	}
+}
 
 // Clear scheduled crons.
 wp_clear_scheduled_hook( 'bgcw_pro_license_check' );

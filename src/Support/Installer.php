@@ -134,12 +134,22 @@ class Installer {
 			KEY status (status)
 		) {$charset_collate};";
 
+		// Generated PDF files per gift card.
+		$sqls[] = "CREATE TABLE {$wpdb->prefix}bgcw_pro_pdf (
+			gift_card_id bigint(20) unsigned NOT NULL,
+			file varchar(255) NOT NULL DEFAULT '',
+			design varchar(32) NOT NULL DEFAULT 'classic',
+			design_version int(11) unsigned NOT NULL DEFAULT 1,
+			generated_at datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			PRIMARY KEY  (gift_card_id)
+		) {$charset_collate};";
+
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		foreach ( $sqls as $sql ) {
 			dbDelta( $sql );
 		}
 
-		update_option( 'bgcw_pro_db_version', '1.0.0' );
+		update_option( 'bgcw_pro_db_version', '1.1.0' );
 	}
 
 	/**
