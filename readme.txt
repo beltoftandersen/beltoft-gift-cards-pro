@@ -6,11 +6,11 @@ Tested up to: 7.1
 Requires PHP: 7.4
 WC requires at least: 6.0
 WC tested up to: 9.6
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Premium add-on for Beltoft Gift Cards for WooCommerce. Adds scheduled delivery, email themes, store credit, bulk generation, and more.
+Premium add-on for Beltoft Gift Cards: PDF gift cards with live preview, scheduled delivery, store credit, bulk generation, and more.
 
 == Description ==
 
@@ -19,7 +19,7 @@ Premium add-on for Beltoft Gift Cards for WooCommerce. Adds scheduled delivery, 
 = Features =
 
 * **Scheduled Delivery** — Let customers choose a future delivery date for their gift card. A date picker appears on the product page, and a cron job sends the email at the scheduled time.
-* **Email Themes** — Five built-in email themes (Classic, Birthday, Celebration, Thank You, Holiday) with visual previews. Customers pick a theme on the product page; the gift card email uses the matching design.
+* **PDF Gift Cards** — The gift card is delivered as a designed PDF attached to the email, ready to print. Three designs (Classic, Birthday, Celebration) with your logo, custom heading and color. Customers see a live preview of the card on the product page while they choose the amount, design and message, and can download the PDF from My Account.
 * **Store Credit on Refund** — When an order paid with a gift card is refunded, automatically create a store credit gift card for the customer instead of restoring the original card balance.
 * **Bulk Generation** — Generate up to 500 gift cards at once from the admin panel. Set amount, prefix, expiry, and optional recipient details.
 * **CSV Import / Export** — Export all gift cards to CSV with status filtering. Import gift cards from CSV with validation and error reporting.
@@ -32,7 +32,8 @@ Premium add-on for Beltoft Gift Cards for WooCommerce. Adds scheduled delivery, 
 * WordPress 5.8+
 * WooCommerce 6.0+
 * PHP 7.4+
-* [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards/) (free) 1.2.0+
+* [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards/) (free) 1.5.1+
+* PHP extensions mbstring, dom and gd (needed for PDF generation)
 
 == Installation ==
 
@@ -46,7 +47,7 @@ Premium add-on for Beltoft Gift Cards for WooCommerce. Adds scheduled delivery, 
 
 = Do I need the free plugin? =
 
-Yes. Beltoft Gift Cards for WooCommerce (free) version 1.5.0 or newer must be installed and activated. The Pro add-on extends the free plugin's functionality.
+Yes. Beltoft Gift Cards for WooCommerce (free) version 1.5.1 or newer must be installed and activated. The Pro add-on extends the free plugin's functionality.
 
 = How do I get a license key? =
 
@@ -56,15 +57,23 @@ License keys are distributed when you purchase the Pro add-on. Enter your key un
 
 Yes. When Scheduled Delivery is enabled, a date picker appears on the gift card product page. The email is sent at the chosen date.
 
-= How do email themes work? =
+= How do PDF gift cards work? =
 
-When Email Themes is enabled, a visual theme picker appears on the product page. The customer selects a theme, and the gift card email uses the matching design with themed colors and header image.
+When PDF Gift Cards is enabled, the product page shows a live preview of the card and three designs to choose from. After payment the recipient receives a short email with the card attached as a PDF, and the buyer can download the PDF from My Account. Change the logo, heading and main color under Pro Settings.
 
 = What happens to store credit on refund? =
 
 When Store Credit is enabled and an order paid with a gift card is refunded, the refund amount is issued as a new store credit gift card assigned to the customer, instead of restoring the original card balance.
 
 == Changelog ==
+
+= 1.4.0 =
+* Requires the free plugin 1.5.1 or newer.
+* Added: PDF gift cards. The card is generated as an A5 PDF and attached to the delivery email; the email itself is now a short notice.
+* Added: Live preview of the card on the product page, updating with amount, design, recipient name and message.
+* Added: Three new card designs (Classic, Birthday, Celebration) with logo, heading and color settings and sample downloads.
+* Added: "Download PDF" on the My Account gift cards page for buyers and recipients.
+* Changed: Email themes are replaced by the PDF designs. Orders that chose Thank You or Holiday use Classic.
 
 = 1.3.0 =
 * Requires the free plugin 1.5.0 or newer.

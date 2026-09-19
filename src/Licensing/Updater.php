@@ -96,7 +96,7 @@ class Updater {
 			'tested'       => get_bloginfo( 'version' ),
 			'requires_php' => '7.4',
 			'sections'     => [
-				'description' => 'Premium add-on for Beltoft Gift Cards for WooCommerce &mdash; scheduled delivery, email themes, store credit, bulk generation, BOGO promotions, and analytics.',
+				'description' => 'Premium add-on for Beltoft Gift Cards for WooCommerce &mdash; scheduled delivery, PDF gift cards, store credit, bulk generation, BOGO promotions, and analytics.',
 			],
 		];
 

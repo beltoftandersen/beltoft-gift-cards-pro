@@ -121,10 +121,9 @@ class PdfGenerator {
 	 */
 	public static function record( int $gift_card_id ) {
 		global $wpdb;
-		$table = self::table();
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom table.
-		return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE gift_card_id = %d", $gift_card_id ) );
+		return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}bgcw_pro_pdf WHERE gift_card_id = %d", $gift_card_id ) );
 	}
 
 	/**

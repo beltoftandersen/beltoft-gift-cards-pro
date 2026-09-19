@@ -51,7 +51,7 @@ bgcwp_test_register_cleanup( function () use ( $orig ) { update_option( 'bgcw_pr
 $d = Designs::get();
 bgcwp_assert_eq( 'Custom heading', $d['classic']['heading'], 'heading override applied' );
 bgcwp_assert_eq( '#123456', $d['classic']['color'], 'color override applied' );
-bgcwp_assert_eq( 'No expiry date', CardRenderer::format_expiry( null ), 'null expiry text' );
+bgcwp_assert_eq( __( 'No expiry date', 'beltoft-gift-cards-pro' ), CardRenderer::format_expiry( null ), 'null expiry text' );
 
 $parts = CardRenderer::amount_parts( 1250, 'EUR' );
 bgcwp_assert( false === strpos( $parts['number'], wc_get_price_decimal_separator() . '00' ), 'zero decimals trimmed' );

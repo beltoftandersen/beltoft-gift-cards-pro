@@ -1,23 +1,23 @@
 # Beltoft Gift Cards for WooCommerce - Pro
 
-Premium add-on for [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards/) — scheduled delivery, email themes, store credit, bulk generation, BOGO promotions, and analytics.
+Premium add-on for [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards/) — scheduled delivery, PDF gift cards, store credit, bulk generation, BOGO promotions, and analytics.
 
-- Stable version: 1.3.0
+- Stable version: 1.4.0
 - Requires: WordPress 5.8+, PHP 7.4+, WooCommerce 6.0+ (tested up to WordPress 7.1)
-- Requires: Beltoft Gift Cards for WooCommerce (free) 1.5.0+
+- Requires: Beltoft Gift Cards for WooCommerce (free) 1.5.1+
 - Author: beltoft.net
 - License: GPLv2 or later
 
 ## Overview
 
-This plugin extends the free Beltoft Gift Cards for WooCommerce with advanced features for gift card management: scheduled delivery, email themes, store credit on refund, bulk generation, BOGO promotions, and analytics.
+This plugin extends the free Beltoft Gift Cards for WooCommerce with advanced features for gift card management: scheduled delivery, PDF gift cards, store credit on refund, bulk generation, BOGO promotions, and analytics.
 
 A valid license key is required to activate Pro features.
 
 ## Features
 
 - **Scheduled Delivery** — Let customers choose a future delivery date for their gift card. A date picker appears on the product page, and a cron job sends the email at the scheduled time.
-- **Email Themes** — Five built-in email themes (Classic, Birthday, Celebration, Thank You, Holiday) with visual previews. Customers pick a theme on the product page; the gift card email uses the matching design.
+- **PDF Gift Cards** — The gift card is delivered as a designed PDF attached to the email, ready to print. Three designs (Classic, Birthday, Celebration) with your logo, custom heading and color. Customers see a live preview of the card on the product page while they choose the amount, design and message, and can download the PDF from My Account.
 - **Store Credit on Refund** — When an order paid with a gift card is refunded, automatically create a store credit gift card for the customer instead of restoring the original card balance.
 - **Bulk Generation** — Generate up to 500 gift cards at once from the admin panel. Set amount, prefix, expiry, and optional recipient details.
 - **CSV Import / Export** — Export all gift cards to CSV with status filtering. Import gift cards from CSV with validation and error reporting.
@@ -30,7 +30,8 @@ A valid license key is required to activate Pro features.
 - WordPress 5.8+
 - WooCommerce 6.0+
 - PHP 7.4+
-- [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards/) (free) 1.2.0+
+- [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards/) (free) 1.5.1+
+- PHP extensions mbstring, dom and gd (needed for PDF generation)
 
 ## Installation
 
@@ -41,6 +42,15 @@ A valid license key is required to activate Pro features.
 5. Configure features under the **Pro Settings** tab.
 
 ## Changelog
+
+### 1.4.0
+
+- Requires the free plugin 1.5.1 or newer.
+- Added: PDF gift cards. The card is generated as an A5 PDF and attached to the delivery email; the email itself is now a short notice.
+- Added: Live preview of the card on the product page, updating with amount, design, recipient name and message.
+- Added: Three new card designs (Classic, Birthday, Celebration) with logo, heading and color settings and sample downloads.
+- Added: "Download PDF" on the My Account gift cards page for buyers and recipients.
+- Changed: Email themes are replaced by the PDF designs. Orders that chose Thank You or Holiday use Classic.
 
 ### 1.3.0
 
