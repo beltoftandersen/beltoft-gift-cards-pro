@@ -162,3 +162,38 @@
 	$('#bgcw-pro-report-frequency').trigger('change');
 
 })(jQuery);
+
+/* ── PDF logo picker ─────────────────────────── */
+jQuery(function ($) {
+	var $pick = $('#bgcw_pro_pdf_logo_pick');
+	if (!$pick.length || typeof wp === 'undefined' || !wp.media) {
+		return;
+	}
+	var $id = $('#bgcw_pro_pdf_logo_id');
+	var $preview = $('.bgcw-pro-logo-field__preview');
+	var $remove = $('#bgcw_pro_pdf_logo_remove');
+	var frame;
+
+	$pick.on('click', function (e) {
+		e.preventDefault();
+		if (!frame) {
+			frame = wp.media({ title: $pick.text(), multiple: false, library: { type: 'image' } });
+			frame.on('select', function () {
+				var att = frame.state().get('selection').first().toJSON();
+				var url = (att.sizes && att.sizes.medium) ? att.sizes.medium.url : att.url;
+				$id.val(att.id);
+				$preview.find('img').attr('src', url);
+				$preview.prop('hidden', false);
+				$remove.prop('hidden', false);
+			});
+		}
+		frame.open();
+	});
+
+	$remove.on('click', function (e) {
+		e.preventDefault();
+		$id.val('');
+		$preview.prop('hidden', true).find('img').attr('src', '');
+		$remove.prop('hidden', true);
+	});
+});

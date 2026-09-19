@@ -36,6 +36,7 @@ class SettingsPage {
 			return;
 		}
 		wp_enqueue_style( 'bgcw-pro-admin', BGCW_PRO_URL . 'assets/css/admin.css', [], BGCW_PRO_VER );
+		wp_enqueue_media();
 
 		// Register a minimal handle for license tab inline script.
 		wp_register_script( 'bgcw-pro-license', '', [ 'jquery' ], BGCW_PRO_VER, true );
@@ -129,34 +130,29 @@ class SettingsPage {
 			__( 'Allow customers to pick a future delivery date when purchasing a gift card.', 'beltoft-gift-cards-pro' )
 		);
 
-		// ── Email Themes Section ──
+		// ── PDF Gift Cards Section ──
 		add_settings_section(
-			'bgcw_pro_email_themes',
-			__( 'Email Themes', 'beltoft-gift-cards-pro' ),
+			'bgcw_pro_pdf',
+			__( 'PDF Gift Cards', 'beltoft-gift-cards-pro' ),
 			function () {
-				echo '<p>' . esc_html__( 'Offer themed email designs for gift card delivery emails.', 'beltoft-gift-cards-pro' ) . '</p>';
+				echo '<p>' . esc_html__( 'Deliver the gift card as a designed PDF attached to the email. Customers see a live preview of the card on the product page and can download it from My Account.', 'beltoft-gift-cards-pro' ) . '</p>';
 			},
 			self::PAGE_SLUG
 		);
 
 		self::add_checkbox(
-			'email_themes',
-			__( 'Enable Email Themes', 'beltoft-gift-cards-pro' ),
-			'bgcw_pro_email_themes',
-			__( 'Allow customers to choose a themed design for the gift card email.', 'beltoft-gift-cards-pro' )
+			'pdf_enabled',
+			__( 'Enable PDF Gift Cards', 'beltoft-gift-cards-pro' ),
+			'bgcw_pro_pdf',
+			__( 'Attach the PDF to the delivery email and show the live card preview on gift card products.', 'beltoft-gift-cards-pro' )
 		);
 
-		self::add_select(
-			'default_theme',
-			__( 'Default Theme', 'beltoft-gift-cards-pro' ),
-			'bgcw_pro_email_themes',
-			[
-				'classic'     => __( 'Classic', 'beltoft-gift-cards-pro' ),
-				'birthday'    => __( 'Birthday', 'beltoft-gift-cards-pro' ),
-				'celebration' => __( 'Celebration', 'beltoft-gift-cards-pro' ),
-				'thank-you'   => __( 'Thank You', 'beltoft-gift-cards-pro' ),
-				'holiday'     => __( 'Holiday', 'beltoft-gift-cards-pro' ),
-			]
+		add_settings_field(
+			'pdf_logo_id',
+			__( 'Logo on the card', 'beltoft-gift-cards-pro' ),
+			[ __CLASS__, 'render_logo_field' ],
+			self::PAGE_SLUG,
+			'bgcw_pro_pdf'
 		);
 
 		// ── Store Credit Section ──
@@ -365,8 +361,8 @@ class SettingsPage {
 			do_settings_sections( self::PAGE_SLUG );
 			?>
 
-			<?php if ( Options::get( 'email_themes' ) === '1' ) : ?>
-				<?php self::render_theme_customization(); ?>
+			<?php if ( Options::get( 'pdf_enabled' ) === '1' ) : ?>
+				<?php self::render_pdf_design_customization(); ?>
 			<?php endif; ?>
 
 			<?php submit_button(); ?>
@@ -375,55 +371,66 @@ class SettingsPage {
 		}
 
 	/**
-	 * Render the email theme customization cards.
+	 * Logo picker field (media library).
 	 */
-	private static function render_theme_customization() {
-		$themes = \BgcwPro\EmailThemes\ThemeManager::get_available_themes();
-
-		$defaults = [
-			'classic'     => [ 'heading' => __( "You've received a gift card!", 'beltoft-gift-cards-pro' ), 'color' => '#6B4C9A' ],
-			'birthday'    => [ 'heading' => __( 'Happy Birthday!', 'beltoft-gift-cards-pro' ), 'color' => '#E91E8C' ],
-			'celebration' => [ 'heading' => __( 'Congratulations!', 'beltoft-gift-cards-pro' ), 'color' => '#E88700' ],
-			'thank-you'   => [ 'heading' => __( 'Thank You!', 'beltoft-gift-cards-pro' ), 'color' => '#1A9E8F' ],
-			'holiday'     => [ 'heading' => __( 'Happy Holidays!', 'beltoft-gift-cards-pro' ), 'color' => '#B22222' ],
-		];
+	public static function render_logo_field() {
+		$logo_id = (int) Options::get( 'pdf_logo_id' );
+		$src     = $logo_id ? wp_get_attachment_image_url( $logo_id, 'medium' ) : '';
 		?>
-		<h2><?php esc_html_e( 'Theme Customization', 'beltoft-gift-cards-pro' ); ?></h2>
-		<p class="description"><?php esc_html_e( 'Customize the heading text and accent color for each email theme. Leave fields blank to use the defaults.', 'beltoft-gift-cards-pro' ); ?></p>
+		<div class="bgcw-pro-logo-field">
+			<input type="hidden" id="bgcw_pro_pdf_logo_id" name="<?php echo esc_attr( Options::OPTION ); ?>[pdf_logo_id]" value="<?php echo esc_attr( $logo_id ? (string) $logo_id : '' ); ?>" />
+			<div class="bgcw-pro-logo-field__preview"<?php echo $src ? '' : ' hidden'; ?>>
+				<img src="<?php echo esc_url( $src ); ?>" alt="" />
+			</div>
+			<button type="button" class="button" id="bgcw_pro_pdf_logo_pick"><?php esc_html_e( 'Choose logo', 'beltoft-gift-cards-pro' ); ?></button>
+			<button type="button" class="button-link-delete" id="bgcw_pro_pdf_logo_remove"<?php echo $src ? '' : ' hidden'; ?>><?php esc_html_e( 'Remove', 'beltoft-gift-cards-pro' ); ?></button>
+			<p class="description"><?php esc_html_e( 'Shown at the top of the card. PNG or JPG, at least 400px wide. Without a logo the store name is printed instead.', 'beltoft-gift-cards-pro' ); ?></p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Per-design heading and color fields with sample PDF links.
+	 */
+	private static function render_pdf_design_customization() {
+		$designs     = \BgcwPro\Pdf\Designs::get();
+		$option_name = Options::OPTION;
+		?>
+		<h2><?php esc_html_e( 'Card designs', 'beltoft-gift-cards-pro' ); ?></h2>
+		<p class="description"><?php esc_html_e( 'Customers pick one of these designs on the product page. Change the heading or main color, then download a sample to see the result. Saving a change regenerates stored PDFs the next time they are sent or downloaded.', 'beltoft-gift-cards-pro' ); ?></p>
 
 		<div class="bgcw-pro-theme-grid">
-			<?php foreach ( $themes as $slug => $theme ) :
-				$saved_heading = Options::get( 'theme_heading_' . $slug );
-				$saved_color   = Options::get( 'theme_color_' . $slug );
-				$color         = $saved_color ?: $defaults[ $slug ]['color'];
-				$option_name   = Options::OPTION;
+			<?php foreach ( $designs as $slug => $design ) :
+				$saved_heading = (string) Options::get( 'pdf_heading_' . $slug );
+				$saved_color   = (string) Options::get( 'pdf_color_' . $slug );
 				?>
 				<div class="bgcw-pro-theme-card">
-					<div class="bgcw-pro-theme-card__preview" style="border-top: 3px solid <?php echo esc_attr( $color ); ?>;">
-						<span style="display:block;width:120px;height:50px;border-radius:4px;background-color:<?php echo esc_attr( $color ); ?>;margin:0 auto 6px;"></span>
-						<strong><?php echo esc_html( $theme['name'] ); ?></strong>
+					<div class="bgcw-pro-theme-card__preview">
+						<span class="bgcw-pro-theme-card__swatch" style="background-color:<?php echo esc_attr( $design['color'] ); ?>;"><span style="background-color:<?php echo esc_attr( $design['accent'] ); ?>;"></span></span>
+						<strong><?php echo esc_html( $design['name'] ); ?></strong>
 						<br />
-						<em style="font-size:12px;color:#666;"><?php echo esc_html( $saved_heading ?: $defaults[ $slug ]['heading'] ); ?></em>
+						<em><?php echo esc_html( $design['heading'] ); ?></em>
 					</div>
 					<div class="bgcw-pro-theme-card__fields">
 						<label>
 							<?php esc_html_e( 'Heading', 'beltoft-gift-cards-pro' ); ?>
 							<input type="text"
-								   name="<?php echo esc_attr( $option_name ); ?>[theme_heading_<?php echo esc_attr( $slug ); ?>]"
+								   name="<?php echo esc_attr( $option_name ); ?>[pdf_heading_<?php echo esc_attr( $slug ); ?>]"
 								   value="<?php echo esc_attr( $saved_heading ); ?>"
-								   placeholder="<?php echo esc_attr( $defaults[ $slug ]['heading'] ); ?>"
+								   placeholder="<?php echo esc_attr( $design['heading'] ); ?>"
 								   class="widefat" />
 						</label>
 						<label class="bgcw-pro-theme-card__color">
-							<?php esc_html_e( 'Accent Color', 'beltoft-gift-cards-pro' ); ?>
+							<?php esc_html_e( 'Main color', 'beltoft-gift-cards-pro' ); ?>
 							<span class="bgcw-color-setting">
 								<input type="color"
-									   name="<?php echo esc_attr( $option_name ); ?>[theme_color_<?php echo esc_attr( $slug ); ?>]"
-									   value="<?php echo esc_attr( $color ); ?>"
+									   name="<?php echo esc_attr( $option_name ); ?>[pdf_color_<?php echo esc_attr( $slug ); ?>]"
+									   value="<?php echo esc_attr( $saved_color ? $saved_color : $design['color'] ); ?>"
 									   class="bgcw-color-picker" />
-								<code><?php echo esc_html( $color ); ?></code>
+								<code><?php echo esc_html( $saved_color ? $saved_color : $design['color'] ); ?></code>
 							</span>
 						</label>
+						<a class="button" href="<?php echo esc_url( \BgcwPro\Pdf\Download::sample_url( $slug ) ); ?>"><?php esc_html_e( 'Download sample PDF', 'beltoft-gift-cards-pro' ); ?></a>
 					</div>
 				</div>
 			<?php endforeach; ?>

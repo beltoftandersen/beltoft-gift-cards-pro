@@ -33,21 +33,18 @@ class Options {
 			// Scheduled Delivery.
 			'scheduled_delivery' => '1',
 
-			// Email Themes.
-			'email_themes'  => '1',
-			'default_theme' => 'classic',
+			// PDF gift cards.
+			'pdf_enabled'        => '1',
+			'pdf_logo_id'        => '',
+			'pdf_design_version' => '1',
 
-			// Per-theme customization (empty = use built-in default).
-			'theme_heading_classic'     => '',
-			'theme_heading_birthday'    => '',
-			'theme_heading_celebration' => '',
-			'theme_heading_thank-you'   => '',
-			'theme_heading_holiday'     => '',
-			'theme_color_classic'       => '',
-			'theme_color_birthday'      => '',
-			'theme_color_celebration'   => '',
-			'theme_color_thank-you'     => '',
-			'theme_color_holiday'       => '',
+			// Per-design customization (empty = use built-in default).
+			'pdf_heading_classic'     => '',
+			'pdf_heading_birthday'    => '',
+			'pdf_heading_celebration' => '',
+			'pdf_color_classic'       => '',
+			'pdf_color_birthday'      => '',
+			'pdf_color_celebration'   => '',
 
 			// Store Credit.
 			'store_credit'      => '1',
@@ -127,7 +124,7 @@ class Options {
 		// Checkbox fields (present = 1, absent = 0).
 		$checks = [
 			'scheduled_delivery',
-			'email_themes',
+			'pdf_enabled',
 			'store_credit',
 			'auto_store_credit',
 			'bogo_enabled',
@@ -141,11 +138,6 @@ class Options {
 		// Enum fields.
 		if ( isset( $input['report_frequency'] ) && in_array( $input['report_frequency'], [ 'daily', 'weekly', 'monthly' ], true ) ) {
 			$clean['report_frequency'] = $input['report_frequency'];
-		}
-
-		// Default theme.
-		if ( isset( $input['default_theme'] ) ) {
-			$clean['default_theme'] = sanitize_key( $input['default_theme'] );
 		}
 
 		// Email recipients — sanitize each email.
@@ -173,17 +165,46 @@ class Options {
 			$clean['report_time_of_day'] = (string) min( 23, $hour );
 		}
 
-		// Per-theme headings and colors.
-		$theme_slugs = [ 'classic', 'birthday', 'celebration', 'thank-you', 'holiday' ];
-		foreach ( $theme_slugs as $slug ) {
-			$heading_key = 'theme_heading_' . $slug;
-			if ( isset( $input[ $heading_key ] ) ) {
-				$clean[ $heading_key ] = sanitize_text_field( $input[ $heading_key ] );
+		// PDF design settings. Any change bumps the design version so stored PDFs regenerate.
+		$design_changed = false;
+		if ( isset( $input['pdf_logo_id'] ) ) {
+			$logo = absint( $input['pdf_logo_id'] );
+			$logo = $logo > 0 ? (string) $logo : '';
+			if ( $logo !== (string) ( $clean['pdf_logo_id'] ?? '' ) ) {
+				$design_changed = true;
 			}
-			$color_key = 'theme_color_' . $slug;
+			$clean['pdf_logo_id'] = $logo;
+		}
+		foreach ( [ 'classic', 'birthday', 'celebration' ] as $slug ) {
+			$heading_key = 'pdf_heading_' . $slug;
+			if ( isset( $input[ $heading_key ] ) ) {
+				$val = sanitize_text_field( $input[ $heading_key ] );
+				if ( $val !== (string) ( $clean[ $heading_key ] ?? '' ) ) {
+					$design_changed = true;
+				}
+				$clean[ $heading_key ] = $val;
+			}
+			$color_key = 'pdf_color_' . $slug;
 			if ( isset( $input[ $color_key ] ) ) {
 				$val = sanitize_hex_color( $input[ $color_key ] );
-				$clean[ $color_key ] = $val ? $val : '';
+				$val = $val ? $val : '';
+				if ( $val !== (string) ( $clean[ $color_key ] ?? '' ) ) {
+					$design_changed = true;
+				}
+				$clean[ $color_key ] = $val;
+			}
+		}
+		if ( $design_changed ) {
+			$clean['pdf_design_version'] = (string) ( max( 1, (int) ( $clean['pdf_design_version'] ?? 1 ) ) + 1 );
+		}
+
+		// Legacy email theme options are no longer used.
+		foreach ( [ 'email_themes', 'default_theme' ] as $legacy ) {
+			unset( $clean[ $legacy ] );
+		}
+		foreach ( array_keys( $clean ) as $k ) {
+			if ( 0 === strpos( (string) $k, 'theme_heading_' ) || 0 === strpos( (string) $k, 'theme_color_' ) ) {
+				unset( $clean[ $k ] );
 			}
 		}
 
