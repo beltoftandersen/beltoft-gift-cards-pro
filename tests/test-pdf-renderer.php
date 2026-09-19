@@ -52,3 +52,10 @@ $d = Designs::get();
 bgcwp_assert_eq( 'Custom heading', $d['classic']['heading'], 'heading override applied' );
 bgcwp_assert_eq( '#123456', $d['classic']['color'], 'color override applied' );
 bgcwp_assert_eq( 'No expiry date', CardRenderer::format_expiry( null ), 'null expiry text' );
+
+$parts = CardRenderer::amount_parts( 1250, 'EUR' );
+bgcwp_assert( false === strpos( $parts['number'], wc_get_price_decimal_separator() . '00' ), 'zero decimals trimmed' );
+bgcwp_assert_eq( '€', $parts['symbol'], 'symbol decoded' );
+bgcwp_assert_eq( 'lg', CardRenderer::amount_parts( 123456, 'EUR' )['size'], 'size tier lg for 7 chars' );
+bgcwp_assert_eq( 'xl', CardRenderer::amount_parts( 50, 'EUR' )['size'], 'size tier xl for short' );
+bgcwp_assert( false !== strpos( CardRenderer::amount_parts( 12.5, 'EUR' )['number'], wc_get_price_decimal_separator() . '5' ), 'non-zero decimals kept' );

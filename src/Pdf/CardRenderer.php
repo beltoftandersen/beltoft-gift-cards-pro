@@ -89,6 +89,34 @@ class CardRenderer {
 	}
 
 	/**
+	 * Split an amount into number and currency symbol for the card.
+	 *
+	 * Zero decimals are dropped (50,00 -> 50) so the number reads like a denomination.
+	 *
+	 * @return array{number:string,symbol:string,symbol_first:bool,space:bool,size:string}
+	 */
+	public static function amount_parts( $amount, string $currency ): array {
+		$decimals = wc_get_price_decimals();
+		$number   = number_format( (float) $amount, $decimals, wc_get_price_decimal_separator(), wc_get_price_thousand_separator() );
+		if ( $decimals > 0 ) {
+			$zeros  = wc_get_price_decimal_separator() . str_repeat( '0', $decimals );
+			$number = substr( $number, -strlen( $zeros ) ) === $zeros ? substr( $number, 0, -strlen( $zeros ) ) : $number;
+		}
+		$pos    = (string) get_option( 'woocommerce_currency_pos', 'left' );
+		$symbol = html_entity_decode( get_woocommerce_currency_symbol( $currency ), ENT_QUOTES, 'UTF-8' );
+		$len    = mb_strlen( $number );
+		$size   = $len <= 5 ? 'xl' : ( $len <= 8 ? 'lg' : 'md' );
+
+		return [
+			'number'       => $number,
+			'symbol'       => $symbol,
+			'symbol_first' => in_array( $pos, [ 'left', 'left_space' ], true ),
+			'space'        => in_array( $pos, [ 'left_space', 'right_space' ], true ),
+			'size'         => $size,
+		];
+	}
+
+	/**
 	 * Format an expiry date as plain text.
 	 *
 	 * @param string|null $expires_at MySQL datetime or null.
@@ -124,6 +152,7 @@ class CardRenderer {
 			'store'          => $store,
 			'logo_src'       => self::MODE_PDF === $mode ? $store['logo_path'] : $store['logo_url'],
 			'amount_text'    => self::format_amount( $data['amount'], (string) $data['currency'] ),
+			'amount'         => self::amount_parts( $data['amount'], (string) $data['currency'] ),
 			'code'           => (string) $data['code'],
 			'recipient_name' => (string) $data['recipient_name'],
 			'sender_name'    => (string) $data['sender_name'],

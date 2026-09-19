@@ -8,7 +8,8 @@
  * @var string $mode           'preview' or 'pdf'.
  * @var array  $store          Store branding (see CardRenderer::store()).
  * @var string $logo_src       Logo path (pdf) or URL (preview); empty for none.
- * @var string $amount_text    Formatted amount.
+ * @var string $amount_text    Formatted amount (plain text).
+ * @var array  $amount         number, symbol, symbol_first, space, size (see CardRenderer::amount_parts()).
  * @var string $code           Gift card code.
  * @var string $recipient_name Recipient name.
  * @var string $sender_name    Sender name.
@@ -18,10 +19,10 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$bgcw_amount_class = 'bgcw-card__amount';
-if ( mb_strlen( $amount_text ) > 9 ) {
-	$bgcw_amount_class .= ' bgcw-card__amount--long';
-}
+$bgcw_amount_class = 'bgcw-card__amount bgcw-card__amount--' . $amount['size'];
+$bgcw_symbol       = '<span class="bgcw-card__currency" data-bgcw-field="currency">' . esc_html( $amount['symbol'] ) . '</span>';
+$bgcw_number       = '<span class="bgcw-card__number" data-bgcw-field="number">' . esc_html( $amount['number'] ) . '</span>';
+$bgcw_space        = $amount['space'] ? ' ' : '';
 $bgcw_message_short = mb_strlen( $message ) > 220 ? mb_substr( $message, 0, 217 ) . '…' : $message;
 ?>
 <div class="bgcw-card bgcw-card--<?php echo esc_attr( $design ); ?>" data-design="<?php echo esc_attr( $design ); ?>">
@@ -39,7 +40,10 @@ $bgcw_message_short = mb_strlen( $message ) > 220 ? mb_substr( $message, 0, 217 
 		<?php endif; ?>
 		<div class="bgcw-card__panel-inner">
 			<div class="bgcw-card__heading" data-bgcw-field="heading"><?php echo esc_html( $theme['heading'] ); ?></div>
-			<div class="<?php echo esc_attr( $bgcw_amount_class ); ?>" data-bgcw-field="amount"><?php echo esc_html( $amount_text ); ?></div>
+			<div class="<?php echo esc_attr( $bgcw_amount_class ); ?>" data-bgcw-field="amount" data-symbol-first="<?php echo $amount['symbol_first'] ? '1' : '0'; ?>" data-space="<?php echo $amount['space'] ? '1' : '0'; ?>" title="<?php echo esc_attr( $amount_text ); ?>"><?php
+				// Spans are escaped above; order follows the store's currency position setting.
+				echo $amount['symbol_first'] ? $bgcw_symbol . $bgcw_space . $bgcw_number : $bgcw_number . $bgcw_space . $bgcw_symbol; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			?></div>
 			<div class="bgcw-card__accent"></div>
 		</div>
 		<div class="bgcw-card__panel-foot"><?php echo esc_html( $store['store_name'] ); ?></div>
