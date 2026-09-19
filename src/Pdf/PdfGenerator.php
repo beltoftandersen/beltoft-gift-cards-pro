@@ -89,9 +89,8 @@ class PdfGenerator {
 			if ( '' === $fallback && '' !== $design ) {
 				$fallback = $design;
 			}
-			$recipient = (string) $item->get_meta( '_bgcw_recipient_email' );
-			if ( '' !== $design && '' !== $recipient && ! empty( $gc->recipient_email )
-				&& strtolower( $recipient ) === strtolower( (string) $gc->recipient_email ) ) {
+			// Same multi-signal match (amount, names, emails, message) the scheduler uses.
+			if ( '' !== $design && \BgcwPro\ScheduledDelivery\Scheduler::item_matches_gift_card( $item, $gc ) ) {
 				return Designs::normalize( $design );
 			}
 		}
@@ -132,33 +131,43 @@ class PdfGenerator {
 	 * @return string|\WP_Error
 	 */
 	public static function get_or_generate( $gc ) {
-		$row = self::record( (int) $gc->id );
-		if ( $row ) {
-			$path = self::path_for( $row->file );
-			if ( $path && file_exists( $path ) && (int) $row->design_version === Designs::version() ) {
-				return $path;
-			}
-		}
-
-		return self::generate( $gc );
-	}
-
-	/**
-	 * Generate (or regenerate) the PDF for a gift card.
-	 *
-	 * @return string|\WP_Error Absolute path.
-	 */
-	public static function generate( $gc ) {
-		global $wpdb;
-
 		$dir = self::dir();
 		if ( is_wp_error( $dir ) ) {
 			return $dir;
 		}
 
+		$row = self::record( (int) $gc->id );
+		if ( $row ) {
+			$path = self::path_for( $row->file, $dir );
+			if ( $path && file_exists( $path ) && (int) $row->design_version === Designs::version() ) {
+				return $path;
+			}
+		}
+
+		return self::generate( $gc, $row, $dir );
+	}
+
+	/**
+	 * Generate (or regenerate) the PDF for a gift card.
+	 *
+	 * @param object            $gc  Gift card row.
+	 * @param object|null|false $row Existing record when already loaded (false = not loaded).
+	 * @param string            $dir Storage dir when already resolved.
+	 * @return string|\WP_Error Absolute path.
+	 */
+	public static function generate( $gc, $row = false, string $dir = '' ) {
+		global $wpdb;
+
+		if ( '' === $dir ) {
+			$dir = self::dir();
+			if ( is_wp_error( $dir ) ) {
+				return $dir;
+			}
+		}
+
 		$design = self::design_for_card( $gc );
 		$html   = CardRenderer::render( $design, self::data_for_card( $gc ), CardRenderer::MODE_PDF );
-		$bytes  = self::render_pdf( $html );
+		$bytes  = self::render_pdf( $html, $dir );
 		if ( is_wp_error( $bytes ) ) {
 			return $bytes;
 		}
@@ -171,9 +180,9 @@ class PdfGenerator {
 			return self::fail( 'bgcw_pdf_write', __( 'Could not write the PDF file.', 'beltoft-gift-cards-pro' ) );
 		}
 
-		$old = self::record( (int) $gc->id );
+		$old = false === $row ? self::record( (int) $gc->id ) : $row;
 		if ( $old ) {
-			$old_path = self::path_for( $old->file );
+			$old_path = self::path_for( $old->file, $dir );
 			if ( $old_path && $old_path !== $path && file_exists( $old_path ) ) {
 				wp_delete_file( $old_path );
 			}
@@ -201,8 +210,13 @@ class PdfGenerator {
 	 * @return string|\WP_Error
 	 */
 	public static function sample( string $design ) {
+		$dir = self::dir();
+		if ( is_wp_error( $dir ) ) {
+			return $dir;
+		}
+
 		$html  = CardRenderer::render( $design, CardRenderer::placeholders(), CardRenderer::MODE_PDF );
-		$bytes = self::render_pdf( $html );
+		$bytes = self::render_pdf( $html, $dir );
 		if ( is_wp_error( $bytes ) ) {
 			return $bytes;
 		}
@@ -239,15 +253,17 @@ class PdfGenerator {
 	/**
 	 * Absolute path for a stored file name (rejects anything outside the storage dir).
 	 */
-	private static function path_for( string $file ) {
+	private static function path_for( string $file, string $dir = '' ) {
 		$file = basename( $file );
 		if ( '' === $file || ! preg_match( '/^\d+-[A-Za-z0-9]+\.pdf$/', $file ) ) {
 			return '';
 		}
 
-		$dir = self::dir();
-		if ( is_wp_error( $dir ) ) {
-			return '';
+		if ( '' === $dir ) {
+			$dir = self::dir();
+			if ( is_wp_error( $dir ) ) {
+				return '';
+			}
 		}
 
 		return $dir . '/' . $file;
@@ -258,14 +274,9 @@ class PdfGenerator {
 	 *
 	 * @return string|\WP_Error PDF bytes.
 	 */
-	private static function render_pdf( string $html ) {
+	private static function render_pdf( string $html, string $dir ) {
 		if ( ! Loader::load() ) {
 			return self::fail( 'bgcw_pdf_library', __( 'The PDF library is missing.', 'beltoft-gift-cards-pro' ) );
-		}
-
-		$dir = self::dir();
-		if ( is_wp_error( $dir ) ) {
-			return $dir;
 		}
 
 		$upload = wp_upload_dir();

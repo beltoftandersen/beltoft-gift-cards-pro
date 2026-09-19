@@ -397,7 +397,7 @@ class SettingsPage {
 		$option_name = Options::OPTION;
 		?>
 		<h2><?php esc_html_e( 'Card designs', 'beltoft-gift-cards-pro' ); ?></h2>
-		<p class="description"><?php esc_html_e( 'Customers pick one of these designs on the product page. Change the heading or main color, then download a sample to see the result. Saving a change regenerates stored PDFs the next time they are sent or downloaded.', 'beltoft-gift-cards-pro' ); ?></p>
+		<p class="description"><?php esc_html_e( 'Customers pick one of these designs on the product page. Change the heading or main color and save, then download a sample to see the result. Saving a change regenerates stored PDFs the next time they are sent or downloaded.', 'beltoft-gift-cards-pro' ); ?></p>
 
 		<div class="bgcw-pro-theme-grid">
 			<?php foreach ( $designs as $slug => $design ) :

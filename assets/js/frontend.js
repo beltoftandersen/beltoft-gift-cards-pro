@@ -77,12 +77,9 @@
 			return;
 		}
 		var value = input ? input.value.trim() : '';
-		if (name === 'message') {
-			if (value.length > 220) {
-				value = value.slice(0, 217) + '…';
-			}
-			el.textContent = value || placeholder;
-			return;
+		// Keep in step with the 220/217 truncation in templates/pdf/_card.php.
+		if (name === 'message' && value.length > 220) {
+			value = value.slice(0, 217) + '…';
 		}
 		el.textContent = value || placeholder;
 	}
@@ -93,7 +90,7 @@
 			return;
 		}
 		var slug = checked.value;
-		card.className = card.className.replace(/\bbgcw-card--(classic|birthday|celebration)\b/g, '').trim() + ' bgcw-card--' + slug;
+		card.className = card.className.replace(/\bbgcw-card--[a-z0-9_-]+/g, '').replace(/\s+/g, ' ').trim() + ' bgcw-card--' + slug;
 		card.setAttribute('data-design', slug);
 		var heading = field('heading');
 		if (heading && params.headings[slug]) {

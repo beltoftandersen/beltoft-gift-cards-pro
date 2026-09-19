@@ -188,7 +188,10 @@ class Options {
 			if ( isset( $input[ $color_key ] ) ) {
 				$val = sanitize_hex_color( $input[ $color_key ] );
 				$val = $val ? $val : '';
-				if ( $val !== (string) ( $clean[ $color_key ] ?? '' ) ) {
+				if ( '' !== $val && strtolower( $val ) === strtolower( \BgcwPro\Pdf\Designs::builtin_value( $slug, 'color' ) ) ) {
+					$val = ''; // Same as the built-in default: no override.
+				}
+				if ( strtolower( $val ) !== strtolower( (string) ( $clean[ $color_key ] ?? '' ) ) ) {
 					$design_changed = true;
 				}
 				$clean[ $color_key ] = $val;

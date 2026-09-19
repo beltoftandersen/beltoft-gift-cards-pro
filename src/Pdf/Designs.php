@@ -87,9 +87,30 @@ class Designs {
 	 * @return string
 	 */
 	public static function normalize( $slug ): string {
-		$slug = is_string( $slug ) ? sanitize_key( $slug ) : '';
+		$slug    = is_string( $slug ) ? sanitize_key( $slug ) : '';
+		$designs = self::get();
 
-		return isset( self::builtin()[ $slug ] ) ? $slug : self::DEFAULT_SLUG;
+		if ( isset( $designs[ $slug ] ) ) {
+			return $slug;
+		}
+		if ( isset( $designs[ self::DEFAULT_SLUG ] ) ) {
+			return self::DEFAULT_SLUG;
+		}
+
+		$keys = array_keys( $designs );
+
+		return $keys ? (string) $keys[0] : self::DEFAULT_SLUG;
+	}
+
+	/**
+	 * Built-in (unfiltered, non-overridden) value for a design key, e.g. the default color.
+	 *
+	 * @return string Empty when unknown.
+	 */
+	public static function builtin_value( string $slug, string $key ): string {
+		$builtin = self::builtin();
+
+		return isset( $builtin[ $slug ][ $key ] ) ? (string) $builtin[ $slug ][ $key ] : '';
 	}
 
 	/**

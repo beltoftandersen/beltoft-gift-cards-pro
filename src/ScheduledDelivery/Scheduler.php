@@ -266,7 +266,7 @@ class Scheduler {
 	 * @param object         $gift_card Gift card database row.
 	 * @return bool
 	 */
-	private static function item_matches_gift_card( $item, $gift_card ) {
+	public static function item_matches_gift_card( $item, $gift_card ) {
 		$has_signal = false;
 
 		$item_amount = (float) $item->get_meta( '_bgcw_amount' );

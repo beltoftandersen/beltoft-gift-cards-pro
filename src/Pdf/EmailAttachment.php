@@ -20,6 +20,24 @@ class EmailAttachment {
 	public static function init() {
 		add_filter( 'woocommerce_email_attachments', [ __CLASS__, 'attach' ], 10, 4 );
 		add_filter( 'bgcw_email_template_html', [ __CLASS__, 'swap_template' ], 20, 2 );
+		add_filter( 'woocommerce_locate_template', [ __CLASS__, 'locate_template' ], 10, 2 );
+	}
+
+	/**
+	 * Resolve our notice template to the Pro plugin path (no-op for every other template).
+	 *
+	 * @param string $located       Located path.
+	 * @param string $template_name Template being looked up.
+	 * @return string
+	 */
+	public static function locate_template( $located, $template_name ) {
+		if ( self::TEMPLATE !== $template_name ) {
+			return $located;
+		}
+
+		$full_path = BGCW_PRO_PATH . 'templates/' . self::TEMPLATE;
+
+		return file_exists( $full_path ) ? $full_path : $located;
 	}
 
 	/**
@@ -73,24 +91,16 @@ class EmailAttachment {
 		}
 
 		// Only swap when a PDF actually exists, so a failed render still delivers the code inline.
+		// WC_Email builds the content before the attachments, so this is the first (and only) render;
+		// attach() then reuses the stored file.
 		$path = PdfGenerator::get_or_generate( $gift_card );
 		if ( is_wp_error( $path ) ) {
 			return $template;
 		}
 
-		$full_path = BGCW_PRO_PATH . 'templates/' . self::TEMPLATE;
-		if ( ! file_exists( $full_path ) ) {
+		if ( ! file_exists( BGCW_PRO_PATH . 'templates/' . self::TEMPLATE ) ) {
 			return $template;
 		}
-
-		add_filter(
-			'woocommerce_locate_template',
-			function ( $located, $template_name ) use ( $full_path ) {
-				return self::TEMPLATE === $template_name ? $full_path : $located;
-			},
-			10,
-			2
-		);
 
 		return self::TEMPLATE;
 	}

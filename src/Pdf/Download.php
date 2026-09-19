@@ -19,6 +19,7 @@ class Download {
 	 */
 	public static function init() {
 		add_action( 'admin_post_' . self::ACTION_DOWNLOAD, [ __CLASS__, 'handle_download' ] );
+		add_action( 'admin_post_nopriv_' . self::ACTION_DOWNLOAD, [ __CLASS__, 'handle_download' ] );
 		add_action( 'admin_post_' . self::ACTION_SAMPLE, [ __CLASS__, 'handle_sample' ] );
 		add_action( 'bgcw_my_account_card_actions', [ __CLASS__, 'render_button' ] );
 	}
@@ -79,15 +80,17 @@ class Download {
 	 * Stream a card PDF to its owner.
 	 */
 	public static function handle_download() {
+		// Nonces are per session: a logged-out visitor is sent to log in and back to My Account,
+		// where a fresh download link is rendered.
+		if ( ! is_user_logged_in() ) {
+			wp_safe_redirect( wp_login_url( wc_get_account_endpoint_url( 'gift-cards' ) ) );
+			exit;
+		}
+
 		$card_id = isset( $_GET['card'] ) ? absint( wp_unslash( $_GET['card'] ) ) : 0;
 
 		if ( ! $card_id || ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), self::ACTION_DOWNLOAD . '_' . $card_id ) ) {
 			wp_die( esc_html__( 'This download link is not valid.', 'beltoft-gift-cards-pro' ), '', [ 'response' => 403 ] );
-		}
-
-		if ( ! is_user_logged_in() ) {
-			wp_safe_redirect( wp_login_url( self::url_for_card( (object) [ 'id' => $card_id ] ) ) );
-			exit;
 		}
 
 		$gc = Repository::find( $card_id );
