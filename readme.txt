@@ -6,7 +6,7 @@ Tested up to: 7.1
 Requires PHP: 7.4
 WC requires at least: 6.0
 WC tested up to: 9.6
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,6 +66,9 @@ When PDF Gift Cards is enabled, the product page shows a live preview of the car
 When Store Credit is enabled and an order paid with a gift card is refunded, the refund amount is issued as a new store credit gift card assigned to the customer, instead of restoring the original card balance.
 
 == Changelog ==
+
+= 1.4.2 =
+* Fixed: Portuguese translations for the PDF card and preview strings.
 
 = 1.4.1 =
 * Changed: The gift card PDF is now A5 portrait with a redesigned layout.

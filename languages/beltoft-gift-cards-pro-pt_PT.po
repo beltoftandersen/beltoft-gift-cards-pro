@@ -17,9 +17,8 @@ msgstr ""
 
 #. Plugin Name of the plugin
 #: beltoft-gift-cards-pro.php
-#, fuzzy
 msgid "Beltoft Gift Cards for WooCommerce - Pro"
-msgstr "Smart Gift Cards for WooCommerce - Pro"
+msgstr "Beltoft Gift Cards for WooCommerce - Pro"
 
 #. Plugin URI of the plugin
 #: beltoft-gift-cards-pro.php
@@ -28,7 +27,6 @@ msgstr "https://beltoft.net/beltoft-gift-cards-pro"
 
 #. Description of the plugin
 #: beltoft-gift-cards-pro.php
-#, fuzzy
 msgid ""
 "Premium add-on for Beltoft Gift Cards for WooCommerce — scheduled delivery, "
 "PDF gift cards, store credit, bulk generation, BOGO promotions, and "
@@ -49,7 +47,6 @@ msgid "https://beltoft.net"
 msgstr "https://beltoft.net"
 
 #: beltoft-gift-cards-pro.php:50 beltoft-gift-cards-pro.php:90
-#, fuzzy
 msgid ""
 "Beltoft Gift Cards for WooCommerce - Pro requires the free \"Beltoft Gift "
 "Cards for WooCommerce\" plugin to be installed and activated."
@@ -58,7 +55,6 @@ msgstr ""
 "\"Smart Gift Cards for WooCommerce\" esteja instalado e ativo."
 
 #: beltoft-gift-cards-pro.php:80
-#, fuzzy
 msgid ""
 "Beltoft Gift Cards for WooCommerce - Pro requires WooCommerce to be "
 "installed and activated."
@@ -67,7 +63,6 @@ msgstr ""
 "instalado e ativo."
 
 #: beltoft-gift-cards-pro.php:100
-#, fuzzy
 msgid ""
 "Beltoft Gift Cards for WooCommerce - Pro requires version 1.5.1 or higher of "
 "the free plugin. Please update."
@@ -149,9 +144,8 @@ msgstr ""
 "cartão-presente."
 
 #: src/Admin/SettingsPage.php:136
-#, fuzzy
 msgid "PDF Gift Cards"
-msgstr "Gerar Cartões-presente"
+msgstr "Cartões presente em PDF"
 
 #: src/Admin/SettingsPage.php:138
 msgid ""
@@ -161,9 +155,8 @@ msgid ""
 msgstr ""
 
 #: src/Admin/SettingsPage.php:145
-#, fuzzy
 msgid "Enable PDF Gift Cards"
-msgstr "Gerar Cartões-presente"
+msgstr "Ativar cartões presente em PDF"
 
 #: src/Admin/SettingsPage.php:147
 msgid ""
@@ -348,9 +341,8 @@ msgstr ""
 "funcionalidades."
 
 #: src/Admin/SettingsPage.php:385
-#, fuzzy
 msgid "Choose logo"
-msgstr "Escolha um Design"
+msgstr "Escolher logótipo"
 
 #: src/Admin/SettingsPage.php:386
 msgid "Remove"
@@ -420,28 +412,24 @@ msgid "Deactivate your old domain and reactivate here"
 msgstr ""
 
 #: src/Admin/SettingsPage.php:479
-#, fuzzy
 msgid "Invalid Key"
-msgstr "ID de regra inválido."
+msgstr ""
 
 #: src/Admin/SettingsPage.php:480
-#, fuzzy
 msgid "Please check and re-enter your license key"
-msgstr "Introduza uma chave de licença."
+msgstr ""
 
 #: src/Admin/SettingsPage.php:482
-#, fuzzy
 msgid "Not Activated"
-msgstr "Ativar"
+msgstr ""
 
 #: src/Admin/SettingsPage.php:507
 msgid "Enter your license key"
 msgstr "Introduza a sua chave de licença"
 
 #: src/Admin/SettingsPage.php:532
-#, fuzzy
 msgid "Activations: Unlimited"
-msgstr "Falha na ativação."
+msgstr ""
 
 #. translators: %d: maximum number of site activations
 #: src/Admin/SettingsPage.php:536
@@ -826,23 +814,20 @@ msgid "Please enter a license key."
 msgstr "Introduza uma chave de licença."
 
 #: src/Licensing/License.php:80
-#, fuzzy
 msgid "Could not connect to license server. Please try again."
-msgstr "Erro no carregamento do ficheiro. Tente novamente."
+msgstr ""
 
 #: src/Licensing/License.php:91
-#, fuzzy
 msgid "License key not found. Please check and try again."
-msgstr "O pedido falhou. Atualize a página e tente novamente."
+msgstr ""
 
 #: src/Licensing/License.php:97
 msgid "License endpoint unavailable. Please try again in a moment."
 msgstr ""
 
 #: src/Licensing/License.php:124 src/Licensing/License.php:133
-#, fuzzy
 msgid "License activation failed."
-msgstr "Falha na desativação."
+msgstr ""
 
 #: src/Licensing/License.php:162
 msgid "License activated successfully."
@@ -864,7 +849,7 @@ msgstr "Licença desativada com sucesso."
 
 #. translators: %s: license settings page URL
 #: src/Licensing/License.php:363
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Gift Cards Pro: Please <a href=\"%s\">enter your license key</a> to enable "
 "Pro features."
@@ -874,7 +859,7 @@ msgstr ""
 
 #. translators: %s: license settings page URL
 #: src/Licensing/License.php:378
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Gift Cards Pro: License is not activated. <a href=\"%s\">Activate your "
 "license</a> to enable Pro features and updates."
@@ -884,7 +869,7 @@ msgstr ""
 
 #. translators: %s: license settings page URL
 #: src/Licensing/License.php:393
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Gift Cards Pro: License inactive. <a href=\"%s\">Renew your license</a> to "
 "receive updates."
@@ -902,7 +887,7 @@ msgstr ""
 
 #. translators: %s: license settings page URL
 #: src/Licensing/License.php:423
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Gift Cards Pro: License key not found. Please <a href=\"%s\">check your "
 "license key</a>."
@@ -915,9 +900,8 @@ msgid "A valid license key is required to download updates."
 msgstr ""
 
 #: src/Licensing/Updater.php:148
-#, fuzzy
 msgid "Download failed."
-msgstr "Transferir CSV"
+msgstr ""
 
 #: src/Licensing/Updater.php:170
 msgid "Could not connect to license server to download the update."
@@ -966,33 +950,28 @@ msgid "Birthday"
 msgstr "Aniversário"
 
 #: src/Pdf/Designs.php:38
-#, fuzzy
 msgid "Happy birthday"
-msgstr "Feliz Aniversário!"
+msgstr "Feliz aniversário"
 
 #: src/Pdf/Designs.php:45
 msgid "Celebration"
 msgstr "Celebração"
 
 #: src/Pdf/Designs.php:46
-#, fuzzy
 msgid "Congratulations"
-msgstr "Parabéns!"
+msgstr "Parabéns"
 
 #: src/Pdf/Download.php:76
-#, fuzzy
 msgid "Download PDF"
-msgstr "Transferir CSV"
+msgstr "Descarregar PDF"
 
 #: src/Pdf/Download.php:93
-#, fuzzy
 msgid "This download link is not valid."
-msgstr "Esta chave de licença é inválida."
+msgstr "Esta ligação de descarga não é válida."
 
 #: src/Pdf/Download.php:98
-#, fuzzy
 msgid "You do not have access to this gift card."
-msgstr "Não tem permissão para realizar esta ação."
+msgstr "Não tem acesso a este cartão presente."
 
 #: src/Pdf/Download.php:103
 msgid "The gift card PDF could not be created. Please try again later."
@@ -1000,9 +979,8 @@ msgstr ""
 "Não foi possível criar o PDF do cartão presente. Tente novamente mais tarde."
 
 #: src/Pdf/Download.php:114
-#, fuzzy
 msgid "You do not have permission to do this."
-msgstr "Não tem permissão para realizar esta ação."
+msgstr "Não tem permissão para fazer isto."
 
 #: src/Pdf/PdfGenerator.php:46
 msgid "Could not create the PDF storage folder."
@@ -1021,9 +999,8 @@ msgid "The PDF renderer returned no document."
 msgstr "O gerador de PDF não devolveu nenhum documento."
 
 #: src/Pdf/ProductPreview.php:75 src/Pdf/ProductPreview.php:76
-#, fuzzy
 msgid "Card design"
-msgstr "Escolha um Design"
+msgstr "Design do cartão"
 
 #: src/Pdf/ProductPreview.php:86
 msgid "Preview your card"
@@ -1034,9 +1011,8 @@ msgid "The recipient gets it as a PDF by email once the order is paid."
 msgstr "O destinatário recebe-o em PDF por e-mail assim que a encomenda for paga."
 
 #: src/Pdf/ProductPreview.php:89
-#, fuzzy
 msgid "Gift card preview"
-msgstr "Código do cartão presente"
+msgstr "Pré-visualização do cartão presente"
 
 #: src/Pdf/ProductPreview.php:92
 msgid "Close preview"
@@ -1116,9 +1092,9 @@ msgstr "Crédito de loja emitido do reembolso da encomenda #%d"
 
 #. translators: %s: sender name
 #: templates/emails/pdf-notice.php:24
-#, fuzzy, php-format
+#, php-format
 msgid "%s sent you a gift card."
-msgstr "Linha %d: Falha ao criar o cartão-presente."
+msgstr "%s enviou-lhe um cartão presente."
 
 #: templates/emails/pdf-notice.php:37
 msgid ""
@@ -1131,9 +1107,8 @@ msgid "Gift card code"
 msgstr "Código do cartão presente"
 
 #: templates/emails/pdf-notice.php:48
-#, fuzzy
 msgid "Shop now"
-msgstr "Comprar Agora"
+msgstr "Comprar agora"
 
 #. translators: %s: expiry date
 #: templates/emails/pdf-notice.php:57
@@ -1146,11 +1121,9 @@ msgid "To"
 msgstr "Para"
 
 #: templates/pdf/_card.php:65
-#, fuzzy
 msgid "From"
-msgstr "De: %s"
+msgstr "De"
 
-#, fuzzy
 #~ msgid "Your gift card"
 #~ msgstr "Recebeu um cartão-presente!"
 
