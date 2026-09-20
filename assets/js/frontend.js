@@ -109,14 +109,68 @@
 		updateDesign();
 	}
 
+	var lightbox = root.querySelector('.bgcw-pro-lightbox');
+	var openBtn = root.querySelector('.bgcw-pro-preview__open');
+	var lastFocus = null;
+
 	function rescale() {
-		var width = stage.clientWidth;
-		if (!width) {
+		if (!lightbox || lightbox.hidden) {
 			return;
 		}
-		var scale = Math.min(1, width / params.card_width);
+		var panel = lightbox.querySelector('.bgcw-pro-lightbox__panel');
+		var note = lightbox.querySelector('.bgcw-pro-lightbox__note');
+		var chrome = 48 + (note ? note.offsetHeight + 12 : 0);
+		var availW = panel.clientWidth - 32;
+		var availH = window.innerHeight * 0.9 - chrome;
+		var scale = Math.min(1, availW / params.card_width, availH / params.card_height);
+		if (!(scale > 0)) {
+			return;
+		}
 		scaler.style.transform = 'scale(' + scale + ')';
+		stage.style.width = Math.round(params.card_width * scale) + 'px';
 		stage.style.height = Math.round(params.card_height * scale) + 'px';
+	}
+
+	function openLightbox() {
+		if (!lightbox) {
+			return;
+		}
+		lastFocus = document.activeElement;
+		lightbox.hidden = false;
+		document.body.classList.add('bgcw-pro-lightbox-open');
+		updateAll();
+		rescale();
+		var close = lightbox.querySelector('.bgcw-pro-lightbox__close');
+		if (close) {
+			close.focus();
+		}
+	}
+
+	function closeLightbox() {
+		if (!lightbox || lightbox.hidden) {
+			return;
+		}
+		lightbox.hidden = true;
+		document.body.classList.remove('bgcw-pro-lightbox-open');
+		if (lastFocus && lastFocus.focus) {
+			lastFocus.focus();
+		}
+	}
+
+	if (openBtn) {
+		openBtn.addEventListener('click', openLightbox);
+	}
+	if (lightbox) {
+		lightbox.addEventListener('click', function (e) {
+			if (e.target.closest('[data-bgcw-close]')) {
+				closeLightbox();
+			}
+		});
+		document.addEventListener('keydown', function (e) {
+			if (e.key === 'Escape') {
+				closeLightbox();
+			}
+		});
 	}
 
 	// The free plugin sets #bgcw_amount from these controls without firing events,
@@ -147,7 +201,6 @@
 		document.fonts.ready.then(rescale);
 	}
 
-	rescale();
 	updateAll();
 	setTimeout(updateAll, 100);
 })();

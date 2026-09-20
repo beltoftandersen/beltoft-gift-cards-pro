@@ -46,7 +46,6 @@ $bgcw_message_short = mb_strlen( $message ) > 220 ? mb_substr( $message, 0, 217 
 			?></div>
 			<div class="bgcw-card__accent"></div>
 		</div>
-		<div class="bgcw-card__panel-foot"><?php echo esc_html( $store['store_name'] ); ?></div>
 	</div>
 	<div class="bgcw-card__body">
 		<div class="bgcw-card__brand">

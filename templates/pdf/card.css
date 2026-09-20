@@ -1,43 +1,43 @@
-/* Gift card — shared by the live preview and the PDF. dompdf-safe: no flex/grid/variables. */
-.bgcw-card{position:relative;width:794px;height:559px;overflow:hidden;background:#ffffff;font-family:'BgcwSans',Helvetica,Arial,sans-serif;color:#1B1B1B;line-height:18px;-webkit-font-smoothing:antialiased;text-align:left;}
+/* Gift card (A5 portrait) — shared by the live preview and the PDF. dompdf-safe: no flex/grid/variables. */
+.bgcw-card{position:relative;width:559px;height:794px;overflow:hidden;background:#ffffff;font-family:'BgcwSans',Helvetica,Arial,sans-serif;color:#1B1B1B;line-height:18px;-webkit-font-smoothing:antialiased;text-align:left;}
 .bgcw-card *{margin:0;padding:0;}
-.bgcw-card__panel{position:absolute;left:0;top:0;width:302px;height:559px;color:#ffffff;}
-.bgcw-card__panel-inner{position:absolute;left:36px;top:132px;width:230px;}
-.bgcw-card__heading{font-family:'BgcwSerif',Georgia,serif;font-size:27px;line-height:32px;color:#ffffff;}
-.bgcw-card__amount{font-family:'BgcwSerif',Georgia,serif;color:#ffffff;margin-top:28px;white-space:nowrap;letter-spacing:-1px;}
-.bgcw-card__amount--xl{font-size:84px;line-height:84px;}
-.bgcw-card__amount--lg{font-size:60px;line-height:64px;}
-.bgcw-card__amount--md{font-size:44px;line-height:48px;letter-spacing:0;}
-.bgcw-card__currency{font-size:45%;letter-spacing:0;}
-.bgcw-card__accent{width:44px;height:5px;margin-top:26px;}
-.bgcw-card__panel-foot{position:absolute;left:36px;top:498px;width:230px;font-size:11px;line-height:16px;color:#ffffff;}
+/* Top color panel */
+.bgcw-card__panel{position:absolute;left:0;top:0;width:559px;height:350px;color:#ffffff;}
+.bgcw-card__panel-inner{position:absolute;left:44px;top:64px;width:471px;}
+.bgcw-card__heading{font-family:'BgcwSerif',Georgia,serif;font-size:30px;line-height:36px;color:#ffffff;}
+.bgcw-card__amount{font-family:'BgcwSerif',Georgia,serif;color:#ffffff;margin-top:44px;white-space:nowrap;letter-spacing:-2px;}
+.bgcw-card__amount--xl{font-size:118px;line-height:118px;}
+.bgcw-card__amount--lg{font-size:84px;line-height:88px;}
+.bgcw-card__amount--md{font-size:60px;line-height:64px;letter-spacing:-1px;}
+.bgcw-card__currency{font-size:42%;letter-spacing:0;}
+.bgcw-card__accent{width:56px;height:6px;margin-top:30px;}
 /* Motifs */
-.bgcw-card__frame{position:absolute;left:16px;top:16px;width:268px;height:525px;border:1px solid #ffffff;}
+.bgcw-card__frame{position:absolute;left:16px;top:16px;width:525px;height:316px;border:1px solid #ffffff;}
 .bgcw-card__confetti{position:absolute;border-radius:50%;}
-.bgcw-card__confetti--1{left:214px;top:38px;width:18px;height:18px;}
-.bgcw-card__confetti--2{left:250px;top:92px;width:10px;height:10px;background-color:#ffffff !important;}
-.bgcw-card__confetti--3{left:40px;top:360px;width:12px;height:12px;background-color:#ffffff !important;}
-.bgcw-card__confetti--4{left:196px;top:440px;width:22px;height:22px;}
-.bgcw-card__confetti--5{left:120px;top:500px;width:8px;height:8px;background-color:#ffffff !important;}
-.bgcw-card__confetti--6{left:262px;top:330px;width:14px;height:14px;}
-.bgcw-card__ribbon{position:absolute;left:0;height:10px;}
-.bgcw-card__ribbon--1{top:392px;width:302px;}
-.bgcw-card__ribbon--2{top:412px;width:220px;}
-.bgcw-card__ribbon--3{top:432px;width:120px;}
-/* Body */
-.bgcw-card__body{position:absolute;left:302px;top:0;width:412px;height:559px;padding:0 40px;border-left:2px dashed #DDDDDD;}
-.bgcw-card__brand{position:absolute;left:40px;top:44px;width:412px;height:44px;}
-.bgcw-card__brand img{max-height:40px;max-width:200px;display:block;}
+.bgcw-card__confetti--1{left:440px;top:44px;width:20px;height:20px;}
+.bgcw-card__confetti--2{left:498px;top:96px;width:10px;height:10px;background-color:#ffffff !important;}
+.bgcw-card__confetti--3{left:380px;top:250px;width:12px;height:12px;background-color:#ffffff !important;}
+.bgcw-card__confetti--4{left:470px;top:292px;width:24px;height:24px;}
+.bgcw-card__confetti--5{left:36px;top:312px;width:8px;height:8px;background-color:#ffffff !important;}
+.bgcw-card__confetti--6{left:520px;top:200px;width:14px;height:14px;}
+.bgcw-card__ribbon{position:absolute;top:0;width:10px;}
+.bgcw-card__ribbon--1{left:497px;height:350px;}
+.bgcw-card__ribbon--2{left:517px;height:250px;}
+.bgcw-card__ribbon--3{left:537px;height:150px;}
+/* Lower body */
+.bgcw-card__body{position:absolute;left:0;top:350px;width:559px;height:444px;border-top:2px dashed #DDDDDD;}
+.bgcw-card__brand{position:absolute;left:44px;top:34px;width:471px;height:40px;}
+.bgcw-card__brand img{max-height:40px;max-width:220px;display:block;}
 .bgcw-card__brand-name{font-family:'BgcwSerif',Georgia,serif;font-size:24px;line-height:40px;color:#1B1B1B;white-space:nowrap;overflow:hidden;}
-.bgcw-card__people{position:absolute;left:40px;top:118px;width:412px;border-collapse:collapse;}
+.bgcw-card__people{position:absolute;left:44px;top:96px;width:471px;border-collapse:collapse;}
 .bgcw-card__people td{width:50%;vertical-align:top;padding:0 12px 0 0;}
 .bgcw-card__label{display:block;font-size:11px;font-weight:600;line-height:14px;margin-bottom:3px;}
 .bgcw-card__value{display:block;font-size:16px;line-height:20px;color:#1B1B1B;overflow:hidden;white-space:nowrap;}
-.bgcw-card__message{position:absolute;left:40px;top:190px;width:412px;height:120px;overflow:hidden;font-size:14px;line-height:22px;color:#3A3A3A;}
-.bgcw-card__code{position:absolute;left:40px;top:328px;padding:12px 20px 14px;border:1px solid #000000;}
+.bgcw-card__message{position:absolute;left:44px;top:156px;width:471px;height:88px;overflow:hidden;font-size:14px;line-height:22px;color:#3A3A3A;}
+.bgcw-card__code{position:absolute;left:44px;top:262px;padding:12px 22px 14px;border:1px solid #000000;}
 .bgcw-card__code .bgcw-card__label{margin-bottom:4px;}
-.bgcw-card__code-value{display:block;font-size:20px;font-weight:600;letter-spacing:2px;line-height:24px;color:#1B1B1B;white-space:nowrap;}
-.bgcw-card__footer{position:absolute;left:40px;top:470px;width:412px;border-collapse:collapse;font-size:10px;line-height:15px;color:#6B6B6B;}
+.bgcw-card__code-value{display:block;font-size:22px;font-weight:600;letter-spacing:2px;line-height:26px;color:#1B1B1B;white-space:nowrap;}
+.bgcw-card__footer{position:absolute;left:44px;top:366px;width:471px;border-collapse:collapse;font-size:10px;line-height:15px;color:#6B6B6B;}
 .bgcw-card__footer td{vertical-align:bottom;padding:0;}
 .bgcw-card__footer .bgcw-card__expiry{font-weight:600;color:#1B1B1B;}
 .bgcw-card__footer .bgcw-card__host{text-align:right;width:150px;}

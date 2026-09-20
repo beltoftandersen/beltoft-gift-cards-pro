@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Smart Gift Cards for WooCommerce - Pro 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/beltoft-gift-"
 "cards-pro\n"
-"POT-Creation-Date: 2026-09-19T22:48:17+00:00\n"
+"POT-Creation-Date: 2026-09-20T09:50:19+00:00\n"
 "PO-Revision-Date: 2026-02-20 00:00+0000\n"
 "Last-Translator: beltoft.net <support@beltoft.net>\n"
 "Language-Team: Portuguese (Portugal)\n"
@@ -31,8 +31,8 @@ msgstr "https://beltoft.net/beltoft-gift-cards-pro"
 #, fuzzy
 msgid ""
 "Premium add-on for Beltoft Gift Cards for WooCommerce — scheduled delivery, "
-"email themes, store credit, bulk generation, BOGO promotions, and analytics. "
-"Requires the free core plugin."
+"PDF gift cards, store credit, bulk generation, BOGO promotions, and "
+"analytics. Requires the free core plugin."
 msgstr ""
 "Extensão premium para o Smart Gift Cards for WooCommerce — entrega agendada, "
 "temas de e-mail, crédito de loja, geração em massa, promoções BOGO e "
@@ -67,8 +67,9 @@ msgstr ""
 "instalado e ativo."
 
 #: beltoft-gift-cards-pro.php:100
+#, fuzzy
 msgid ""
-"Beltoft Gift Cards for WooCommerce - Pro requires version 1.5.0 or higher of "
+"Beltoft Gift Cards for WooCommerce - Pro requires version 1.5.1 or higher of "
 "the free plugin. Please update."
 msgstr ""
 "Beltoft Gift Cards for WooCommerce - Pro requer a versão 1.5.0 ou superior "
@@ -368,8 +369,8 @@ msgstr "Designs do cartão"
 #: src/Admin/SettingsPage.php:400
 msgid ""
 "Customers pick one of these designs on the product page. Change the heading "
-"or main color, then download a sample to see the result. Saving a change "
-"regenerates stored PDFs the next time they are sent or downloaded."
+"or main color and save, then download a sample to see the result. Saving a "
+"change regenerates stored PDFs the next time they are sent or downloaded."
 msgstr ""
 
 #: src/Admin/SettingsPage.php:416
@@ -938,7 +939,9 @@ msgstr "A sua mensagem aparecerá aqui."
 #: src/Pdf/CardRenderer.php:65
 #, php-format
 msgid "Enter the code at checkout on %s, or show this card in store."
-msgstr "Introduza o código na finalização da compra em %s, ou mostre este cartão na loja."
+msgstr ""
+"Introduza o código na finalização da compra em %s, ou mostre este cartão na "
+"loja."
 
 #: src/Pdf/CardRenderer.php:126
 msgid "No expiry date"
@@ -976,26 +979,27 @@ msgstr "Celebração"
 msgid "Congratulations"
 msgstr "Parabéns!"
 
-#: src/Pdf/Download.php:75
+#: src/Pdf/Download.php:76
 #, fuzzy
 msgid "Download PDF"
 msgstr "Transferir CSV"
 
-#: src/Pdf/Download.php:85
+#: src/Pdf/Download.php:93
 #, fuzzy
 msgid "This download link is not valid."
 msgstr "Esta chave de licença é inválida."
 
-#: src/Pdf/Download.php:95
+#: src/Pdf/Download.php:98
 #, fuzzy
 msgid "You do not have access to this gift card."
 msgstr "Não tem permissão para realizar esta ação."
 
-#: src/Pdf/Download.php:100
+#: src/Pdf/Download.php:103
 msgid "The gift card PDF could not be created. Please try again later."
-msgstr "Não foi possível criar o PDF do cartão presente. Tente novamente mais tarde."
+msgstr ""
+"Não foi possível criar o PDF do cartão presente. Tente novamente mais tarde."
 
-#: src/Pdf/Download.php:111
+#: src/Pdf/Download.php:114
 #, fuzzy
 msgid "You do not have permission to do this."
 msgstr "Não tem permissão para realizar esta ação."
@@ -1004,35 +1008,46 @@ msgstr "Não tem permissão para realizar esta ação."
 msgid "Could not create the PDF storage folder."
 msgstr "Não foi possível criar a pasta de armazenamento dos PDF."
 
-#: src/Pdf/PdfGenerator.php:172 src/Pdf/PdfGenerator.php:214
+#: src/Pdf/PdfGenerator.php:180 src/Pdf/PdfGenerator.php:227
 msgid "Could not write the PDF file."
 msgstr "Não foi possível gravar o ficheiro PDF."
 
-#: src/Pdf/PdfGenerator.php:264
+#: src/Pdf/PdfGenerator.php:279
 msgid "The PDF library is missing."
 msgstr "A biblioteca PDF não está disponível."
 
-#: src/Pdf/PdfGenerator.php:298
+#: src/Pdf/PdfGenerator.php:308
 msgid "The PDF renderer returned no document."
 msgstr "O gerador de PDF não devolveu nenhum documento."
 
-#: src/Pdf/ProductPreview.php:75
-#, fuzzy
-msgid "Your gift card"
-msgstr "Recebeu um cartão-presente!"
-
-#: src/Pdf/ProductPreview.php:84
+#: src/Pdf/ProductPreview.php:75 src/Pdf/ProductPreview.php:76
 #, fuzzy
 msgid "Card design"
 msgstr "Escolha um Design"
 
-#: src/Pdf/ProductPreview.php:93
+#: src/Pdf/ProductPreview.php:86
+msgid "Preview your card"
+msgstr "Pré-visualizar o seu cartão"
+
+#: src/Pdf/ProductPreview.php:87
+msgid "The recipient gets it as a PDF by email once the order is paid."
+msgstr "O destinatário recebe-o em PDF por e-mail assim que a encomenda for paga."
+
+#: src/Pdf/ProductPreview.php:89
+#, fuzzy
+msgid "Gift card preview"
+msgstr "Código do cartão presente"
+
+#: src/Pdf/ProductPreview.php:92
+msgid "Close preview"
+msgstr "Fechar pré-visualização"
+
+#: src/Pdf/ProductPreview.php:101
 msgid ""
-"The recipient gets this card as a PDF by email. The code is added when the "
-"order is paid."
+"This is how the PDF will look. The code is added when the order is paid."
 msgstr ""
 
-#: src/Pdf/ProductPreview.php:135
+#: src/Pdf/ProductPreview.php:145
 msgid "Design"
 msgstr "Modelo"
 
@@ -1111,7 +1126,7 @@ msgid ""
 "at checkout."
 msgstr ""
 
-#: templates/emails/pdf-notice.php:40 templates/pdf/_card.php:73
+#: templates/emails/pdf-notice.php:40 templates/pdf/_card.php:72
 msgid "Gift card code"
 msgstr "Código do cartão presente"
 
@@ -1126,14 +1141,18 @@ msgstr "Comprar Agora"
 msgid "Valid until %s."
 msgstr "Válido até %s."
 
-#: templates/pdf/_card.php:62
+#: templates/pdf/_card.php:61
 msgid "To"
 msgstr "Para"
 
-#: templates/pdf/_card.php:66
+#: templates/pdf/_card.php:65
 #, fuzzy
 msgid "From"
 msgstr "De: %s"
+
+#, fuzzy
+#~ msgid "Your gift card"
+#~ msgstr "Recebeu um cartão-presente!"
 
 #~ msgid ""
 #~ "Smart Gift Cards for WooCommerce - Pro requires version 1.2.0 or higher "

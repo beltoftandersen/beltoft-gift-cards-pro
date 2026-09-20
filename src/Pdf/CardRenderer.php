@@ -15,10 +15,10 @@ class CardRenderer {
 	const MODE_PDF     = 'pdf';
 
 	/**
-	 * Card size in CSS pixels at 96 dpi (A5 landscape, 210 x 148 mm).
+	 * Card size in CSS pixels at 96 dpi (A5 portrait, 148 x 210 mm).
 	 */
-	const WIDTH  = 794;
-	const HEIGHT = 559;
+	const WIDTH  = 559;
+	const HEIGHT = 794;
 
 	/**
 	 * Dummy data for the product-page preview and admin samples.

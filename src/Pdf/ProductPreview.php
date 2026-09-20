@@ -72,15 +72,7 @@ class ProductPreview {
 		$default = Designs::DEFAULT_SLUG;
 		?>
 		<div class="bgcw-pro-preview" data-bgcw-preview>
-			<h4 class="bgcw-pro-preview__title"><?php esc_html_e( 'Your gift card', 'beltoft-gift-cards-pro' ); ?></h4>
-			<div class="bgcw-pro-preview__stage">
-				<div class="bgcw-pro-preview__scale">
-					<?php
-					// CardRenderer escapes all dynamic values.
-					echo CardRenderer::render( $default, CardRenderer::placeholders(), CardRenderer::MODE_PREVIEW ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-					?>
-				</div>
-			</div>
+			<h4 class="bgcw-pro-preview__title"><?php esc_html_e( 'Card design', 'beltoft-gift-cards-pro' ); ?></h4>
 			<div class="bgcw-pro-designs" role="radiogroup" aria-label="<?php esc_attr_e( 'Card design', 'beltoft-gift-cards-pro' ); ?>">
 				<?php foreach ( $designs as $slug => $design ) : ?>
 					<label class="bgcw-pro-design<?php echo $slug === $default ? ' is-selected' : ''; ?>">
@@ -90,7 +82,25 @@ class ProductPreview {
 					</label>
 				<?php endforeach; ?>
 			</div>
-			<p class="bgcw-pro-preview__note"><?php esc_html_e( 'The recipient gets this card as a PDF by email. The code is added when the order is paid.', 'beltoft-gift-cards-pro' ); ?></p>
+			<p class="bgcw-pro-preview__actions">
+				<button type="button" class="bgcw-pro-preview__open" aria-haspopup="dialog" aria-controls="bgcw-pro-lightbox"><?php esc_html_e( 'Preview your card', 'beltoft-gift-cards-pro' ); ?></button>
+				<span class="bgcw-pro-preview__note"><?php esc_html_e( 'The recipient gets it as a PDF by email once the order is paid.', 'beltoft-gift-cards-pro' ); ?></span>
+			</p>
+			<div class="bgcw-pro-lightbox" id="bgcw-pro-lightbox" role="dialog" aria-modal="true" aria-label="<?php esc_attr_e( 'Gift card preview', 'beltoft-gift-cards-pro' ); ?>" hidden>
+				<div class="bgcw-pro-lightbox__backdrop" data-bgcw-close></div>
+				<div class="bgcw-pro-lightbox__panel">
+					<button type="button" class="bgcw-pro-lightbox__close" data-bgcw-close aria-label="<?php esc_attr_e( 'Close preview', 'beltoft-gift-cards-pro' ); ?>">&times;</button>
+					<div class="bgcw-pro-preview__stage">
+						<div class="bgcw-pro-preview__scale">
+							<?php
+							// CardRenderer escapes all dynamic values.
+							echo CardRenderer::render( $default, CardRenderer::placeholders(), CardRenderer::MODE_PREVIEW ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							?>
+						</div>
+					</div>
+					<p class="bgcw-pro-lightbox__note"><?php esc_html_e( 'This is how the PDF will look. The code is added when the order is paid.', 'beltoft-gift-cards-pro' ); ?></p>
+				</div>
+			</div>
 		</div>
 		<?php
 	}

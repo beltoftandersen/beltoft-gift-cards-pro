@@ -294,8 +294,8 @@ class PdfGenerator {
 			$options->set( 'tempDir', get_temp_dir() );
 
 			$dompdf = new \Dompdf\Dompdf( $options );
-			// A5 landscape in points (210 x 148 mm).
-			$dompdf->setPaper( [ 0, 0, 595.276, 419.528 ] );
+			// A5 portrait in points (148 x 210 mm).
+			$dompdf->setPaper( [ 0, 0, 419.528, 595.276 ] );
 			$dompdf->loadHtml( $html, 'UTF-8' );
 			$dompdf->render();
 

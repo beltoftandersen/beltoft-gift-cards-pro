@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Beltoft Gift Cards for WooCommerce - Pro 1.3.0\n"
+"Project-Id-Version: Beltoft Gift Cards for WooCommerce - Pro 1.4.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/beltoft-gift-cards-pro\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-19T22:48:17+00:00\n"
+"POT-Creation-Date: 2026-09-20T09:50:19+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: beltoft-gift-cards-pro\n"
@@ -26,7 +26,7 @@ msgstr ""
 
 #. Description of the plugin
 #: beltoft-gift-cards-pro.php
-msgid "Premium add-on for Beltoft Gift Cards for WooCommerce — scheduled delivery, email themes, store credit, bulk generation, BOGO promotions, and analytics. Requires the free core plugin."
+msgid "Premium add-on for Beltoft Gift Cards for WooCommerce — scheduled delivery, PDF gift cards, store credit, bulk generation, BOGO promotions, and analytics. Requires the free core plugin."
 msgstr ""
 
 #. Author of the plugin
@@ -49,7 +49,7 @@ msgid "Beltoft Gift Cards for WooCommerce - Pro requires WooCommerce to be insta
 msgstr ""
 
 #: beltoft-gift-cards-pro.php:100
-msgid "Beltoft Gift Cards for WooCommerce - Pro requires version 1.5.0 or higher of the free plugin. Please update."
+msgid "Beltoft Gift Cards for WooCommerce - Pro requires version 1.5.1 or higher of the free plugin. Please update."
 msgstr ""
 
 #: beltoft-gift-cards-pro.php:115
@@ -312,7 +312,7 @@ msgid "Card designs"
 msgstr ""
 
 #: src/Admin/SettingsPage.php:400
-msgid "Customers pick one of these designs on the product page. Change the heading or main color, then download a sample to see the result. Saving a change regenerates stored PDFs the next time they are sent or downloaded."
+msgid "Customers pick one of these designs on the product page. Change the heading or main color and save, then download a sample to see the result. Saving a change regenerates stored PDFs the next time they are sent or downloaded."
 msgstr ""
 
 #: src/Admin/SettingsPage.php:416
@@ -895,23 +895,23 @@ msgstr ""
 msgid "Congratulations"
 msgstr ""
 
-#: src/Pdf/Download.php:75
+#: src/Pdf/Download.php:76
 msgid "Download PDF"
 msgstr ""
 
-#: src/Pdf/Download.php:85
+#: src/Pdf/Download.php:93
 msgid "This download link is not valid."
 msgstr ""
 
-#: src/Pdf/Download.php:95
+#: src/Pdf/Download.php:98
 msgid "You do not have access to this gift card."
 msgstr ""
 
-#: src/Pdf/Download.php:100
+#: src/Pdf/Download.php:103
 msgid "The gift card PDF could not be created. Please try again later."
 msgstr ""
 
-#: src/Pdf/Download.php:111
+#: src/Pdf/Download.php:114
 msgid "You do not have permission to do this."
 msgstr ""
 
@@ -919,32 +919,45 @@ msgstr ""
 msgid "Could not create the PDF storage folder."
 msgstr ""
 
-#: src/Pdf/PdfGenerator.php:172
-#: src/Pdf/PdfGenerator.php:214
+#: src/Pdf/PdfGenerator.php:180
+#: src/Pdf/PdfGenerator.php:227
 msgid "Could not write the PDF file."
 msgstr ""
 
-#: src/Pdf/PdfGenerator.php:264
+#: src/Pdf/PdfGenerator.php:279
 msgid "The PDF library is missing."
 msgstr ""
 
-#: src/Pdf/PdfGenerator.php:298
+#: src/Pdf/PdfGenerator.php:308
 msgid "The PDF renderer returned no document."
 msgstr ""
 
 #: src/Pdf/ProductPreview.php:75
-msgid "Your gift card"
-msgstr ""
-
-#: src/Pdf/ProductPreview.php:84
+#: src/Pdf/ProductPreview.php:76
 msgid "Card design"
 msgstr ""
 
-#: src/Pdf/ProductPreview.php:93
-msgid "The recipient gets this card as a PDF by email. The code is added when the order is paid."
+#: src/Pdf/ProductPreview.php:86
+msgid "Preview your card"
 msgstr ""
 
-#: src/Pdf/ProductPreview.php:135
+#: src/Pdf/ProductPreview.php:87
+msgid "The recipient gets it as a PDF by email once the order is paid."
+msgstr ""
+
+#: src/Pdf/ProductPreview.php:89
+msgid "Gift card preview"
+msgstr ""
+
+#: src/Pdf/ProductPreview.php:92
+msgid "Close preview"
+msgstr ""
+
+#: src/Pdf/ProductPreview.php:101
+msgid "This is how the PDF will look. The code is added when the order is paid."
+msgstr ""
+
+#: src/Pdf/ProductPreview.php:145
 msgid "Design"
 msgstr ""
 
@@ -1022,7 +1035,7 @@ msgid "Your gift card is attached to this email as a PDF. Print it or show the c
 msgstr ""
 
 #: templates/emails/pdf-notice.php:40
-#: templates/pdf/_card.php:73
+#: templates/pdf/_card.php:72
 msgid "Gift card code"
 msgstr ""
 
@@ -1036,10 +1049,10 @@ msgstr ""
 msgid "Valid until %s."
 msgstr ""
 
-#: templates/pdf/_card.php:62
+#: templates/pdf/_card.php:61
 msgid "To"
 msgstr ""
 
-#: templates/pdf/_card.php:66
+#: templates/pdf/_card.php:65
 msgid "From"
 msgstr ""
