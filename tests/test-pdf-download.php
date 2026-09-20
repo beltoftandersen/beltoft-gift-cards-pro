@@ -7,6 +7,14 @@ use BgcwPro\Pdf\Download;
 use BgcwPro\Pdf\PdfGenerator;
 
 $admin_id = bgcwp_test_admin_id();
+
+// The button depends on pdf_enabled; pin it for this test and restore afterwards.
+$bgcwp_orig_opts = get_option( 'bgcw_pro_options', [] );
+$bgcwp_opts      = $bgcwp_orig_opts;
+$bgcwp_opts['pdf_enabled'] = '1';
+update_option( 'bgcw_pro_options', $bgcwp_opts );
+BgcwPro\Support\Options::invalidate_cache();
+bgcwp_test_register_cleanup( function () use ( $bgcwp_orig_opts ) { update_option( 'bgcw_pro_options', $bgcwp_orig_opts ); BgcwPro\Support\Options::invalidate_cache(); } );
 $owner_id = wp_insert_user( [ 'user_login' => 'bgcwp_owner_' . wp_rand(), 'user_pass' => wp_generate_password(), 'user_email' => 'bgcwp_owner_' . wp_rand() . '@example.test' ] );
 $recip_id = wp_insert_user( [ 'user_login' => 'bgcwp_recip_' . wp_rand(), 'user_pass' => wp_generate_password(), 'user_email' => 'bgcwp_recip_' . wp_rand() . '@example.test' ] );
 $other_id = wp_insert_user( [ 'user_login' => 'bgcwp_other_' . wp_rand(), 'user_pass' => wp_generate_password(), 'user_email' => 'bgcwp_other_' . wp_rand() . '@example.test' ] );
@@ -33,7 +41,7 @@ bgcwp_assert( false !== strpos( Download::sample_url( 'holiday' ), 'design=class
 // Button renders only for logged-in users when enabled.
 wp_set_current_user( $owner_id );
 ob_start(); Download::render_button( $gc ); $btn = ob_get_clean();
-bgcwp_assert( false !== strpos( $btn, 'Download PDF' ), 'button rendered for logged-in user' );
+bgcwp_assert( false !== strpos( $btn, 'bgcw-pro-pdf-download' ) && false !== strpos( $btn, 'action=bgcw_pro_pdf_download' ), 'button rendered for logged-in user' );
 wp_set_current_user( 0 );
 ob_start(); Download::render_button( $gc ); $btn = ob_get_clean();
 bgcwp_assert_eq( '', $btn, 'no button for guests' );

@@ -21,6 +21,7 @@ bgcwp_assert_eq( $version + 1, (int) $clean['pdf_design_version'], 'version bump
 // Legacy theme keys are dropped.
 $clean = Options::sanitize( [ 'pdf_enabled' => '1' ] );
 bgcwp_assert( ! array_key_exists( 'email_themes', $clean ) && ! array_key_exists( 'theme_color_holiday', $clean ), 'legacy theme options removed' );
+bgcwp_assert( ! array_key_exists( 'pdf_color_birthday', $clean ), 'no per-design keys for removed designs' );
 
 // Invalid logo id -> empty.
 $clean = Options::sanitize( [ 'pdf_enabled' => '1', 'pdf_logo_id' => 'abc' ] );

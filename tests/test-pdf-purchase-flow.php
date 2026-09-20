@@ -25,7 +25,7 @@ WC()->cart->empty_cart();
 WC()->mailer();
 $recipient = 'buyer-flow-' . wp_rand() . '@example.test';
 
-// Item 1: €50 Birthday. Item 2: €100 Classic. Same recipient, so only a multi-signal match separates them.
+// Two items to the same recipient; posted design slugs are ignored (single design).
 foreach ( [ [ 50, 'birthday' ], [ 100, 'classic' ] ] as $line ) {
 	$_POST = [
 		'bgcw_amount'          => (string) $line[0],
@@ -59,7 +59,7 @@ $designs_by_amount = [];
 foreach ( $order->get_items() as $item ) {
 	$designs_by_amount[ (string) (float) $item->get_meta( '_bgcw_amount' ) ] = $item->get_meta( '_bgcw_design_theme' );
 }
-bgcwp_assert_eq( 'birthday', $designs_by_amount['50'] ?? null, 'order item 50 stores birthday design' );
+bgcwp_assert_eq( 'classic', $designs_by_amount['50'] ?? null, 'order item 50 stores classic design (posted slug normalized)' );
 bgcwp_assert_eq( 'classic', $designs_by_amount['100'] ?? null, 'order item 100 stores classic design' );
 
 // Pay -> cards created -> emails with PDFs.
@@ -68,7 +68,7 @@ $cards = Repository::get_by_order( $order_id );
 bgcwp_assert_eq( 2, count( $cards ), 'two gift cards created on processing' );
 
 foreach ( $cards as $gc ) {
-	$expected = 50.0 === (float) $gc->initial_amount ? 'birthday' : 'classic';
+	$expected = 'classic';
 	bgcwp_assert_eq( $expected, PdfGenerator::design_for_card( $gc ), 'card ' . $gc->initial_amount . ' resolves ' . $expected . ' design' );
 	$row = PdfGenerator::record( $gc->id );
 	bgcwp_assert( $row && $expected === $row->design, 'stored PDF for ' . $gc->initial_amount . ' uses ' . $expected );

@@ -2,7 +2,7 @@
 
 Premium add-on for [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards/) — scheduled delivery, PDF gift cards, store credit, bulk generation, BOGO promotions, and analytics.
 
-- Stable version: 1.4.2
+- Stable version: 1.4.3
 - Requires: WordPress 5.8+, PHP 7.4+, WooCommerce 6.0+ (tested up to WordPress 7.1)
 - Requires: Beltoft Gift Cards for WooCommerce (free) 1.5.1+
 - Author: beltoft.net
@@ -17,7 +17,7 @@ A valid license key is required to activate Pro features.
 ## Features
 
 - **Scheduled Delivery** — Let customers choose a future delivery date for their gift card. A date picker appears on the product page, and a cron job sends the email at the scheduled time.
-- **PDF Gift Cards** — The gift card is delivered as a designed PDF attached to the email, ready to print. Three designs (Classic, Birthday, Celebration) with your logo, custom heading and color. Customers see a live preview of the card on the product page while they choose the amount, design and message, and can download the PDF from My Account.
+- **PDF Gift Cards** — The gift card is delivered as a designed PDF attached to the email, ready to print. Add your logo, heading and color. Customers can preview the card on the product page while they choose the amount and message, and download the PDF from My Account.
 - **Store Credit on Refund** — When an order paid with a gift card is refunded, automatically create a store credit gift card for the customer instead of restoring the original card balance.
 - **Bulk Generation** — Generate up to 500 gift cards at once from the admin panel. Set amount, prefix, expiry, and optional recipient details.
 - **CSV Import / Export** — Export all gift cards to CSV with status filtering. Import gift cards from CSV with validation and error reporting.
@@ -42,6 +42,10 @@ A valid license key is required to activate Pro features.
 5. Configure features under the **Pro Settings** tab.
 
 ## Changelog
+
+### 1.4.3
+
+- Changed: One card design (Classic) instead of three. The design picker is removed; heading, main color and logo remain adjustable in Pro Settings.
 
 ### 1.4.2
 

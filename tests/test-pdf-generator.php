@@ -53,6 +53,6 @@ Repository::delete( $id );
 bgcwp_assert( is_string( $p2 ) && ! file_exists( $p2 ), 'bgcw_gift_card_deleted hook removes file' );
 
 // Sample.
-$sample = PdfGenerator::sample( 'birthday' );
+$sample = PdfGenerator::sample( 'classic' );
 bgcwp_assert( is_string( $sample ) && file_exists( $sample ), 'sample pdf written' );
 if ( is_string( $sample ) ) { wp_delete_file( $sample ); }

@@ -50,14 +50,10 @@ const URL = process.env.BGCW_E2E_URL || 'https://test.chimkins.com/product/gift-
     }
     await page.fill('#bgcw_recipient_name', 'Ana Silva');
     await page.fill('#bgcw_message', 'Happy birthday Ana');
-    await page.locator('input[name="bgcw_design_theme"][value="birthday"]').check({ force: true });
     await page.waitForTimeout(100);
     log((await page.locator('[data-bgcw-field="recipient_name"]').textContent()) === 'Ana Silva', `${name}: recipient name live`);
     log((await page.locator('[data-bgcw-field="message"]').textContent()) === 'Happy birthday Ana', `${name}: message live`);
-    const cls = await card.getAttribute('class');
-    log(/bgcw-card--birthday/.test(cls) && !/bgcw-card--classic/.test(cls), `${name}: design class switched (${cls})`);
-    const selected = await page.locator('.bgcw-pro-design.is-selected .bgcw-pro-design__name').textContent();
-    log(selected.trim().length > 0, `${name}: swatch selection state (${selected.trim()})`);
+    log(await page.locator('input[name="bgcw_design_theme"]').count() === 0, `${name}: no design picker`);
 
     // Open the preview.
     await page.locator('.bgcw-pro-preview__open').click();
@@ -72,7 +68,7 @@ const URL = process.env.BGCW_E2E_URL || 'https://test.chimkins.com/product/gift-
     log(Math.abs(dims.h / dims.w - 794 / 559) < 0.02, `${name}: stage has A5 portrait ratio (${Math.round(dims.w)}x${Math.round(dims.h)})`);
     log(dims.top >= 0 && dims.bottom <= dims.vh && dims.w <= dims.vw, `${name}: card fully inside viewport`);
     const panelBg = await page.evaluate(() => getComputedStyle(document.querySelector('.bgcw-card__panel')).backgroundColor);
-    log(panelBg === 'rgb(228, 87, 123)', `${name}: panel color is birthday coral (${panelBg})`);
+    log(panelBg === 'rgb(22, 33, 62)', `${name}: panel color is classic navy (${panelBg})`);
     const heading = await page.locator('[data-bgcw-field="heading"]').textContent();
     log(heading.trim().length > 0, `${name}: heading updated (${heading.trim()})`);
     const fonts = await page.evaluate(() => document.fonts.check("16px BgcwSerif") && document.fonts.check("16px BgcwSans"));

@@ -6,7 +6,7 @@ Tested up to: 7.1
 Requires PHP: 7.4
 WC requires at least: 6.0
 WC tested up to: 9.6
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,7 +19,7 @@ Premium add-on for Beltoft Gift Cards: PDF gift cards with live preview, schedul
 = Features =
 
 * **Scheduled Delivery** — Let customers choose a future delivery date for their gift card. A date picker appears on the product page, and a cron job sends the email at the scheduled time.
-* **PDF Gift Cards** — The gift card is delivered as a designed PDF attached to the email, ready to print. Three designs (Classic, Birthday, Celebration) with your logo, custom heading and color. Customers see a live preview of the card on the product page while they choose the amount, design and message, and can download the PDF from My Account.
+* **PDF Gift Cards** — The gift card is delivered as a designed PDF attached to the email, ready to print. Add your logo, heading and color. Customers can preview the card on the product page while they choose the amount and message, and download the PDF from My Account.
 * **Store Credit on Refund** — When an order paid with a gift card is refunded, automatically create a store credit gift card for the customer instead of restoring the original card balance.
 * **Bulk Generation** — Generate up to 500 gift cards at once from the admin panel. Set amount, prefix, expiry, and optional recipient details.
 * **CSV Import / Export** — Export all gift cards to CSV with status filtering. Import gift cards from CSV with validation and error reporting.
@@ -59,13 +59,16 @@ Yes. When Scheduled Delivery is enabled, a date picker appears on the gift card 
 
 = How do PDF gift cards work? =
 
-When PDF Gift Cards is enabled, the product page shows a live preview of the card and three designs to choose from. After payment the recipient receives a short email with the card attached as a PDF, and the buyer can download the PDF from My Account. Change the logo, heading and main color under Pro Settings.
+When PDF Gift Cards is enabled, the product page offers a live preview of the card. After payment the recipient receives a short email with the card attached as a PDF, and the buyer can download the PDF from My Account. Change the logo, heading and main color under Pro Settings.
 
 = What happens to store credit on refund? =
 
 When Store Credit is enabled and an order paid with a gift card is refunded, the refund amount is issued as a new store credit gift card assigned to the customer, instead of restoring the original card balance.
 
 == Changelog ==
+
+= 1.4.3 =
+* Changed: One card design (Classic) instead of three. The design picker is removed; heading, main color and logo remain adjustable in Pro Settings.
 
 = 1.4.2 =
 * Fixed: Portuguese translations for the PDF card and preview strings.

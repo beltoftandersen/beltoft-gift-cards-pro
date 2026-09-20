@@ -39,12 +39,8 @@ class Options {
 			'pdf_design_version' => '1',
 
 			// Per-design customization (empty = use built-in default).
-			'pdf_heading_classic'     => '',
-			'pdf_heading_birthday'    => '',
-			'pdf_heading_celebration' => '',
-			'pdf_color_classic'       => '',
-			'pdf_color_birthday'      => '',
-			'pdf_color_celebration'   => '',
+			'pdf_heading_classic' => '',
+			'pdf_color_classic'   => '',
 
 			// Store Credit.
 			'store_credit'      => '1',
@@ -175,7 +171,7 @@ class Options {
 			}
 			$clean['pdf_logo_id'] = $logo;
 		}
-		foreach ( [ 'classic', 'birthday', 'celebration' ] as $slug ) {
+		foreach ( array_keys( \BgcwPro\Pdf\Designs::get() ) as $slug ) {
 			$heading_key = 'pdf_heading_' . $slug;
 			if ( isset( $input[ $heading_key ] ) ) {
 				$val = sanitize_text_field( $input[ $heading_key ] );

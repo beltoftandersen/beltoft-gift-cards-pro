@@ -7,7 +7,8 @@ use BgcwPro\Support\Options;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * The three PDF card designs and their palettes.
+ * The PDF card design and its palette. A single design ships; the list stays
+ * filterable (bgcw_pro_pdf_designs) so a site can register its own.
  */
 class Designs {
 
@@ -32,22 +33,6 @@ class Designs {
 				'accent'  => '#C9A227',
 				'bg'      => '#F3F1EC',
 				'motif'   => 'frame',
-			],
-			'birthday'    => [
-				'name'    => __( 'Birthday', 'beltoft-gift-cards-pro' ),
-				'heading' => __( 'Happy birthday', 'beltoft-gift-cards-pro' ),
-				'color'   => '#E4577B',
-				'accent'  => '#F5C451',
-				'bg'      => '#FDF0F3',
-				'motif'   => 'confetti',
-			],
-			'celebration' => [
-				'name'    => __( 'Celebration', 'beltoft-gift-cards-pro' ),
-				'heading' => __( 'Congratulations', 'beltoft-gift-cards-pro' ),
-				'color'   => '#C2571A',
-				'accent'  => '#FFE8B0',
-				'bg'      => '#FBF1E8',
-				'motif'   => 'ribbon',
 			],
 		];
 	}

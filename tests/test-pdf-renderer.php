@@ -6,8 +6,8 @@ use BgcwPro\Pdf\Designs;
 
 bgcwp_assert_eq( 'classic', Designs::normalize( 'holiday' ), 'removed theme normalizes to classic' );
 bgcwp_assert_eq( 'classic', Designs::normalize( '' ), 'empty normalizes to classic' );
-bgcwp_assert_eq( 'birthday', Designs::normalize( 'birthday' ), 'valid slug kept' );
-bgcwp_assert_eq( [ 'classic', 'birthday', 'celebration' ], array_keys( Designs::get() ), 'three designs' );
+bgcwp_assert_eq( 'classic', Designs::normalize( 'birthday' ), 'old birthday slug maps to classic' );
+bgcwp_assert_eq( [ 'classic' ], array_keys( Designs::get() ), 'one design' );
 
 $data = [
 	'amount'         => 75.5,
@@ -33,12 +33,12 @@ foreach ( Designs::get() as $slug => $theme ) {
 $no_msg = CardRenderer::render( 'classic', array_merge( $data, [ 'message' => '' ] ) );
 bgcwp_assert( false !== strpos( $no_msg, 'bgcw-card__message" data-bgcw-field="message" style="display:none"' ), 'empty message hides block' );
 
-$pdf_html = CardRenderer::render( 'celebration', $data, CardRenderer::MODE_PDF );
+$pdf_html = CardRenderer::render( 'classic', $data, CardRenderer::MODE_PDF );
 bgcwp_assert( 0 === strpos( $pdf_html, '<!DOCTYPE html>' ), 'pdf mode is a full document' );
 bgcwp_assert( false !== strpos( $pdf_html, '@page' ), 'pdf mode has @page' );
 bgcwp_assert( false !== strpos( $pdf_html, 'file://' ), 'pdf mode fonts use file paths' );
 bgcwp_assert( false !== strpos( CardRenderer::css(), BGCW_PRO_URL . 'assets/fonts/' ), 'preview css fonts use plugin URL' );
-bgcwp_assert( false !== strpos( CardRenderer::css(), '.bgcw-card--birthday .bgcw-card__panel{background-color:#E4577B;}' ), 'design rules generated' );
+bgcwp_assert( false !== strpos( CardRenderer::css(), '.bgcw-card--classic .bgcw-card__panel{background-color:#16213E;}' ), 'design rules generated' );
 
 // Admin override changes heading + color.
 $opts = get_option( 'bgcw_pro_options', [] );

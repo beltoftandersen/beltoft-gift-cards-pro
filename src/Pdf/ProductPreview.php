@@ -5,10 +5,10 @@ namespace BgcwPro\Pdf;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Live card preview and design picker on the gift card product page.
+ * Live card preview (lightbox) on the gift card product page.
  *
- * The chosen design travels as `bgcw_design_theme` (cart item data) and
- * `_bgcw_design_theme` (order item meta), unchanged from the previous email themes.
+ * A single design ships, so no picker is rendered. The `bgcw_design_theme` cart/order
+ * item handling is kept for sites that register extra designs via the filter.
  */
 class ProductPreview {
 
@@ -68,20 +68,9 @@ class ProductPreview {
 			return;
 		}
 
-		$designs = Designs::get();
-		$default = Designs::DEFAULT_SLUG;
+		$default = Designs::normalize( Designs::DEFAULT_SLUG );
 		?>
 		<div class="bgcw-pro-preview" data-bgcw-preview>
-			<h4 class="bgcw-pro-preview__title"><?php esc_html_e( 'Card design', 'beltoft-gift-cards-pro' ); ?></h4>
-			<div class="bgcw-pro-designs" role="radiogroup" aria-label="<?php esc_attr_e( 'Card design', 'beltoft-gift-cards-pro' ); ?>">
-				<?php foreach ( $designs as $slug => $design ) : ?>
-					<label class="bgcw-pro-design<?php echo $slug === $default ? ' is-selected' : ''; ?>">
-						<input type="radio" name="<?php echo esc_attr( self::FIELD ); ?>" value="<?php echo esc_attr( $slug ); ?>" <?php checked( $slug, $default ); ?> />
-						<span class="bgcw-pro-design__swatch" style="background-color:<?php echo esc_attr( $design['color'] ); ?>;"><span style="background-color:<?php echo esc_attr( $design['accent'] ); ?>;"></span></span>
-						<span class="bgcw-pro-design__name"><?php echo esc_html( $design['name'] ); ?></span>
-					</label>
-				<?php endforeach; ?>
-			</div>
 			<p class="bgcw-pro-preview__actions">
 				<button type="button" class="bgcw-pro-preview__open" aria-haspopup="dialog" aria-controls="bgcw-pro-lightbox"><?php esc_html_e( 'Preview your card', 'beltoft-gift-cards-pro' ); ?></button>
 				<span class="bgcw-pro-preview__note"><?php esc_html_e( 'The recipient gets it as a PDF by email once the order is paid.', 'beltoft-gift-cards-pro' ); ?></span>
