@@ -28,11 +28,11 @@ class Designs {
 		return [
 			'classic'     => [
 				'name'    => __( 'Classic', 'beltoft-gift-cards-pro' ),
-				'heading' => __( 'A gift for you', 'beltoft-gift-cards-pro' ),
-				'color'   => '#16213E',
-				'accent'  => '#C9A227',
-				'bg'      => '#F3F1EC',
-				'motif'   => 'frame',
+				'heading' => __( 'Surprise! A gift card just for you!', 'beltoft-gift-cards-pro' ),
+				'color'   => '#1F4A36',
+				'accent'  => '#1F4A36',
+				'bg'      => '#FFFFFF',
+				'motif'   => 'none',
 			],
 		];
 	}

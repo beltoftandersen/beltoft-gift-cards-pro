@@ -155,6 +155,23 @@ class SettingsPage {
 			'bgcw_pro_pdf'
 		);
 
+		// ── Give as a Gift Section ──
+		add_settings_section(
+			'bgcw_pro_gifting',
+			__( 'Give as a Gift', 'beltoft-gift-cards-pro' ),
+			function () {
+				echo '<p>' . esc_html__( 'Let customers buy any product as a gift. The recipient receives a gift card locked to that product and chooses when to redeem it. Enable it per product with the "Can be given as a gift" checkbox, or for whole categories here.', 'beltoft-gift-cards-pro' ) . '</p>';
+			},
+			self::PAGE_SLUG
+		);
+		add_settings_field(
+			'giftable_category_ids',
+			__( 'Giftable categories', 'beltoft-gift-cards-pro' ),
+			[ __CLASS__, 'render_giftable_categories' ],
+			self::PAGE_SLUG,
+			'bgcw_pro_gifting'
+		);
+
 		// ── Store Credit Section ──
 		add_settings_section(
 			'bgcw_pro_store_credit',
@@ -371,6 +388,25 @@ class SettingsPage {
 		}
 
 	/**
+	 * Multi-select of product categories whose products can be given as a gift.
+	 */
+	public static function render_giftable_categories() {
+		$selected = array_map( 'intval', (array) Options::get( 'giftable_category_ids' ) );
+		$terms    = get_terms( [ 'taxonomy' => 'product_cat', 'hide_empty' => false ] );
+		if ( is_wp_error( $terms ) ) {
+			$terms = [];
+		}
+		?>
+		<select name="<?php echo esc_attr( Options::OPTION ); ?>[giftable_category_ids][]" multiple size="6" class="bgcw-pro-categories">
+			<?php foreach ( $terms as $term ) : ?>
+				<option value="<?php echo (int) $term->term_id; ?>" <?php selected( in_array( (int) $term->term_id, $selected, true ) ); ?>><?php echo esc_html( $term->name ); ?></option>
+			<?php endforeach; ?>
+		</select>
+		<p class="description"><?php esc_html_e( 'Hold Ctrl or Cmd to select several. Gift card products are never giftable.', 'beltoft-gift-cards-pro' ); ?></p>
+		<?php
+	}
+
+	/**
 	 * Logo picker field (media library).
 	 */
 	public static function render_logo_field() {
@@ -435,6 +471,23 @@ class SettingsPage {
 				</div>
 			<?php endforeach; ?>
 		</div>
+
+		<h3><?php esc_html_e( 'Card text', 'beltoft-gift-cards-pro' ); ?></h3>
+		<p class="description"><?php esc_html_e( 'Leave blank for the defaults. {store} and {product} are replaced automatically. Translations for the defaults come from the plugin language files.', 'beltoft-gift-cards-pro' ); ?></p>
+		<table class="form-table">
+			<tr>
+				<th><label for="bgcw_pro_pdf_intro"><?php esc_html_e( 'Text on value cards', 'beltoft-gift-cards-pro' ); ?></label></th>
+				<td><textarea id="bgcw_pro_pdf_intro" name="<?php echo esc_attr( $option_name ); ?>[pdf_intro]" rows="2" class="large-text" placeholder="<?php esc_attr_e( 'Congratulations! You have received a gift card to spend at {store}. We hope you enjoy it!', 'beltoft-gift-cards-pro' ); ?>"><?php echo esc_textarea( (string) Options::get( 'pdf_intro' ) ); ?></textarea></td>
+			</tr>
+			<tr>
+				<th><label for="bgcw_pro_pdf_heading_product"><?php esc_html_e( 'Heading on product gift cards', 'beltoft-gift-cards-pro' ); ?></label></th>
+				<td><input type="text" id="bgcw_pro_pdf_heading_product" name="<?php echo esc_attr( $option_name ); ?>[pdf_heading_product]" class="large-text" value="<?php echo esc_attr( (string) Options::get( 'pdf_heading_product' ) ); ?>" placeholder="<?php esc_attr_e( 'Surprise! A gift just for you!', 'beltoft-gift-cards-pro' ); ?>" /></td>
+			</tr>
+			<tr>
+				<th><label for="bgcw_pro_pdf_intro_product"><?php esc_html_e( 'Text on product gift cards', 'beltoft-gift-cards-pro' ); ?></label></th>
+				<td><textarea id="bgcw_pro_pdf_intro_product" name="<?php echo esc_attr( $option_name ); ?>[pdf_intro_product]" rows="2" class="large-text" placeholder="<?php esc_attr_e( 'Congratulations! You have received {product} as a gift from {store}. We hope you enjoy it!', 'beltoft-gift-cards-pro' ); ?>"><?php echo esc_textarea( (string) Options::get( 'pdf_intro_product' ) ); ?></textarea></td>
+			</tr>
+		</table>
 		<?php
 	}
 

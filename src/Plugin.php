@@ -12,6 +12,10 @@ use BgcwPro\Pdf\PdfGenerator;
 use BgcwPro\Pdf\EmailAttachment;
 use BgcwPro\Pdf\Download;
 use BgcwPro\Pdf\ProductPreview;
+use BgcwPro\Gifting\Giftable;
+use BgcwPro\Gifting\GiftForm;
+use BgcwPro\Gifting\AddToCartHandler;
+use BgcwPro\Gifting\CartDisplay;
 use BgcwPro\StoreCredit\OrderHandler;
 use BgcwPro\BulkGeneration\Generator;
 use BgcwPro\BulkGeneration\CsvHandler;
@@ -52,6 +56,12 @@ class Plugin {
 		EmailAttachment::init();
 		Download::init();
 		ProductPreview::init();
+
+		// Give as a gift (product-locked cards).
+		Giftable::init();
+		GiftForm::init();
+		AddToCartHandler::init();
+		CartDisplay::init();
 
 		// Store credit on refund.
 		OrderHandler::init();
@@ -120,9 +130,9 @@ class Plugin {
 			return;
 		}
 
-		// Only load on gift-card product pages.
+		// Only load on gift-card product pages and on products that can be given as a gift.
 		$product = wc_get_product();
-		if ( ! $product || 'gift-card' !== $product->get_type() ) {
+		if ( ! $product || ( 'gift-card' !== $product->get_type() && ! Giftable::is_giftable( $product ) ) ) {
 			return;
 		}
 

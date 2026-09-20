@@ -33,6 +33,18 @@ do_action( 'woocommerce_email_header', $email_heading, $email );
 	</p>
 <?php endif; ?>
 
+<?php if ( class_exists( '\\Bgcw\\GiftCard\\ProductLock' ) && \Bgcw\GiftCard\ProductLock::is_locked( $gift_card ) ) : ?>
+	<p style="margin: 0 0 16px; font-size: 15px; color: #333;">
+		<?php
+		printf(
+			/* translators: %s: product name */
+			esc_html__( 'Your gift: %s', 'beltoft-gift-cards-pro' ),
+			'<strong>' . esc_html( \Bgcw\GiftCard\ProductLock::product_name( $gift_card ) ) . '</strong>'
+		);
+		?>
+	</p>
+<?php endif; ?>
+
 <p style="margin: 0 0 16px; font-size: 15px; color: #333;">
 	<?php esc_html_e( 'Your gift card is attached to this email as a PDF. Print it or show the code at checkout.', 'beltoft-gift-cards-pro' ); ?>
 </p>
@@ -45,7 +57,7 @@ do_action( 'woocommerce_email_header', $email_heading, $email );
 <p style="margin: 0 0 24px;">
 	<a href="<?php echo esc_url( add_query_arg( 'bgcw_apply', rawurlencode( $gift_card->code ), wc_get_page_permalink( 'shop' ) ) ); ?>"
 	   style="display: inline-block; background: #222222; color: #ffffff; padding: 12px 28px; text-decoration: none; border-radius: 4px; font-weight: 600; font-size: 15px;">
-		<?php esc_html_e( 'Shop now', 'beltoft-gift-cards-pro' ); ?>
+		<?php echo ( class_exists( '\\Bgcw\\GiftCard\\ProductLock' ) && \Bgcw\GiftCard\ProductLock::is_locked( $gift_card ) ) ? esc_html__( 'Redeem your gift', 'beltoft-gift-cards-pro' ) : esc_html__( 'Shop now', 'beltoft-gift-cards-pro' ); ?>
 	</a>
 </p>
 

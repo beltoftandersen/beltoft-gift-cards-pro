@@ -9,7 +9,8 @@ Options::invalidate_cache();
 $version = (int) Options::get( 'pdf_design_version' );
 
 // Browser posts the built-in default color (lowercased) for untouched pickers: not a change.
-$clean = Options::sanitize( [ 'pdf_enabled' => '1', 'pdf_color_classic' => '#16213e', 'pdf_heading_classic' => '' ] );
+$default_color = strtolower( \BgcwPro\Pdf\Designs::builtin_value( 'classic', 'color' ) );
+$clean = Options::sanitize( [ 'pdf_enabled' => '1', 'pdf_color_classic' => $default_color, 'pdf_heading_classic' => '' ] );
 bgcwp_assert_eq( '', $clean['pdf_color_classic'], 'default color is not stored as override' );
 bgcwp_assert_eq( $version, (int) $clean['pdf_design_version'], 'no version bump on untouched save' );
 

@@ -81,6 +81,11 @@
 		if (name === 'message' && value.length > 220) {
 			value = value.slice(0, 217) + '…';
 		}
+		if (name === 'message') {
+			el.textContent = value ? '\u201C' + value + '\u201D' : '';
+			el.style.display = value ? '' : 'none';
+			return;
+		}
 		el.textContent = value || placeholder;
 	}
 
@@ -203,4 +208,47 @@
 
 	updateAll();
 	setTimeout(updateAll, 100);
+})();
+
+/* ── Give as a gift toggle ──────────────────── */
+(function () {
+	'use strict';
+	var gift = document.querySelector('[data-bgcw-gift]');
+	if (!gift) {
+		return;
+	}
+	var toggle = gift.querySelector('#bgcw_gift');
+	var fields = gift.querySelector('.bgcw-pro-gift__fields');
+	var form = gift.closest('form.cart');
+	var button = form ? form.querySelector('.single_add_to_cart_button') : null;
+	var originalText = button ? button.textContent : '';
+	var params = window.bgcw_pro_pdf || {};
+
+	function apply() {
+		var on = toggle.checked;
+		fields.hidden = !on;
+		gift.classList.toggle('is-on', on);
+		var required = fields.querySelectorAll('[data-bgcw-required]');
+		for (var i = 0; i < required.length; i++) {
+			required[i].required = on;
+		}
+		if (button) {
+			button.textContent = on && params.gift_button_text ? params.gift_button_text : originalText;
+			if (on) {
+				// A gift is locked to the parent product; the recipient picks options later.
+				button.classList.remove('disabled', 'wc-variation-selection-needed', 'wc-variation-is-unavailable');
+				button.removeAttribute('disabled');
+			}
+		}
+	}
+
+	toggle.addEventListener('change', apply);
+	if (form && window.jQuery) {
+		window.jQuery(form).on('woocommerce_variation_has_changed hide_variation reset_data', function () {
+			if (toggle.checked) {
+				setTimeout(apply, 0);
+			}
+		});
+	}
+	apply();
 })();

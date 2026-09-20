@@ -110,6 +110,8 @@ class PdfGenerator {
 			'sender_name'    => (string) $gc->sender_name,
 			'message'        => (string) $gc->message,
 			'expires_at'     => $gc->expires_at,
+			'product_id'     => ! empty( $gc->product_id ) ? (int) $gc->product_id : 0,
+			'product_name'   => class_exists( '\\Bgcw\\GiftCard\\ProductLock' ) ? \Bgcw\GiftCard\ProductLock::product_name( $gc ) : '',
 		];
 	}
 
@@ -294,8 +296,8 @@ class PdfGenerator {
 			$options->set( 'tempDir', get_temp_dir() );
 
 			$dompdf = new \Dompdf\Dompdf( $options );
-			// A5 portrait in points (148 x 210 mm).
-			$dompdf->setPaper( [ 0, 0, 419.528, 595.276 ] );
+			// A5 landscape in points (210 x 148 mm).
+			$dompdf->setPaper( [ 0, 0, 595.276, 419.528 ] );
 			$dompdf->loadHtml( $html, 'UTF-8' );
 			$dompdf->render();
 

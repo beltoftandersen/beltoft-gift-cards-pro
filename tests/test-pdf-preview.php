@@ -26,4 +26,4 @@ bgcwp_assert( false !== strpos( $html, 'GIFT-XXXX-XXXX' ), 'placeholder code sho
 
 $params = ProductPreview::script_params();
 bgcwp_assert( isset( $params['currency']['symbol'], $params['headings']['classic'], $params['placeholders']['message'] ), 'script params complete' );
-bgcwp_assert_eq( 559, $params['card_width'], 'card width param' );
+bgcwp_assert_eq( 794, $params['card_width'], 'card width param' );

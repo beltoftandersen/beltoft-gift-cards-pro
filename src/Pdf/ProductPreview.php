@@ -53,6 +53,7 @@ class ProductPreview {
 				'sender_name'    => $placeholders['sender_name'],
 				'message'        => $placeholders['message'],
 			],
+			'gift_button_text' => __( 'Add gift to cart', 'beltoft-gift-cards-pro' ),
 			'card_width'   => CardRenderer::WIDTH,
 			'card_height'  => CardRenderer::HEIGHT,
 		];
@@ -69,6 +70,11 @@ class ProductPreview {
 		}
 
 		$default = Designs::normalize( Designs::DEFAULT_SLUG );
+		$data    = CardRenderer::placeholders();
+		if ( $product instanceof \WC_Product && 'gift-card' !== $product->get_type() ) {
+			$data['product_id']   = $product->get_id();
+			$data['product_name'] = $product->get_name();
+		}
 		?>
 		<div class="bgcw-pro-preview" data-bgcw-preview>
 			<p class="bgcw-pro-preview__actions">
@@ -83,7 +89,7 @@ class ProductPreview {
 						<div class="bgcw-pro-preview__scale">
 							<?php
 							// CardRenderer escapes all dynamic values.
-							echo CardRenderer::render( $default, CardRenderer::placeholders(), CardRenderer::MODE_PREVIEW ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							echo CardRenderer::render( $default, $data, CardRenderer::MODE_PREVIEW ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 							?>
 						</div>
 					</div>

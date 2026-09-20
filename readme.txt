@@ -6,7 +6,7 @@ Tested up to: 7.1
 Requires PHP: 7.4
 WC requires at least: 6.0
 WC tested up to: 9.6
-Stable tag: 1.4.3
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,6 +20,7 @@ Premium add-on for Beltoft Gift Cards: PDF gift cards with live preview, schedul
 
 * **Scheduled Delivery** — Let customers choose a future delivery date for their gift card. A date picker appears on the product page, and a cron job sends the email at the scheduled time.
 * **PDF Gift Cards** — The gift card is delivered as a designed PDF attached to the email, ready to print. Add your logo, heading and color. Customers can preview the card on the product page while they choose the amount and message, and download the PDF from My Account.
+* **Give as a Gift** — Sell any product as a gift. The buyer pays now; the recipient gets a gift card locked to that product and redeems it with one click, choosing the date or options themselves. Enable per product or per category.
 * **Store Credit on Refund** — When an order paid with a gift card is refunded, automatically create a store credit gift card for the customer instead of restoring the original card balance.
 * **Bulk Generation** — Generate up to 500 gift cards at once from the admin panel. Set amount, prefix, expiry, and optional recipient details.
 * **CSV Import / Export** — Export all gift cards to CSV with status filtering. Import gift cards from CSV with validation and error reporting.
@@ -32,7 +33,7 @@ Premium add-on for Beltoft Gift Cards: PDF gift cards with live preview, schedul
 * WordPress 5.8+
 * WooCommerce 6.0+
 * PHP 7.4+
-* [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards/) (free) 1.5.1+
+* [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards/) (free) 1.6.0+
 * PHP extensions mbstring, dom and gd (needed for PDF generation)
 
 == Installation ==
@@ -47,7 +48,7 @@ Premium add-on for Beltoft Gift Cards: PDF gift cards with live preview, schedul
 
 = Do I need the free plugin? =
 
-Yes. Beltoft Gift Cards for WooCommerce (free) version 1.5.1 or newer must be installed and activated. The Pro add-on extends the free plugin's functionality.
+Yes. Beltoft Gift Cards for WooCommerce (free) version 1.6.0 or newer must be installed and activated. The Pro add-on extends the free plugin's functionality.
 
 = How do I get a license key? =
 
@@ -66,6 +67,12 @@ When PDF Gift Cards is enabled, the product page offers a live preview of the ca
 When Store Credit is enabled and an order paid with a gift card is refunded, the refund amount is issued as a new store credit gift card assigned to the customer, instead of restoring the original card balance.
 
 == Changelog ==
+
+= 1.5.0 =
+* Requires the free plugin 1.6.0 or newer.
+* Added: "Give as a gift" on any product. Enable it per product or per category; the buyer pays the product price and the recipient receives a gift card locked to that product, redeemable with one click from the email. Ideal for workshops and experiences, where the recipient picks the date.
+* Changed: New card layout based on a printed voucher: landscape, white, one brand color, Onest typeface, with From/To, an editable text and a box holding the amount (or the gifted product) and the code.
+* Added: Editable card texts in Pro Settings ({store} and {product} placeholders), separate heading and text for product gift cards.
 
 = 1.4.3 =
 * Changed: One card design (Classic) instead of three. The design picker is removed; heading, main color and logo remain adjustable in Pro Settings.

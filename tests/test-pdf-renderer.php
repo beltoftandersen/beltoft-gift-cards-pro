@@ -31,14 +31,23 @@ foreach ( Designs::get() as $slug => $theme ) {
 }
 
 $no_msg = CardRenderer::render( 'classic', array_merge( $data, [ 'message' => '' ] ) );
-bgcwp_assert( false !== strpos( $no_msg, 'bgcw-card__message" data-bgcw-field="message" style="display:none"' ), 'empty message hides block' );
+bgcwp_assert( false !== strpos( $no_msg, 'data-bgcw-field="message" style="display:none"' ), 'empty message hides block' );
 
 $pdf_html = CardRenderer::render( 'classic', $data, CardRenderer::MODE_PDF );
 bgcwp_assert( 0 === strpos( $pdf_html, '<!DOCTYPE html>' ), 'pdf mode is a full document' );
 bgcwp_assert( false !== strpos( $pdf_html, '@page' ), 'pdf mode has @page' );
 bgcwp_assert( false !== strpos( $pdf_html, 'file://' ), 'pdf mode fonts use file paths' );
 bgcwp_assert( false !== strpos( CardRenderer::css(), BGCW_PRO_URL . 'assets/fonts/' ), 'preview css fonts use plugin URL' );
-bgcwp_assert( false !== strpos( CardRenderer::css(), '.bgcw-card--classic .bgcw-card__panel{background-color:#16213E;}' ), 'design rules generated' );
+bgcwp_assert( false !== strpos( CardRenderer::css(), '.bgcw-card--classic .bgcw-card__box,.bgcw-card--classic .bgcw-card__cell-left{border-color:#1F4A36;}' ), 'design rules generated' );
+
+// Product variant.
+$prod_html = CardRenderer::render( 'classic', array_merge( $data, [ 'product_id' => 0, 'product_name' => 'Perfume Workshop' ] ) );
+bgcwp_assert( false !== strpos( $prod_html, 'bgcw-card--product' ) && false !== strpos( $prod_html, 'Perfume Workshop' ), 'product variant renders product name' );
+bgcwp_assert( false === strpos( $prod_html, 'data-bgcw-field="amount"' ), 'product variant hides the amount' );
+bgcwp_assert( false !== strpos( $prod_html, 'Perfume Workshop' . '' ) && false !== strpos( $prod_html, esc_html( __( 'Surprise! A gift just for you!', 'beltoft-gift-cards-pro' ) ) ), 'product heading used' );
+$val_html = CardRenderer::render( 'classic', $data );
+bgcwp_assert( false === strpos( $val_html, 'bgcw-card--product' ) && false !== strpos( $val_html, 'data-bgcw-field="amount"' ), 'value variant shows amount' );
+bgcwp_assert( false === strpos( $val_html, '{store}' ) && false === strpos( $prod_html, '{product}' ), 'intro placeholders replaced' );
 
 // Admin override changes heading + color.
 $opts = get_option( 'bgcw_pro_options', [] );

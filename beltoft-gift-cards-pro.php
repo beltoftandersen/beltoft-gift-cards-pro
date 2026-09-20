@@ -3,7 +3,7 @@
  * Plugin Name:       Beltoft Gift Cards for WooCommerce - Pro
  * Plugin URI:        https://beltoft.net/beltoft-gift-cards-pro
  * Description:       Premium add-on for Beltoft Gift Cards for WooCommerce — scheduled delivery, PDF gift cards, store credit, bulk generation, BOGO promotions, and analytics. Requires the free core plugin.
- * Version:           1.4.3
+ * Version:           1.5.0
  * Requires at least: 5.8
  * Requires PHP:      7.4
  * Author:            beltoft.net
@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || exit;
 
 define( 'BGCW_PRO_PATH', plugin_dir_path( __FILE__ ) );
 define( 'BGCW_PRO_URL', plugin_dir_url( __FILE__ ) );
-define( 'BGCW_PRO_VER', '1.4.3' );
+define( 'BGCW_PRO_VER', '1.5.0' );
 define( 'BGCW_PRO_FILE', __FILE__ );
 define( 'BGCW_PRO_LICENSE_SERVER', 'https://beltoft.net' );
 
@@ -94,10 +94,10 @@ add_action( 'plugins_loaded', function () {
 	}
 
 	// Check minimum version.
-	if ( version_compare( BGCW_VERSION, '1.5.1', '<' ) ) {
+	if ( version_compare( BGCW_VERSION, '1.6.0', '<' ) ) {
 		add_action( 'admin_notices', function () {
 			echo '<div class="notice notice-warning"><p>';
-			esc_html_e( 'Beltoft Gift Cards for WooCommerce - Pro requires version 1.5.1 or higher of the free plugin. Please update.', 'beltoft-gift-cards-pro' );
+			esc_html_e( 'Beltoft Gift Cards for WooCommerce - Pro requires version 1.6.0 or higher of the free plugin. Please update.', 'beltoft-gift-cards-pro' );
 			echo '</p></div>';
 		} );
 		return;

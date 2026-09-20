@@ -41,6 +41,12 @@ class Options {
 			// Per-design customization (empty = use built-in default).
 			'pdf_heading_classic' => '',
 			'pdf_color_classic'   => '',
+			'pdf_heading_product' => '',
+			'pdf_intro'           => '',
+			'pdf_intro_product'   => '',
+
+			// Give as a gift.
+			'giftable_category_ids' => [],
 
 			// Store Credit.
 			'store_credit'      => '1',
@@ -192,6 +198,21 @@ class Options {
 				}
 				$clean[ $color_key ] = $val;
 			}
+		}
+		foreach ( [ 'pdf_heading_product', 'pdf_intro', 'pdf_intro_product' ] as $text_key ) {
+			if ( isset( $input[ $text_key ] ) ) {
+				$val = sanitize_textarea_field( $input[ $text_key ] );
+				if ( $val !== (string) ( $clean[ $text_key ] ?? '' ) ) {
+					$design_changed = true;
+				}
+				$clean[ $text_key ] = $val;
+			}
+		}
+		if ( array_key_exists( 'giftable_category_ids', $input ) ) {
+			$clean['giftable_category_ids'] = array_values( array_filter( array_map( 'absint', (array) $input['giftable_category_ids'] ) ) );
+		} elseif ( isset( $input['pdf_enabled'] ) || isset( $input['scheduled_delivery'] ) ) {
+			// Settings form submitted with no category selected.
+			$clean['giftable_category_ids'] = [];
 		}
 		if ( $design_changed ) {
 			$clean['pdf_design_version'] = (string) ( max( 1, (int) ( $clean['pdf_design_version'] ?? 1 ) ) + 1 );

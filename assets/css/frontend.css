@@ -206,3 +206,39 @@ body.bgcw-pro-lightbox-open {
 		transition: border-color 0.15s;
 	}
 }
+
+/* ── Give as a gift ─────────────────────────── */
+.bgcw-pro-gift {
+	flex-basis: 100%;
+	width: 100%;
+	margin: 16px 0 0;
+}
+
+.bgcw-pro-gift__toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.bgcw-pro-gift__fields {
+	margin-top: 12px;
+	padding: 16px;
+	border: 1px solid #e5e5e5;
+	border-radius: 6px;
+}
+
+.bgcw-pro-gift__fields[hidden] {
+	display: none;
+}
+
+.bgcw-pro-gift__note {
+	margin: 0 0 12px;
+	font-size: 14px;
+	color: #555;
+}
+
+.bgcw-pro-gift .bgcw-recipient-fields .form-row {
+	margin-bottom: 10px;
+}

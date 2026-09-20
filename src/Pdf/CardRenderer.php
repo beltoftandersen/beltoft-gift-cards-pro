@@ -15,10 +15,10 @@ class CardRenderer {
 	const MODE_PDF     = 'pdf';
 
 	/**
-	 * Card size in CSS pixels at 96 dpi (A5 portrait, 148 x 210 mm).
+	 * Card size in CSS pixels at 96 dpi (A5 landscape, 210 x 148 mm).
 	 */
-	const WIDTH  = 559;
-	const HEIGHT = 794;
+	const WIDTH  = 794;
+	const HEIGHT = 559;
 
 	/**
 	 * Dummy data for the product-page preview and admin samples.
@@ -32,8 +32,10 @@ class CardRenderer {
 			'code'           => 'GIFT-XXXX-XXXX',
 			'recipient_name' => __( 'Recipient', 'beltoft-gift-cards-pro' ),
 			'sender_name'    => __( 'You', 'beltoft-gift-cards-pro' ),
-			'message'        => __( 'Your message will appear here.', 'beltoft-gift-cards-pro' ),
+			'message'        => '',
 			'expires_at'     => gmdate( 'Y-m-d H:i:s', time() + YEAR_IN_SECONDS ),
+			'product_id'     => 0,
+			'product_name'   => '',
 		];
 	}
 
@@ -64,7 +66,13 @@ class CardRenderer {
 		/* translators: %s: shop domain */
 		$redeem = sprintf( __( 'Enter the code at checkout on %s, or show this card in store.', 'beltoft-gift-cards-pro' ), $shop_host );
 
+		$intro         = (string) Options::get( 'pdf_intro' );
+		$intro_product = (string) Options::get( 'pdf_intro_product' );
+
 		return [
+			'intro'         => '' !== trim( $intro ) ? $intro : __( 'Congratulations! You have received a gift card to spend at {store}. We hope you enjoy it!', 'beltoft-gift-cards-pro' ),
+			'intro_product' => '' !== trim( $intro_product ) ? $intro_product : __( 'Congratulations! You have received {product} as a gift from {store}. We hope you enjoy it!', 'beltoft-gift-cards-pro' ),
+			'heading_product' => '' !== trim( (string) Options::get( 'pdf_heading_product' ) ) ? (string) Options::get( 'pdf_heading_product' ) : __( 'Surprise! A gift just for you!', 'beltoft-gift-cards-pro' ),
 			'logo_path'   => $logo_path,
 			'logo_url'    => $logo_url,
 			'store_name'  => get_bloginfo( 'name' ),
@@ -145,8 +153,24 @@ class CardRenderer {
 		$store   = self::store();
 		$data    = wp_parse_args( $data, self::placeholders() );
 
+		$is_product   = ! empty( $data['product_id'] ) || '' !== trim( (string) $data['product_name'] );
+		$product_name = (string) $data['product_name'];
+		if ( $is_product && '' === $product_name && function_exists( 'wc_get_product' ) ) {
+			$product      = wc_get_product( (int) $data['product_id'] );
+			$product_name = $product ? $product->get_name() : '';
+		}
+		$intro = str_replace(
+			[ '{store}', '{product}' ],
+			[ $store['store_name'], $product_name ],
+			$is_product ? $store['intro_product'] : $store['intro']
+		);
+
 		$vars = [
 			'design'         => $design,
+			'heading'        => $is_product ? $store['heading_product'] : $theme['heading'],
+			'intro'          => $intro,
+			'is_product'     => $is_product,
+			'product_name'   => $product_name,
 			'theme'          => $theme,
 			'mode'           => $mode,
 			'store'          => $store,
@@ -187,9 +211,9 @@ class CardRenderer {
 			: BGCW_PRO_URL . 'assets/fonts/';
 
 		$fonts = sprintf(
-			"@font-face{font-family:'BgcwSerif';font-weight:400;src:url('%1\$sDMSerifDisplay-Regular.ttf') format('truetype');}\n" .
-			"@font-face{font-family:'BgcwSans';font-weight:400;src:url('%1\$sIBMPlexSans-Regular.ttf') format('truetype');}\n" .
-			"@font-face{font-family:'BgcwSans';font-weight:600;src:url('%1\$sIBMPlexSans-SemiBold.ttf') format('truetype');}\n",
+			"@font-face{font-family:'BgcwSans';font-weight:400;src:url('%1\$sOnest-Regular.ttf') format('truetype');}\n" .
+			"@font-face{font-family:'BgcwSans';font-weight:700;src:url('%1\$sOnest-Bold.ttf') format('truetype');}\n" .
+			"@font-face{font-family:'BgcwSans';font-weight:800;src:url('%1\$sOnest-ExtraBold.ttf') format('truetype');}\n",
 			$font_base
 		);
 
@@ -200,15 +224,10 @@ class CardRenderer {
 		$designs = '';
 		foreach ( Designs::get() as $slug => $theme ) {
 			$designs .= sprintf(
-				".bgcw-card--%1\$s .bgcw-card__panel{background-color:%2\$s;}\n" .
-				".bgcw-card--%1\$s .bgcw-card__accent,.bgcw-card--%1\$s .bgcw-card__confetti,.bgcw-card--%1\$s .bgcw-card__ribbon{background-color:%3\$s;}\n" .
-				".bgcw-card--%1\$s .bgcw-card__frame{border-color:%3\$s;}\n" .
-				".bgcw-card--%1\$s .bgcw-card__code{background-color:%4\$s;border-color:%2\$s;}\n" .
-				".bgcw-card--%1\$s .bgcw-card__label{color:%2\$s;}\n",
+				".bgcw-card--%1\$s,.bgcw-card--%1\$s .bgcw-card__heading,.bgcw-card--%1\$s .bgcw-card__brand-name,.bgcw-card--%1\$s .bgcw-card__footer,.bgcw-card--%1\$s .bgcw-card__people,.bgcw-card--%1\$s .bgcw-card__intro,.bgcw-card--%1\$s .bgcw-card__box{color:%2\$s;}\n" .
+				".bgcw-card--%1\$s .bgcw-card__box,.bgcw-card--%1\$s .bgcw-card__cell-left{border-color:%2\$s;}\n",
 				esc_attr( $slug ),
-				esc_attr( $theme['color'] ),
-				esc_attr( $theme['accent'] ),
-				esc_attr( $theme['bg'] )
+				esc_attr( $theme['color'] )
 			);
 		}
 
