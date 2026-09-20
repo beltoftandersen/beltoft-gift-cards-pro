@@ -27,9 +27,15 @@ class GiftForm {
 			return;
 		}
 
-		$show_name    = apply_filters( 'bgcw_show_recipient_name_field', true, $product );
-		$show_email   = apply_filters( 'bgcw_show_recipient_email_field', true, $product );
-		$show_message = apply_filters( 'bgcw_show_personal_message_field', true, $product );
+		// The free plugin validates the add-to-cart against the carrier product, so evaluate the
+		// field visibility filters against the same product to keep form and validation in step.
+		$carrier_id   = Carrier::id();
+		$carrier      = $carrier_id ? wc_get_product( $carrier_id ) : null;
+		$filter_for   = $carrier ? $carrier : $product;
+		$show_name    = apply_filters( 'bgcw_show_recipient_name_field', true, $filter_for );
+		$show_email   = apply_filters( 'bgcw_show_recipient_email_field', true, $filter_for );
+		$show_message = apply_filters( 'bgcw_show_personal_message_field', true, $filter_for );
+		$amount       = Giftable::gift_amount( $product );
 		?>
 		<div class="bgcw-pro-gift" data-bgcw-gift>
 			<label class="bgcw-pro-gift__toggle">
@@ -42,8 +48,11 @@ class GiftForm {
 					printf(
 						/* translators: %s: formatted price */
 						esc_html__( 'You pay %s now. The recipient gets a gift card for this product by email and chooses when to use it.', 'beltoft-gift-cards-pro' ),
-						wp_kses_post( wc_price( Giftable::gift_amount( $product ) ) )
+						wp_kses_post( wc_price( $amount ) )
 					);
+					if ( $product->is_type( 'variable' ) ) {
+						echo ' ' . esc_html__( 'The card is worth the lowest option price; the recipient pays any difference when choosing a more expensive option.', 'beltoft-gift-cards-pro' );
+					}
 					?>
 				</p>
 				<div class="bgcw-recipient-fields">

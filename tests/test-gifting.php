@@ -35,14 +35,14 @@ bgcwp_assert_eq( false, Giftable::is_giftable( $mug_id ), 'mug not giftable befo
 $opts['giftable_category_ids'] = [ $cat_id ];
 update_option( 'bgcw_pro_options', $opts ); Options::invalidate_cache();
 bgcwp_assert_eq( true, Giftable::is_giftable( $mug_id ), 'category setting makes mug giftable' );
-$expected_amount = (float) wc_get_price_to_display( wc_get_product( $workshop_id ) );
+$expected_amount = (float) wc_get_product( $workshop_id )->get_price();
 bgcwp_assert( $expected_amount > 0 && abs( Giftable::gift_amount( wc_get_product( $workshop_id ) ) - $expected_amount ) < 0.001, 'gift amount is the displayed product price (' . $expected_amount . ')' );
 
 // Carrier.
 $carrier_id = Carrier::id();
 bgcwp_assert( $carrier_id > 0, 'carrier created' );
 $carrier = wc_get_product( $carrier_id );
-bgcwp_assert( $carrier && 'gift-card' === $carrier->get_type() && 'hidden' === $carrier->get_catalog_visibility() && $carrier->is_purchasable(), 'carrier is a hidden purchasable gift-card product' );
+bgcwp_assert( $carrier && 'gift-card' === $carrier->get_type() && 'hidden' === $carrier->get_catalog_visibility() && $carrier->is_purchasable() && 'none' === $carrier->get_tax_status(), 'carrier is a hidden, purchasable, non-taxable gift-card product' );
 bgcwp_assert_eq( $carrier_id, Carrier::id(), 'carrier reused' );
 bgcwp_assert_eq( true, Carrier::is_carrier( $carrier ), 'carrier detected' );
 bgcwp_assert_eq( false, Giftable::is_giftable( $carrier ), 'carrier itself is not giftable' );

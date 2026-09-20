@@ -17,10 +17,8 @@ class Designs {
 	/**
 	 * Built-in designs.
 	 *
-	 * color  - main panel color
-	 * accent - secondary color (code box border, stripe, confetti)
-	 * bg     - light tint used behind the code
-	 * motif  - decorative treatment key used by the template
+	 * color   - the single brand color used for text and the box border
+	 * heading - default headline on value cards
 	 *
 	 * @return array<string,array>
 	 */
@@ -30,9 +28,6 @@ class Designs {
 				'name'    => __( 'Classic', 'beltoft-gift-cards-pro' ),
 				'heading' => __( 'Surprise! A gift card just for you!', 'beltoft-gift-cards-pro' ),
 				'color'   => '#1F4A36',
-				'accent'  => '#1F4A36',
-				'bg'      => '#FFFFFF',
-				'motif'   => 'none',
 			],
 		];
 	}

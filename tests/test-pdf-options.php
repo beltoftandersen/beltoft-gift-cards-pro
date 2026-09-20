@@ -24,6 +24,13 @@ $clean = Options::sanitize( [ 'pdf_enabled' => '1' ] );
 bgcwp_assert( ! array_key_exists( 'email_themes', $clean ) && ! array_key_exists( 'theme_color_holiday', $clean ), 'legacy theme options removed' );
 bgcwp_assert( ! array_key_exists( 'pdf_color_birthday', $clean ), 'no per-design keys for removed designs' );
 
+// Categories: cleared when the form marker is present and nothing selected; kept otherwise.
+$clean = Options::sanitize( [ 'pdf_enabled' => '1', 'giftable_category_ids' => [ '5', 'x', '7' ] ] );
+bgcwp_assert_eq( [ 5, 7 ], $clean['giftable_category_ids'], 'category ids sanitized' );
+$clean = Options::sanitize( [ 'giftable_categories_submitted' => '1' ] );
+bgcwp_assert_eq( [], $clean['giftable_category_ids'], 'categories cleared when submitted empty' );
+bgcwp_assert( ! array_key_exists( 'giftable_categories_submitted', $clean ), 'marker not stored' );
+
 // Invalid logo id -> empty.
 $clean = Options::sanitize( [ 'pdf_enabled' => '1', 'pdf_logo_id' => 'abc' ] );
 bgcwp_assert_eq( '', $clean['pdf_logo_id'], 'invalid logo id cleared' );

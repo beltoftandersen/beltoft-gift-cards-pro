@@ -53,7 +53,7 @@ class ProductPreview {
 				'sender_name'    => $placeholders['sender_name'],
 				'message'        => $placeholders['message'],
 			],
-			'gift_button_text' => __( 'Add gift to cart', 'beltoft-gift-cards-pro' ),
+			'message_max'  => CardRenderer::MESSAGE_MAX,
 			'card_width'   => CardRenderer::WIDTH,
 			'card_height'  => CardRenderer::HEIGHT,
 		];

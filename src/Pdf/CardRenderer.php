@@ -20,6 +20,9 @@ class CardRenderer {
 	const WIDTH  = 794;
 	const HEIGHT = 559;
 
+	/** Personal message is cut to this many characters on the card (preview mirrors it). */
+	const MESSAGE_MAX = 160;
+
 	/**
 	 * Dummy data for the product-page preview and admin samples.
 	 *

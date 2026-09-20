@@ -2,7 +2,7 @@
 
 Premium add-on for [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards/) — scheduled delivery, PDF gift cards, store credit, bulk generation, BOGO promotions, and analytics.
 
-- Stable version: 1.5.0
+- Stable version: 1.5.1
 - Requires: WordPress 5.8+, PHP 7.4+, WooCommerce 6.0+ (tested up to WordPress 7.1)
 - Requires: Beltoft Gift Cards for WooCommerce (free) 1.6.0+
 - Author: beltoft.net
@@ -43,6 +43,12 @@ A valid license key is required to activate Pro features.
 5. Configure features under the **Pro Settings** tab.
 
 ## Changelog
+
+### 1.5.1
+
+- Fixed: Gift amount uses the product's stored price and the hidden carrier product is non-taxable, so the buyer pays exactly the product price and the card zeroes the product at redemption.
+- Fixed: Clearing all giftable categories now saves; the carrier product recovers if set to draft; recipient field visibility filters match the free plugin's validation.
+- Fixed: Redemption instructions printed on the card again; preview and PDF truncate the message at the same length; gift button label works with PDF cards disabled.
 
 ### 1.5.0
 

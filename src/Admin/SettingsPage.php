@@ -397,6 +397,7 @@ class SettingsPage {
 			$terms = [];
 		}
 		?>
+		<input type="hidden" name="<?php echo esc_attr( Options::OPTION ); ?>[giftable_categories_submitted]" value="1" />
 		<select name="<?php echo esc_attr( Options::OPTION ); ?>[giftable_category_ids][]" multiple size="6" class="bgcw-pro-categories">
 			<?php foreach ( $terms as $term ) : ?>
 				<option value="<?php echo (int) $term->term_id; ?>" <?php selected( in_array( (int) $term->term_id, $selected, true ) ); ?>><?php echo esc_html( $term->name ); ?></option>
@@ -442,7 +443,7 @@ class SettingsPage {
 				?>
 				<div class="bgcw-pro-theme-card">
 					<div class="bgcw-pro-theme-card__preview">
-						<span class="bgcw-pro-theme-card__swatch" style="background-color:<?php echo esc_attr( $design['color'] ); ?>;"><span style="background-color:<?php echo esc_attr( $design['accent'] ); ?>;"></span></span>
+						<span class="bgcw-pro-theme-card__swatch" style="background-color:<?php echo esc_attr( $design['color'] ); ?>;"></span>
 						<strong><?php echo esc_html( $design['name'] ); ?></strong>
 						<br />
 						<em><?php echo esc_html( $design['heading'] ); ?></em>

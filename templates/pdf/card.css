@@ -27,4 +27,5 @@
 .bgcw-card__code-value{font-size:24px;font-weight:700;line-height:30px;letter-spacing:1px;white-space:nowrap;}
 .bgcw-card__code-value--small{font-size:14px;font-weight:400;line-height:20px;letter-spacing:1px;margin-top:2px;}
 .bgcw-card__expiry{font-size:12px;line-height:18px;margin-top:4px;}
-.bgcw-card__footer{position:absolute;left:57px;top:500px;width:680px;font-size:22px;font-weight:700;line-height:30px;}
+.bgcw-card__redeem{position:absolute;left:57px;top:484px;width:680px;font-size:11px;line-height:14px;}
+.bgcw-card__footer{position:absolute;left:57px;top:506px;width:680px;font-size:22px;font-weight:700;line-height:30px;}

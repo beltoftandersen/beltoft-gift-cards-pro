@@ -24,6 +24,15 @@ class Carrier {
 		$product = $id ? wc_get_product( $id ) : null;
 
 		if ( $product && 'gift-card' === $product->get_type() && 'trash' !== $product->get_status() ) {
+			// An admin may have set the hidden product to draft/private; it must stay purchasable.
+			if ( 'publish' !== $product->get_status() ) {
+				$product->set_status( 'publish' );
+				$product->save();
+			}
+			if ( 'none' !== $product->get_tax_status() ) {
+				$product->set_tax_status( 'none' );
+				$product->save();
+			}
 			return $id;
 		}
 
@@ -55,6 +64,7 @@ class Carrier {
 		$product->set_catalog_visibility( 'hidden' );
 		$product->set_regular_price( '0' );
 		$product->set_virtual( true );
+		$product->set_tax_status( 'none' );
 		$product->set_sold_individually( false );
 		$product->update_meta_data( self::META, 'yes' );
 		$product->update_meta_data( '_bgcw_amounts', '' );

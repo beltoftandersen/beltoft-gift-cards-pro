@@ -6,7 +6,7 @@ Tested up to: 7.1
 Requires PHP: 7.4
 WC requires at least: 6.0
 WC tested up to: 9.6
-Stable tag: 1.5.0
+Stable tag: 1.5.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,6 +67,11 @@ When PDF Gift Cards is enabled, the product page offers a live preview of the ca
 When Store Credit is enabled and an order paid with a gift card is refunded, the refund amount is issued as a new store credit gift card assigned to the customer, instead of restoring the original card balance.
 
 == Changelog ==
+
+= 1.5.1 =
+* Fixed: Gift amount uses the product's stored price and the hidden carrier product is non-taxable, so the buyer pays exactly the product price and the card zeroes the product at redemption.
+* Fixed: Clearing all giftable categories now saves; the carrier product recovers if set to draft; recipient field visibility filters match the free plugin's validation.
+* Fixed: Redemption instructions printed on the card again; preview and PDF truncate the message at the same length; gift button label works with PDF cards disabled.
 
 = 1.5.0 =
 * Requires the free plugin 1.6.0 or newer.

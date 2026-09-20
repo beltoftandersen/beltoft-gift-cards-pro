@@ -151,6 +151,10 @@ class Plugin {
 			true
 		);
 
+		wp_localize_script( 'bgcw-pro-frontend', 'bgcw_pro_gift', [
+			'gift_button_text' => __( 'Add gift to cart', 'beltoft-gift-cards-pro' ),
+		] );
+
 		if ( EmailAttachment::enabled() ) {
 			wp_add_inline_style( 'bgcw-pro-frontend', CardRenderer::css( CardRenderer::MODE_PREVIEW ) );
 			wp_localize_script( 'bgcw-pro-frontend', 'bgcw_pro_pdf', ProductPreview::script_params() );

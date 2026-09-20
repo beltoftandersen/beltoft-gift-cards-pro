@@ -57,17 +57,21 @@ class Giftable {
 	}
 
 	/**
-	 * Amount the gift card is issued for: the product's displayed price (min price for variable products).
+	 * Amount the gift card is issued for.
+	 *
+	 * Uses the product's stored price (the same basis WooCommerce's discount engine uses), so a
+	 * fixed_product coupon of this amount zeroes the product line at redemption. The carrier line is
+	 * not taxable, so the buyer pays exactly this amount. Variable products use the lowest variation price.
 	 */
 	public static function gift_amount( \WC_Product $product ): float {
 		if ( $product->is_type( 'variable' ) ) {
-			$prices = $product->get_variation_prices( true );
+			$prices = $product->get_variation_prices( false );
 			$min    = ! empty( $prices['price'] ) ? min( $prices['price'] ) : 0;
 
 			return (float) $min;
 		}
 
-		return (float) wc_get_price_to_display( $product );
+		return (float) $product->get_price();
 	}
 
 	/**

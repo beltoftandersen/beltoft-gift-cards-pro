@@ -77,9 +77,9 @@
 			return;
 		}
 		var value = input ? input.value.trim() : '';
-		// Keep in step with the 220/217 truncation in templates/pdf/_card.php.
-		if (name === 'message' && value.length > 220) {
-			value = value.slice(0, 217) + '…';
+		var max = parseInt(params.message_max, 10) || 160;
+		if (name === 'message' && value.length > max) {
+			value = value.slice(0, max - 3) + '…';
 		}
 		if (name === 'message') {
 			el.textContent = value ? '\u201C' + value + '\u201D' : '';
@@ -95,7 +95,7 @@
 			return;
 		}
 		var slug = checked.value;
-		card.className = card.className.replace(/\bbgcw-card--[a-z0-9_-]+/g, '').replace(/\s+/g, ' ').trim() + ' bgcw-card--' + slug;
+		card.className = card.className.replace(/\bbgcw-card--(?!product\b)[a-z0-9_-]+/g, '').replace(/\s+/g, ' ').trim() + ' bgcw-card--' + slug;
 		card.setAttribute('data-design', slug);
 		var heading = field('heading');
 		if (heading && params.headings[slug]) {
@@ -222,7 +222,7 @@
 	var form = gift.closest('form.cart');
 	var button = form ? form.querySelector('.single_add_to_cart_button') : null;
 	var originalText = button ? button.textContent : '';
-	var params = window.bgcw_pro_pdf || {};
+	var params = window.bgcw_pro_gift || {};
 
 	function apply() {
 		var on = toggle.checked;

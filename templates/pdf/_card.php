@@ -29,7 +29,7 @@ $bgcw_amount_class = 'bgcw-card__amount bgcw-card__amount--' . $amount['size'];
 $bgcw_symbol       = '<span class="bgcw-card__currency" data-bgcw-field="currency">' . esc_html( $amount['symbol'] ) . '</span>';
 $bgcw_number       = '<span class="bgcw-card__number" data-bgcw-field="number">' . esc_html( $amount['number'] ) . '</span>';
 $bgcw_space        = $amount['space'] ? ' ' : '';
-$bgcw_message      = mb_strlen( $message ) > 160 ? mb_substr( $message, 0, 157 ) . '…' : $message;
+$bgcw_message      = mb_strlen( $message ) > BgcwPro\Pdf\CardRenderer::MESSAGE_MAX ? mb_substr( $message, 0, BgcwPro\Pdf\CardRenderer::MESSAGE_MAX - 3 ) . '…' : $message;
 $bgcw_has_people   = '' !== trim( $sender_name ) || '' !== trim( $recipient_name );
 $bgcw_product_len  = mb_strlen( $product_name );
 $bgcw_product_cls  = 'bgcw-card__product bgcw-card__product--' . ( $bgcw_product_len <= 24 ? 'lg' : ( $bgcw_product_len <= 44 ? 'md' : 'sm' ) );
@@ -80,6 +80,7 @@ $bgcw_product_cls  = 'bgcw-card__product bgcw-card__product--' . ( $bgcw_product
 		</table>
 	</div>
 
+	<div class="bgcw-card__redeem"><?php echo esc_html( $store['redeem_text'] ); ?></div>
 	<div class="bgcw-card__footer"><?php
 		/* translators: %s: shop domain */
 		printf( esc_html__( 'Visit us at %s', 'beltoft-gift-cards-pro' ), esc_html( $store['shop_host'] ) );

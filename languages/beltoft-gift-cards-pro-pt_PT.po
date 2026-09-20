@@ -1365,3 +1365,6 @@ msgstr "Visita-nos em %s"
 
 #~ msgid "Happy Holidays!"
 #~ msgstr "Boas Festas!"
+
+msgid "The card is worth the lowest option price; the recipient pays any difference when choosing a more expensive option."
+msgstr "O cartão vale o preço da opção mais barata; o destinatário paga a diferença se escolher uma opção mais cara."

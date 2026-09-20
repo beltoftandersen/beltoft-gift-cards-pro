@@ -210,10 +210,11 @@ class Options {
 		}
 		if ( array_key_exists( 'giftable_category_ids', $input ) ) {
 			$clean['giftable_category_ids'] = array_values( array_filter( array_map( 'absint', (array) $input['giftable_category_ids'] ) ) );
-		} elseif ( isset( $input['pdf_enabled'] ) || isset( $input['scheduled_delivery'] ) ) {
-			// Settings form submitted with no category selected.
+		} elseif ( ! empty( $input['giftable_categories_submitted'] ) ) {
+			// The form was submitted with no category selected (browsers omit an empty multi-select).
 			$clean['giftable_category_ids'] = [];
 		}
+		unset( $clean['giftable_categories_submitted'] );
 		if ( $design_changed ) {
 			$clean['pdf_design_version'] = (string) ( max( 1, (int) ( $clean['pdf_design_version'] ?? 1 ) ) + 1 );
 		}
