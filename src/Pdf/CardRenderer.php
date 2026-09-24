@@ -34,7 +34,7 @@ class CardRenderer {
 			'currency'       => get_woocommerce_currency(),
 			'code'           => 'GIFT-XXXX-XXXX',
 			'recipient_name' => __( 'Recipient', 'beltoft-gift-cards-pro' ),
-			'sender_name'    => __( 'You', 'beltoft-gift-cards-pro' ),
+			'sender_name'    => __( 'Sender', 'beltoft-gift-cards-pro' ),
 			'message'        => '',
 			'expires_at'     => gmdate( 'Y-m-d H:i:s', time() + YEAR_IN_SECONDS ),
 			'product_id'     => 0,
