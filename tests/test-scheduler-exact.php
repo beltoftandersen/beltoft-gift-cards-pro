@@ -8,7 +8,7 @@ use BgcwPro\ScheduledDelivery\Scheduler;
 global $wpdb;
 $table = $wpdb->prefix . 'bgcw_scheduled_deliveries';
 bgcwp_assert( function_exists( 'as_schedule_single_action' ), 'Action Scheduler available' );
-bgcwp_assert( false === wp_next_scheduled( 'bgcw_pro_process_scheduled_deliveries' ) || true, 'hourly sweep no longer registered by the plugin' );
+bgcwp_assert_eq( false, wp_next_scheduled( 'bgcw_pro_process_scheduled_deliveries' ), 'hourly sweep not scheduled' );
 bgcwp_assert( ! method_exists( Scheduler::class, 'process_scheduled' ), 'hourly sweep code removed' );
 
 // Order with a slot tomorrow 10:00 (site time).
@@ -38,7 +38,19 @@ bgcwp_assert_eq( $expected_ts, strtotime( $row->scheduled_date . ' UTC' ), 'row 
 $next = as_next_scheduled_action( Scheduler::ACTION, [ 'row_id' => (int) $row->id ], Scheduler::GROUP );
 bgcwp_assert_eq( $expected_ts, $next, 'Action Scheduler action booked at the exact delivery time' );
 
-// The action fires: exactly one send, row marked sent, repeat is a no-op.
+// Order edited to a later slot before the action fires: no send, row re-booked at the new time.
+foreach ( $order->get_items() as $it ) { $it->update_meta_data( '_bgcw_delivery_date', current_datetime()->modify( '+2 days' )->format( 'Y-m-d' ) ); $it->save(); }
+$wpdb->update( $table, [ 'scheduled_date' => gmdate( 'Y-m-d H:i:s', time() - 60 ) ], [ 'id' => $row->id ] );
+Scheduler::deliver_row( (int) $row->id );
+$moved = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d", $row->id ) );
+$expected2 = ( new DateTimeImmutable( current_datetime()->modify( '+2 days' )->format( 'Y-m-d' ) . ' 10:00:00', wp_timezone() ) )->getTimestamp();
+bgcwp_assert_eq( 'pending', $moved->status, 'edited slot: row stays pending' );
+bgcwp_assert_eq( 0, $fired, 'edited slot: nothing sent' );
+bgcwp_assert_eq( $expected2, as_next_scheduled_action( Scheduler::ACTION, [ 'row_id' => (int) $row->id ], Scheduler::GROUP ), 'edited slot: action re-booked at the new time' );
+
+// Slot arrives: exactly one send, row marked sent, repeat is a no-op.
+foreach ( $order->get_items() as $it ) { $it->update_meta_data( '_bgcw_delivery_date', current_datetime()->modify( '-1 day' )->format( 'Y-m-d' ) ); $it->save(); }
+$wpdb->update( $table, [ 'scheduled_date' => gmdate( 'Y-m-d H:i:s', time() - 60 ) ], [ 'id' => $row->id ] );
 Scheduler::deliver_row( (int) $row->id );
 $row2 = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d", $row->id ) );
 bgcwp_assert_eq( 'sent', $row2->status, 'row marked sent' );

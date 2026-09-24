@@ -67,6 +67,9 @@ wp_clear_scheduled_hook( 'bgcw_pro_license_check' );
 wp_clear_scheduled_hook( 'bgcw_pro_process_scheduled_deliveries' );
 wp_clear_scheduled_hook( 'bgcw_pro_send_report' );
 wp_clear_scheduled_hook( 'bgcw_pro_cleanup_old_reports' );
+if ( function_exists( 'as_unschedule_all_actions' ) ) {
+	as_unschedule_all_actions( 'bgcw_pro_deliver_gift_card', [], 'bgcw-pro' );
+}
 
 // Remove report files directory.
 $bgcw_pro_upload_dir = wp_get_upload_dir();

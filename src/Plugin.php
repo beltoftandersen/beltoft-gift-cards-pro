@@ -41,6 +41,9 @@ class Plugin {
 		}
 
 		// Gate Pro features behind an active license.
+		// Deliveries already paid for must still go out if the license lapses.
+		Scheduler::register_delivery_handler();
+
 		if ( ! License::is_active() ) {
 			return;
 		}

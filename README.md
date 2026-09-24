@@ -2,7 +2,7 @@
 
 Premium add-on for [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards/) — scheduled delivery, PDF gift cards, store credit, bulk generation, BOGO promotions, and analytics.
 
-- Stable version: 1.5.10
+- Stable version: 1.5.11
 - Requires: WordPress 5.8+, PHP 7.4+, WooCommerce 6.0+ (tested up to WordPress 7.1)
 - Requires: Beltoft Gift Cards for WooCommerce (free) 1.6.0+
 - Author: beltoft.net
@@ -43,6 +43,10 @@ A valid license key is required to activate Pro features.
 5. Configure features under the **Pro Settings** tab.
 
 ## Changelog
+
+### 1.5.11
+
+- Fixed: Scheduled deliveries are sent even if the license lapses before the slot; an order whose delivery date is moved later is re-booked instead of being skipped; a failed send is retried rather than silently marked as sent; booked deliveries are cancelled on deactivation and uninstall.
 
 ### 1.5.10
 

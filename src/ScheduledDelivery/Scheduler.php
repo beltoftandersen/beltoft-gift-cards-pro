@@ -19,11 +19,18 @@ class Scheduler {
 	public static function init() {
 		add_filter( 'bgcw_should_send_email_now', [ __CLASS__, 'maybe_defer' ], 10, 3 );
 		add_action( 'bgcw_gift_card_created', [ __CLASS__, 'schedule_delivery' ], 10, 2 );
-		add_action( self::ACTION, [ __CLASS__, 'deliver_row' ] );
+		self::register_delivery_handler();
+	}
 
-		// Pre-1.5.10 installs had an hourly sweep; make sure it is gone.
-		if ( wp_next_scheduled( 'bgcw_pro_process_scheduled_deliveries' ) ) {
-			wp_clear_scheduled_hook( 'bgcw_pro_process_scheduled_deliveries' );
+	/**
+	 * Register the Action Scheduler callback.
+	 *
+	 * Registered even without an active license (see Plugin::init) so a delivery that was
+	 * paid for still goes out if the license lapses before its slot.
+	 */
+	public static function register_delivery_handler() {
+		if ( ! has_action( self::ACTION, [ __CLASS__, 'deliver_row' ] ) ) {
+			add_action( self::ACTION, [ __CLASS__, 'deliver_row' ] );
 		}
 	}
 
@@ -109,40 +116,116 @@ class Scheduler {
 			[ '%d', '%d', '%s', '%s', '%s' ]
 		);
 
-		if ( $wpdb->insert_id && function_exists( 'as_schedule_single_action' ) ) {
-			// One action per delivery, at the exact time (visible under WooCommerce > Status > Scheduled Actions).
-			as_schedule_single_action( strtotime( $scheduled_date_utc . ' UTC' ), self::ACTION, [ 'row_id' => (int) $wpdb->insert_id ], self::GROUP );
+		if ( $wpdb->insert_id ) {
+			self::book( (int) $wpdb->insert_id, $scheduled_date_utc );
+		}
+	}
+
+	/**
+	 * Book (or re-book) the one Action Scheduler action that delivers a row at its exact time.
+	 *
+	 * @param int    $row_id             Delivery row ID.
+	 * @param string $scheduled_date_utc MySQL datetime (UTC).
+	 * @return bool
+	 */
+	public static function book( int $row_id, string $scheduled_date_utc ): bool {
+		$ts = strtotime( $scheduled_date_utc . ' UTC' );
+		if ( ! $ts || ! function_exists( 'as_schedule_single_action' ) ) {
+			self::log( sprintf( 'Could not book delivery for row %d: Action Scheduler unavailable.', $row_id ) );
+			return false;
+		}
+
+		as_unschedule_all_actions( self::ACTION, [ 'row_id' => $row_id ], self::GROUP );
+		$action_id = as_schedule_single_action( $ts, self::ACTION, [ 'row_id' => $row_id ], self::GROUP );
+
+		if ( ! $action_id ) {
+			self::log( sprintf( 'Could not book delivery for row %d at %s UTC.', $row_id, $scheduled_date_utc ) );
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Cancel every booked delivery action (deactivation / uninstall).
+	 */
+	public static function unbook_all() {
+		if ( function_exists( 'as_unschedule_all_actions' ) ) {
+			as_unschedule_all_actions( self::ACTION, [], self::GROUP );
+		}
+	}
+
+	/**
+	 * Log to the WooCommerce logger under the bgcw-pro source.
+	 */
+	private static function log( string $message ) {
+		if ( function_exists( 'wc_get_logger' ) ) {
+			wc_get_logger()->error( $message, [ 'source' => 'bgcw-pro' ] );
 		}
 	}
 
 	/**
 	 * Action Scheduler handler: send one scheduled delivery.
 	 *
+	 * Claims the row atomically, re-books it if the order's slot was moved to a later time,
+	 * and releases the claim if sending throws so the row is not stranded.
+	 *
 	 * @param int $row_id Delivery row ID.
 	 */
 	public static function deliver_row( $row_id ) {
 		global $wpdb;
-		$table = $wpdb->prefix . 'bgcw_scheduled_deliveries';
+		$row_id = (int) $row_id;
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom table.
-		$row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}bgcw_scheduled_deliveries WHERE id = %d AND status = %s", (int) $row_id, 'pending' ) );
-		if ( ! $row ) {
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table.
+		$row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}bgcw_scheduled_deliveries WHERE id = %d", $row_id ) );
+		if ( ! $row || 'pending' !== $row->status ) {
 			return;
 		}
 
 		$gc    = Repository::find( $row->gift_card_id );
 		$order = wc_get_order( $row->order_id );
-
 		if ( ! $gc || ! $order ) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table.
-			$wpdb->update( $table, [ 'status' => 'failed' ], [ 'id' => $row->id ], [ '%s' ], [ '%d' ] );
+			self::set_status( $row_id, 'failed' );
 			return;
 		}
 
-		do_action( 'bgcw_gift_card_created', (int) $row->gift_card_id, $order );
+		// The order may have been edited after booking: if its slot is now later, re-book and keep waiting.
+		$info = self::get_delivery_info_from_order( (int) $row->gift_card_id, $order );
+		if ( ! empty( $info['date'] ) && self::is_future_local_datetime( $info['date'], $info['hour'] ) ) {
+			$new_utc = self::local_datetime_to_utc( $info['date'], $info['hour'] );
+			if ( $new_utc ) {
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table.
+				$wpdb->update( $wpdb->prefix . 'bgcw_scheduled_deliveries', [ 'scheduled_date' => $new_utc ], [ 'id' => $row_id ], [ '%s' ], [ '%d' ] );
+				self::book( $row_id, $new_utc );
+			}
+			return;
+		}
 
+		// Atomic claim: only one runner may send this row.
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table.
-		$wpdb->update( $table, [ 'status' => 'sent' ], [ 'id' => $row->id ], [ '%s' ], [ '%d' ] );
+		$claimed = $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}bgcw_scheduled_deliveries SET status = 'sending' WHERE id = %d AND status = 'pending'", $row_id ) );
+		if ( 1 !== (int) $claimed ) {
+			return;
+		}
+
+		try {
+			do_action( 'bgcw_gift_card_created', (int) $row->gift_card_id, $order );
+		} catch ( \Throwable $e ) {
+			self::set_status( $row_id, 'pending' );
+			self::log( sprintf( 'Delivery for row %d failed: %s', $row_id, $e->getMessage() ) );
+			throw $e; // Action Scheduler records the failure.
+		}
+
+		self::set_status( $row_id, 'sent' );
+	}
+
+	/**
+	 * Update a delivery row's status.
+	 */
+	private static function set_status( int $row_id, string $status ) {
+		global $wpdb;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table.
+		$wpdb->update( $wpdb->prefix . 'bgcw_scheduled_deliveries', [ 'status' => $status ], [ 'id' => $row_id ], [ '%s' ], [ '%d' ] );
 	}
 
 	/**

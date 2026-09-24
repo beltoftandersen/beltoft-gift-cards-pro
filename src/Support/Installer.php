@@ -43,6 +43,7 @@ class Installer {
 		wp_clear_scheduled_hook( 'bgcw_pro_process_scheduled_deliveries' );
 		wp_clear_scheduled_hook( 'bgcw_pro_send_report' );
 		wp_clear_scheduled_hook( 'bgcw_pro_cleanup_old_reports' );
+		\BgcwPro\ScheduledDelivery\Scheduler::unbook_all();
 	}
 
 	/**
@@ -77,7 +78,7 @@ class Installer {
 				self::reclassify_store_credit_source();
 			}
 
-			// 1.5.10: deliveries fire via Action Scheduler at their exact time; the hourly sweep is gone.
+			// 1.5.10+: deliveries fire via Action Scheduler at their exact time; the hourly sweep is gone.
 			wp_clear_scheduled_hook( 'bgcw_pro_process_scheduled_deliveries' );
 
 			// 1.5.8 changed the card layout: stored PDFs regenerate on next send/download.
