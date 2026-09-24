@@ -28,7 +28,7 @@ bgcwp_assert( is_array( $captured ), 'delivery email was sent through wp_mail' )
 if ( is_array( $captured ) ) {
 	$att = $captured['attachments'] ?? [];
 	bgcwp_assert( 1 === count( $att ) && file_exists( $att[0] ) && '.pdf' === substr( $att[0], -4 ), 'exactly one PDF attachment' );
-	bgcwp_assert( false !== strpos( $captured['message'], 'attached to this email as a PDF' ), 'neutral pdf notice body used' );
+	bgcwp_assert( false !== strpos( $captured['message'], __( 'Your gift card is attached to this email as a PDF. Print it or show the code at checkout.', 'beltoft-gift-cards-pro' ) ), 'neutral pdf notice body used' );
 	bgcwp_assert( false !== strpos( $captured['message'], Repository::find( $id )->code ), 'code still present in email body' );
 	bgcwp_assert_eq( 'flow@example.test', is_array( $captured['to'] ) ? $captured['to'][0] : $captured['to'], 'sent to recipient' );
 }
@@ -40,4 +40,4 @@ update_option( 'bgcw_pro_options', $opts );
 Options::invalidate_cache();
 do_action( 'bgcw_gift_card_created', $id, null );
 bgcwp_assert( is_array( $captured ) && empty( $captured['attachments'] ), 'disabled: no attachment' );
-bgcwp_assert( is_array( $captured ) && false === strpos( $captured['message'], 'attached to this email as a PDF' ), 'disabled: original email body' );
+bgcwp_assert( is_array( $captured ) && false === strpos( $captured['message'], __( 'Your gift card is attached to this email as a PDF. Print it or show the code at checkout.', 'beltoft-gift-cards-pro' ) ), 'disabled: original email body' );

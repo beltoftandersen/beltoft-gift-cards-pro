@@ -32,7 +32,7 @@ $located = apply_filters( 'woocommerce_locate_template', 'orig', 'emails/pdf-not
 bgcwp_assert_eq( BGCW_PRO_PATH . 'templates/emails/pdf-notice.php', $located, 'pdf notice resolves to Pro template' );
 
 $html = wc_get_template_html( 'emails/pdf-notice.php', [ 'gift_card' => $gc, 'order' => null, 'email_heading' => 'H', 'sent_to_admin' => false, 'plain_text' => false, 'email' => new WC_Email() ], '', BGCW_PRO_PATH . 'templates/' );
-bgcwp_assert( false !== strpos( $html, $gc->code ) && false !== strpos( $html, 'attached to this email as a PDF' ), 'notice email renders code and attachment sentence' );
+bgcwp_assert( false !== strpos( $html, $gc->code ) && false !== strpos( $html, __( 'Your gift card is attached to this email as a PDF. Print it or show the code at checkout.', 'beltoft-gift-cards-pro' ) ), 'notice email renders code and attachment sentence' );
 
 // Disabled -> nothing.
 $opts['pdf_enabled'] = '0';
