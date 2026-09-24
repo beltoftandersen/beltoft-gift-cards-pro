@@ -38,9 +38,14 @@ class SettingsPage {
 		wp_enqueue_style( 'bgcw-pro-admin', BGCW_PRO_URL . 'assets/css/admin.css', [], BGCW_PRO_VER );
 		wp_enqueue_media();
 
-		// Register a minimal handle for license tab inline script.
-		wp_register_script( 'bgcw-pro-license', '', [ 'jquery' ], BGCW_PRO_VER, true );
-		wp_enqueue_script( 'bgcw-pro-license' );
+		// License tab script (a real file: WordPress 7.1+ no longer prints inline scripts on source-less handles).
+		wp_enqueue_script(
+			'bgcw-pro-license',
+			BGCW_PRO_URL . 'assets/js/admin-license.js',
+			[ 'jquery' ],
+			(string) filemtime( BGCW_PRO_PATH . 'assets/js/admin-license.js' ),
+			true
+		);
 		wp_localize_script( 'bgcw-pro-license', 'bgcw_pro_license', [
 			'nonce' => wp_create_nonce( 'bgcw_pro_license' ),
 			'i18n'  => [
@@ -54,38 +59,6 @@ class SettingsPage {
 				'confirm_deactivate'  => __( 'Are you sure you want to deactivate this license?', 'beltoft-gift-cards-pro' ),
 			],
 		] );
-
-		$license_js = "jQuery(function($) {"
-			. "var p = bgcw_pro_license;"
-			. "$('#bgcw-pro-activate-license').on('click', function() {"
-			. "var key = $('#bgcw-pro-license-key').val().trim();"
-			. "if (!key) return;"
-			. "var $btn = $(this).prop('disabled', true).text(p.i18n.activating);"
-			. "var $msg = $('#bgcw-pro-license-message');"
-			. "$msg.text('');"
-			. "$.post(ajaxurl, {action: 'bgcw_pro_activate_license', nonce: p.nonce, license_key: key})"
-			. ".done(function(r) {"
-			. "if (r.success) { $msg.text(r.data.message).css('color', '#00a32a'); setTimeout(function() { location.reload(); }, 1000); }"
-			. "else { $msg.text(r.data ? r.data.message : p.i18n.activation_failed).css('color', '#d63638'); $btn.prop('disabled', false).text(p.i18n.activate); }"
-			. "}).fail(function() {"
-			. "$msg.text(p.i18n.request_failed).css('color', '#d63638'); $btn.prop('disabled', false).text(p.i18n.activate);"
-			. "});"
-			. "});"
-			. "$('#bgcw-pro-deactivate-license').on('click', function() {"
-			. "if (!confirm(p.i18n.confirm_deactivate)) return;"
-			. "var $btn = $(this).prop('disabled', true).text(p.i18n.deactivating);"
-			. "var $msg = $('#bgcw-pro-license-message');"
-			. "$msg.text('');"
-			. "$.post(ajaxurl, {action: 'bgcw_pro_deactivate_license', nonce: p.nonce})"
-			. ".done(function(r) {"
-			. "if (r.success) { $msg.text(r.data.message).css('color', '#00a32a'); setTimeout(function() { location.reload(); }, 500); }"
-			. "else { $msg.text(r.data ? r.data.message : p.i18n.deactivation_failed).css('color', '#d63638'); $btn.prop('disabled', false).text(p.i18n.deactivate); }"
-			. "}).fail(function() {"
-			. "$msg.text(p.i18n.request_failed).css('color', '#d63638'); $btn.prop('disabled', false).text(p.i18n.deactivate);"
-			. "});"
-			. "});"
-			. "});";
-		wp_add_inline_script( 'bgcw-pro-license', $license_js );
 	}
 
 	/**

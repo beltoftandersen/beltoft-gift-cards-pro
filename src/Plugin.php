@@ -97,7 +97,7 @@ class Plugin {
 
 		// NOTE: Admin CSS is enqueued by SettingsPage::enqueue_assets() (always loaded).
 		// This method only loads JS for Pro features (bulk gen, CSV, BOGO) which require
-		// an active license. License tab JS is inline in render_license_tab().
+		// an active license. The license tab script is enqueued by SettingsPage::enqueue_assets().
 
 		wp_enqueue_script(
 			'bgcw-pro-admin',
