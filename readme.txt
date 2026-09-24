@@ -6,7 +6,7 @@ Tested up to: 7.1
 Requires PHP: 7.4
 WC requires at least: 6.0
 WC tested up to: 9.6
-Stable tag: 1.5.9
+Stable tag: 1.5.10
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,7 +18,7 @@ Premium add-on for Beltoft Gift Cards: PDF gift cards with live preview, schedul
 
 = Features =
 
-* **Scheduled Delivery** — Let customers choose a future delivery date for their gift card. A date picker appears on the product page, and a cron job sends the email at the scheduled time.
+* **Scheduled Delivery** — Let customers choose a future delivery date for their gift card. A date picker appears on the product page, and the email is sent at the scheduled time.
 * **PDF Gift Cards** — The gift card is delivered as a designed PDF attached to the email, ready to print. Add your logo, heading and color. Customers can preview the card on the product page while they choose the amount and message, and download the PDF from My Account.
 * **Give as a Gift** — Sell any product as a gift. The buyer pays now; the recipient gets a gift card locked to that product and redeems it with one click, choosing the date or options themselves. Enable per product or per category.
 * **Store Credit on Refund** — When an order paid with a gift card is refunded, automatically create a store credit gift card for the customer instead of restoring the original card balance.
@@ -67,6 +67,9 @@ When PDF Gift Cards is enabled, the product page offers a live preview of the ca
 When Store Credit is enabled and an order paid with a gift card is refunded, the refund amount is issued as a new store credit gift card assigned to the customer, instead of restoring the original card balance.
 
 == Changelog ==
+
+= 1.5.10 =
+* Changed: Scheduled gift cards are sent at their exact delivery time through WooCommerce's Action Scheduler (WooCommerce → Status → Scheduled Actions). The hourly check, which could delay delivery by up to 59 minutes, is removed.
 
 = 1.5.9 =
 * Fixed: "Download PDF" in My Account now uses a front-end link. On sites that protect /wp-admin/ with a login proxy or SSO, customers were sent to that login instead of receiving the PDF.

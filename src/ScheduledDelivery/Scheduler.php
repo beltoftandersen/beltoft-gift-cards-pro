@@ -9,13 +9,22 @@ defined( 'ABSPATH' ) || exit;
 
 class Scheduler {
 
+	/** Action Scheduler hook fired once per delivery at its exact time. */
+	const ACTION = 'bgcw_pro_deliver_gift_card';
+	const GROUP  = 'bgcw-pro';
+
 	/**
 	 * Initialize hooks.
 	 */
 	public static function init() {
 		add_filter( 'bgcw_should_send_email_now', [ __CLASS__, 'maybe_defer' ], 10, 3 );
 		add_action( 'bgcw_gift_card_created', [ __CLASS__, 'schedule_delivery' ], 10, 2 );
-		add_action( 'bgcw_pro_process_scheduled_deliveries', [ __CLASS__, 'process_scheduled' ] );
+		add_action( self::ACTION, [ __CLASS__, 'deliver_row' ] );
+
+		// Pre-1.5.10 installs had an hourly sweep; make sure it is gone.
+		if ( wp_next_scheduled( 'bgcw_pro_process_scheduled_deliveries' ) ) {
+			wp_clear_scheduled_hook( 'bgcw_pro_process_scheduled_deliveries' );
+		}
 	}
 
 	/**
@@ -99,83 +108,41 @@ class Scheduler {
 			],
 			[ '%d', '%d', '%s', '%s', '%s' ]
 		);
+
+		if ( $wpdb->insert_id && function_exists( 'as_schedule_single_action' ) ) {
+			// One action per delivery, at the exact time (visible under WooCommerce > Status > Scheduled Actions).
+			as_schedule_single_action( strtotime( $scheduled_date_utc . ' UTC' ), self::ACTION, [ 'row_id' => (int) $wpdb->insert_id ], self::GROUP );
+		}
 	}
 
 	/**
-	 * Process scheduled deliveries (cron handler).
+	 * Action Scheduler handler: send one scheduled delivery.
 	 *
-	 * Finds all pending deliveries where the scheduled date has passed,
-	 * triggers the gift card created action for each, and marks them as sent.
+	 * @param int $row_id Delivery row ID.
 	 */
-	public static function process_scheduled() {
-		if ( Options::get( 'scheduled_delivery' ) !== '1' ) {
-			return;
-		}
-
+	public static function deliver_row( $row_id ) {
 		global $wpdb;
+		$table = $wpdb->prefix . 'bgcw_scheduled_deliveries';
 
-		$now_utc = gmdate( 'Y-m-d H:i:s' );
-
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table, cron job.
-		$pending = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT * FROM {$wpdb->prefix}bgcw_scheduled_deliveries WHERE status = %s AND scheduled_date <= %s ORDER BY scheduled_date ASC LIMIT 50",
-				'pending',
-				$now_utc
-			)
-		);
-
-		if ( empty( $pending ) ) {
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom table.
+		$row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}bgcw_scheduled_deliveries WHERE id = %d AND status = %s", (int) $row_id, 'pending' ) );
+		if ( ! $row ) {
 			return;
 		}
 
-		foreach ( $pending as $row ) {
-			$gc    = Repository::find( $row->gift_card_id );
-			$order = wc_get_order( $row->order_id );
+		$gc    = Repository::find( $row->gift_card_id );
+		$order = wc_get_order( $row->order_id );
 
-			if ( ! $gc || ! $order ) {
-				// Mark as failed if the gift card or order no longer exists.
-				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table.
-				$wpdb->update(
-					$wpdb->prefix . 'bgcw_scheduled_deliveries',
-					[ 'status' => 'failed' ],
-					[ 'id' => $row->id ],
-					[ '%s' ],
-					[ '%d' ]
-				);
-				continue;
-			}
-
-			/**
-			 * Trigger the gift card created action to resend the email.
-			 *
-			 * The maybe_defer filter will not block this because
-			 * the scheduled_date has already passed.
-			 */
-			// The order may have been edited since the row was written. If its slot is still in the
-			// future, keep waiting (and re-sync the date) instead of firing and marking this row sent.
-			$info = self::get_delivery_info_from_order( (int) $row->gift_card_id, $order );
-			if ( ! empty( $info['date'] ) && self::is_future_local_datetime( $info['date'], $info['hour'] ) ) {
-				$new_utc = self::local_datetime_to_utc( $info['date'], $info['hour'] );
-				if ( $new_utc && $new_utc !== $row->scheduled_date ) {
-					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table.
-					$wpdb->update( $wpdb->prefix . 'bgcw_scheduled_deliveries', [ 'scheduled_date' => $new_utc ], [ 'id' => $row->id ], [ '%s' ], [ '%d' ] );
-				}
-				continue;
-			}
-
-			do_action( 'bgcw_gift_card_created', (int) $row->gift_card_id, $order );
-
-			// Mark as sent.
+		if ( ! $gc || ! $order ) {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table.
-			$wpdb->update(
-				$wpdb->prefix . 'bgcw_scheduled_deliveries',
-				[ 'status' => 'sent' ],
-				[ 'id' => $row->id ],
-				[ '%s' ],
-				[ '%d' ]
-			);
+			$wpdb->update( $table, [ 'status' => 'failed' ], [ 'id' => $row->id ], [ '%s' ], [ '%d' ] );
+			return;
 		}
+
+		do_action( 'bgcw_gift_card_created', (int) $row->gift_card_id, $order );
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table.
+		$wpdb->update( $table, [ 'status' => 'sent' ], [ 'id' => $row->id ], [ '%s' ], [ '%d' ] );
 	}
 
 	/**

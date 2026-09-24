@@ -77,6 +77,9 @@ class Installer {
 				self::reclassify_store_credit_source();
 			}
 
+			// 1.5.10: deliveries fire via Action Scheduler at their exact time; the hourly sweep is gone.
+			wp_clear_scheduled_hook( 'bgcw_pro_process_scheduled_deliveries' );
+
 			// 1.5.8 changed the card layout: stored PDFs regenerate on next send/download.
 			if ( version_compare( $installed, '1.5.8', '<' ) && '0' !== $installed ) {
 				Options::set( 'pdf_design_version', (string) ( max( 1, (int) Options::get( 'pdf_design_version' ) ) + 1 ) );
@@ -172,9 +175,6 @@ class Installer {
 	private static function schedule_crons() {
 		if ( ! wp_next_scheduled( 'bgcw_pro_license_check' ) ) {
 			wp_schedule_event( time(), 'daily', 'bgcw_pro_license_check' );
-		}
-		if ( ! wp_next_scheduled( 'bgcw_pro_process_scheduled_deliveries' ) ) {
-			wp_schedule_event( time(), 'hourly', 'bgcw_pro_process_scheduled_deliveries' );
 		}
 		if ( ! wp_next_scheduled( 'bgcw_pro_send_report' ) ) {
 			wp_schedule_event( time(), 'hourly', 'bgcw_pro_send_report' );

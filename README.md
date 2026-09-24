@@ -2,7 +2,7 @@
 
 Premium add-on for [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards/) — scheduled delivery, PDF gift cards, store credit, bulk generation, BOGO promotions, and analytics.
 
-- Stable version: 1.5.9
+- Stable version: 1.5.10
 - Requires: WordPress 5.8+, PHP 7.4+, WooCommerce 6.0+ (tested up to WordPress 7.1)
 - Requires: Beltoft Gift Cards for WooCommerce (free) 1.6.0+
 - Author: beltoft.net
@@ -16,7 +16,7 @@ A valid license key is required to activate Pro features.
 
 ## Features
 
-- **Scheduled Delivery** — Let customers choose a future delivery date for their gift card. A date picker appears on the product page, and a cron job sends the email at the scheduled time.
+- **Scheduled Delivery** — Let customers choose a future delivery date for their gift card. A date picker appears on the product page, and the email is sent at the scheduled time.
 - **PDF Gift Cards** — The gift card is delivered as a designed PDF attached to the email, ready to print. Add your logo, heading and color. Customers can preview the card on the product page while they choose the amount and message, and download the PDF from My Account.
 - **Give as a Gift** — Sell any product as a gift. The buyer pays now; the recipient gets a gift card locked to that product and redeems it with one click, choosing the date or options themselves. Enable per product or per category.
 - **Store Credit on Refund** — When an order paid with a gift card is refunded, automatically create a store credit gift card for the customer instead of restoring the original card balance.
@@ -43,6 +43,10 @@ A valid license key is required to activate Pro features.
 5. Configure features under the **Pro Settings** tab.
 
 ## Changelog
+
+### 1.5.10
+
+- Changed: Scheduled gift cards are sent at their exact delivery time through WooCommerce's Action Scheduler (WooCommerce → Status → Scheduled Actions). The hourly check, which could delay delivery by up to 59 minutes, is removed.
 
 ### 1.5.9
 
