@@ -19,7 +19,7 @@ class Updater {
 	 * Register hooks.
 	 */
 	public static function init() {
-		add_filter( 'pre_set_site_transient_update_plugins', [ __CLASS__, 'check_update' ] );
+		add_filter( 'site_transient_update_plugins', [ __CLASS__, 'check_update' ] );
 		add_filter( 'plugins_api', [ __CLASS__, 'plugin_info' ], 10, 3 );
 		add_filter( 'upgrader_pre_download', [ __CLASS__, 'get_download_package' ], 10, 3 );
 		add_action( 'upgrader_process_complete', [ __CLASS__, 'after_update' ], 10, 2 );
@@ -32,7 +32,7 @@ class Updater {
 	 * @return object
 	 */
 	public static function check_update( $transient ) {
-		if ( ! is_object( $transient ) || ! isset( $transient->checked ) ) {
+		if ( ! is_object( $transient ) ) {
 			return $transient;
 		}
 
