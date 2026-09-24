@@ -6,7 +6,7 @@ Tested up to: 7.1
 Requires PHP: 7.4
 WC requires at least: 6.0
 WC tested up to: 9.6
-Stable tag: 1.5.7
+Stable tag: 1.5.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,6 +67,9 @@ When PDF Gift Cards is enabled, the product page offers a live preview of the ca
 When Store Credit is enabled and an order paid with a gift card is refunded, the refund amount is issued as a new store credit gift card assigned to the customer, instead of restoring the original card balance.
 
 == Changelog ==
+
+= 1.5.8 =
+* Fixed: Two-line headings on the PDF card (e.g. the Portuguese default) were cut off. Already generated PDFs are refreshed the next time they are sent or downloaded.
 
 = 1.5.7 =
 * Fixed: A scheduled delivery whose order slot was moved to a later time is kept pending with the new time, instead of being marked as sent early.

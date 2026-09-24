@@ -77,6 +77,11 @@ class Installer {
 				self::reclassify_store_credit_source();
 			}
 
+			// 1.5.8 changed the card layout: stored PDFs regenerate on next send/download.
+			if ( version_compare( $installed, '1.5.8', '<' ) && '0' !== $installed ) {
+				Options::set( 'pdf_design_version', (string) ( max( 1, (int) Options::get( 'pdf_design_version' ) ) + 1 ) );
+			}
+
 			update_option( 'bgcw_pro_version', BGCW_PRO_VER );
 		}
 	}

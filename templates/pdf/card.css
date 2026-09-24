@@ -4,12 +4,12 @@
 .bgcw-card__brand{position:absolute;left:57px;top:34px;width:680px;height:40px;text-align:center;}
 .bgcw-card__brand img{max-height:38px;max-width:220px;display:inline-block;}
 .bgcw-card__brand-name{font-size:26px;font-weight:700;line-height:40px;white-space:nowrap;overflow:hidden;}
-.bgcw-card__heading{position:absolute;left:37px;top:86px;width:720px;height:108px;overflow:hidden;font-size:46px;font-weight:800;line-height:52px;letter-spacing:-1px;}
-.bgcw-card__people{position:absolute;left:57px;top:208px;width:680px;height:30px;font-size:16px;line-height:30px;}
+.bgcw-card__heading{position:absolute;left:37px;top:76px;width:720px;height:150px;overflow:hidden;font-size:42px;font-weight:800;line-height:50px;letter-spacing:-1px;}
+.bgcw-card__people{position:absolute;left:57px;top:232px;width:680px;height:30px;font-size:16px;line-height:30px;}
 .bgcw-card__people strong{font-size:22px;font-weight:700;}
 .bgcw-card__people .bgcw-card__gap{display:inline-block;width:36px;}
-.bgcw-card__intro{position:absolute;left:77px;top:248px;width:640px;height:104px;overflow:hidden;font-size:15px;line-height:22px;}
-.bgcw-card__intro-text,.bgcw-card__message{display:block;font-size:15px;line-height:22px;}
+.bgcw-card__intro{position:absolute;left:77px;top:268px;width:640px;height:90px;overflow:hidden;font-size:14px;line-height:20px;}
+.bgcw-card__intro-text,.bgcw-card__message{display:block;font-size:14px;line-height:20px;}
 .bgcw-card__message{margin-top:2px;}
 .bgcw-card__box{position:absolute;left:57px;top:362px;width:676px;height:116px;border:2px solid #000000;border-radius:12px;}
 .bgcw-card__box table{width:676px;height:116px;border-collapse:collapse;}
