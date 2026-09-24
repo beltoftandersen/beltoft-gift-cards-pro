@@ -152,6 +152,18 @@ class Scheduler {
 			 * The maybe_defer filter will not block this because
 			 * the scheduled_date has already passed.
 			 */
+			// The order may have been edited since the row was written. If its slot is still in the
+			// future, keep waiting (and re-sync the date) instead of firing and marking this row sent.
+			$info = self::get_delivery_info_from_order( (int) $row->gift_card_id, $order );
+			if ( ! empty( $info['date'] ) && self::is_future_local_datetime( $info['date'], $info['hour'] ) ) {
+				$new_utc = self::local_datetime_to_utc( $info['date'], $info['hour'] );
+				if ( $new_utc && $new_utc !== $row->scheduled_date ) {
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table.
+					$wpdb->update( $wpdb->prefix . 'bgcw_scheduled_deliveries', [ 'scheduled_date' => $new_utc ], [ 'id' => $row->id ], [ '%s' ], [ '%d' ] );
+				}
+				continue;
+			}
+
 			do_action( 'bgcw_gift_card_created', (int) $row->gift_card_id, $order );
 
 			// Mark as sent.
