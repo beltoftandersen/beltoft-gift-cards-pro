@@ -35,13 +35,13 @@ bgcwp_assert_eq( false, Download::can_access( $gc, 0 ), 'guest denied' );
 bgcwp_assert_eq( false, Download::can_access( null, $owner_id ), 'missing card denied' );
 
 $url = Download::url_for_card( $gc );
-bgcwp_assert( false !== strpos( $url, 'action=bgcw_pro_pdf_download' ) && false !== strpos( $url, 'card=' . $id ) && false !== strpos( $url, '_wpnonce=' ), 'download url has action, card, nonce' );
+bgcwp_assert( false !== strpos( $url, 'wc-ajax=bgcw_pro_pdf_download' ) && false === strpos( $url, 'wp-admin' ) && false !== strpos( $url, 'card=' . $id ) && false !== strpos( $url, '_wpnonce=' ), 'download url is a front-end wc-ajax link with card and nonce' );
 bgcwp_assert( false !== strpos( Download::sample_url( 'holiday' ), 'design=classic' ), 'sample url normalizes design' );
 
 // Button renders only for logged-in users when enabled.
 wp_set_current_user( $owner_id );
 ob_start(); Download::render_button( $gc ); $btn = ob_get_clean();
-bgcwp_assert( false !== strpos( $btn, 'bgcw-pro-pdf-download' ) && false !== strpos( $btn, 'action=bgcw_pro_pdf_download' ), 'button rendered for logged-in user' );
+bgcwp_assert( false !== strpos( $btn, 'bgcw-pro-pdf-download' ) && false !== strpos( $btn, 'wc-ajax=bgcw_pro_pdf_download' ), 'button rendered for logged-in user' );
 wp_set_current_user( 0 );
 ob_start(); Download::render_button( $gc ); $btn = ob_get_clean();
 bgcwp_assert_eq( '', $btn, 'no button for guests' );

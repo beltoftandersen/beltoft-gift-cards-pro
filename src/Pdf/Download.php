@@ -18,6 +18,9 @@ class Download {
 	 * Register hooks.
 	 */
 	public static function init() {
+		// Customer download runs on the front end (wc-ajax): many sites protect /wp-admin/ with a proxy or SSO.
+		add_action( 'wc_ajax_' . self::ACTION_DOWNLOAD, [ __CLASS__, 'handle_download' ] );
+		// Older links from 1.5.x still work.
 		add_action( 'admin_post_' . self::ACTION_DOWNLOAD, [ __CLASS__, 'handle_download' ] );
 		add_action( 'admin_post_nopriv_' . self::ACTION_DOWNLOAD, [ __CLASS__, 'handle_download' ] );
 		add_action( 'admin_post_' . self::ACTION_SAMPLE, [ __CLASS__, 'handle_sample' ] );
@@ -29,7 +32,7 @@ class Download {
 	 */
 	public static function url_for_card( $gc ): string {
 		return wp_nonce_url(
-			add_query_arg( [ 'action' => self::ACTION_DOWNLOAD, 'card' => (int) $gc->id ], admin_url( 'admin-post.php' ) ),
+			add_query_arg( [ 'card' => (int) $gc->id ], \WC_AJAX::get_endpoint( self::ACTION_DOWNLOAD ) ),
 			self::ACTION_DOWNLOAD . '_' . (int) $gc->id
 		);
 	}
