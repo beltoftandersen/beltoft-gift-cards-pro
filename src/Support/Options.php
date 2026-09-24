@@ -110,7 +110,29 @@ class Options {
 			$opts[ $key ] = $value;
 		}
 
+		/*
+		 * Bypass the registered sanitize callback for internal writes.
+		 *
+		 * sanitize() intentionally ignores license fields from request-driven updates
+		 * (settings form). Activation, deactivation and the daily check also write
+		 * through this helper, and WordPress runs the sanitize filter on every
+		 * update_option() once register_setting() has run, which would silently
+		 * drop the license fields.
+		 */
+		$sanitize_hook = 'sanitize_option_' . self::OPTION;
+		$sanitize_cb   = [ __CLASS__, 'sanitize' ];
+		$priority      = has_filter( $sanitize_hook, $sanitize_cb );
+
+		if ( false !== $priority ) {
+			remove_filter( $sanitize_hook, $sanitize_cb, (int) $priority );
+		}
+
 		update_option( self::OPTION, $opts );
+
+		if ( false !== $priority ) {
+			add_filter( $sanitize_hook, $sanitize_cb, (int) $priority );
+		}
+
 		self::$cache = null; // Invalidate cache.
 	}
 
