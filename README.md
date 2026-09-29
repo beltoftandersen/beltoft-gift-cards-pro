@@ -1,8 +1,8 @@
 # Beltoft Gift Cards for WooCommerce - Pro
 
-Premium add-on for [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards/) — scheduled delivery, PDF gift cards, store credit, bulk generation, BOGO promotions, and analytics.
+Premium add-on for [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards/): PDF gift cards, scheduled delivery, gifting any product, store credit, bulk generation, and more.
 
-- Stable version: 1.5.11
+- Stable version: 1.5.12
 - Requires: WordPress 5.8+, PHP 7.4+, WooCommerce 6.0+ (tested up to WordPress 7.1)
 - Requires: Beltoft Gift Cards for WooCommerce (free) 1.6.0+
 - Author: beltoft.net
@@ -10,21 +10,24 @@ Premium add-on for [Beltoft Gift Cards for WooCommerce](https://wordpress.org/pl
 
 ## Overview
 
-This plugin extends the free Beltoft Gift Cards for WooCommerce with advanced features for gift card management: scheduled delivery, PDF gift cards, store credit on refund, bulk generation, BOGO promotions, and analytics.
-
-A valid license key is required to activate Pro features.
+Pro adds extra features to the free Beltoft Gift Cards for WooCommerce plugin. You need the free plugin and a Pro license key.
 
 ## Features
 
-- **Scheduled Delivery** — Let customers choose a future delivery date for their gift card. A date picker appears on the product page, and the email is sent at the scheduled time.
-- **PDF Gift Cards** — The gift card is delivered as a designed PDF attached to the email, ready to print. Add your logo, heading and color. Customers can preview the card on the product page while they choose the amount and message, and download the PDF from My Account.
-- **Give as a Gift** — Sell any product as a gift. The buyer pays now; the recipient gets a gift card locked to that product and redeems it with one click, choosing the date or options themselves. Enable per product or per category.
-- **Store Credit on Refund** — When an order paid with a gift card is refunded, automatically create a store credit gift card for the customer instead of restoring the original card balance.
-- **Bulk Generation** — Generate up to 500 gift cards at once from the admin panel. Set amount, prefix, expiry, and optional recipient details.
-- **CSV Import / Export** — Export all gift cards to CSV with status filtering. Import gift cards from CSV with validation and error reporting.
-- **BOGO Promotions** — Create "Buy One, Get One" rules (e.g., "Buy a $100 gift card, get a $10 bonus"). Rules support date ranges, usage limits, and minimum quantities.
-- **Analytics Dashboard** — Pro stats on the Gift Cards dashboard: revenue, outstanding liability, redemption rate, pending deliveries, store credits issued, and BOGO bonuses given. Date range filtering (7d, 30d, 90d, all time).
-- **Scheduled Reports** — Receive daily, weekly, or monthly CSV reports by email summarizing all gift card activity.
+### For your customers
+
+- **PDF gift cards**: The gift card arrives as a nicely designed PDF, ready to print or forward. Customers see a live preview while they choose the amount and message, and can download the PDF from My Account. Add your own logo, heading and colour.
+- **Scheduled delivery**: Customers choose the date and hour the gift card should arrive, for example on a birthday morning.
+- **Give as a gift**: Let customers buy any product as a present. The recipient gets a gift card for that product and redeems it when it suits them. Turn it on for single products or whole categories.
+
+### For you
+
+- **Bulk generation**: Create up to 500 gift cards in one go, for example for a promotion or an event.
+- **CSV import and export**: Download your gift cards as a spreadsheet, or upload a spreadsheet to create many cards at once.
+- **BOGO promotions**: Reward buyers with a bonus, such as "Buy a $100 gift card, get $10 extra". Set start and end dates, usage limits and a minimum quantity.
+- **Store credit on refund**: Optionally refund orders paid with a gift card as a new gift card for the customer, instead of putting the money back on the original card.
+- **Sales overview**: Extra numbers on the Gift Cards dashboard: revenue, how much of it has been used, scheduled deliveries still waiting, store credit issued and BOGO bonuses given. View the last 7, 30 or 90 days, or all time.
+- **Email reports**: Receive a gift card report as a spreadsheet by email every day, week or month.
 
 ## Requirements
 
@@ -32,17 +35,50 @@ A valid license key is required to activate Pro features.
 - WooCommerce 6.0+
 - PHP 7.4+
 - [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards/) (free) 1.6.0+
-- PHP extensions mbstring, dom and gd (needed for PDF generation)
+- PHP extensions mbstring, dom and gd (needed for PDF gift cards)
 
 ## Installation
 
 1. Install and activate the free "Beltoft Gift Cards for WooCommerce" plugin.
-2. Upload the `beltoft-gift-cards-pro` folder to `/wp-content/plugins/`.
-3. Activate the plugin through the Plugins menu.
-4. Go to **WooCommerce > Gift Cards > License** and enter your license key.
-5. Configure features under the **Pro Settings** tab.
+2. Upload the `beltoft-gift-cards-pro` folder to `/wp-content/plugins/` and activate it.
+3. Go to **WooCommerce > Gift Cards > License** and enter your license key.
+4. Turn features on or off under **WooCommerce > Gift Cards > Pro Settings**.
+
+## FAQ
+
+**Do I need the free plugin?**
+Yes. The free Beltoft Gift Cards for WooCommerce (1.6.0 or newer) must be installed and active. Pro builds on top of it.
+
+**Where do I get a license key?**
+You receive it when you buy Pro. Enter it under WooCommerce > Gift Cards > License.
+
+**What happens if my license expires?**
+The Pro features switch off, and your gift cards keep working through the free plugin. Scheduled gift cards that customers have already paid for are still delivered on time.
+
+**How does scheduled delivery work?**
+On the gift card product page the customer picks a date and an hour. The gift card email is sent at that time.
+
+**How do PDF gift cards work?**
+The recipient gets a short email with the gift card attached as a PDF. The buyer can also download it from My Account. You can change the logo, heading and colour under Pro Settings.
+
+**How does "Give as a gift" work?**
+Tick "Can be given as a gift" on a product, or choose whole categories under Pro Settings. The customer buys the product as a gift, and the recipient gets a gift card that can only be used for that product.
+
+**What should my CSV file look like for import?**
+One gift card per row. Only an `amount` column is required. You can also add `recipient_name`, `recipient_email`, `message`, `expiry_days` or `expires_at`, and `source`. Cards with a recipient email are sent to that person. An exported file can be imported again.
+
+**How does store credit on refund work?**
+Turn on "Enable Store Credit" and "Auto-Create on Refund" under Pro Settings. When an order paid with a gift card is refunded, the customer gets a new gift card for that amount instead of the money going back on the original card. It is off by default.
+
+## For Developers
+
+Filters: `bgcw_pro_pdf_designs` (add or change PDF designs), `bgcw_pro_pdf_redeem_text` (change the redeem text on the PDF), `bgcw_pro_product_is_giftable` (decide in code which products can be given as a gift).
 
 ## Changelog
+
+### 1.5.12
+
+- Improved: Readme rewritten in plain language. It now explains that store credit on refund is off by default, that customers pick the delivery hour as well as the date, and what happens when the license expires.
 
 ### 1.5.11
 
