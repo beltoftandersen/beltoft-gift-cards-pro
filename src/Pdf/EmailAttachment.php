@@ -73,9 +73,27 @@ class EmailAttachment {
 			return $attachments;
 		}
 
-		$attachments[] = $path;
+		// A string key is the name the customer sees (wp_mail, WP 6.2+); the stored file keeps its random name.
+		$name = self::attachment_name();
+		if ( isset( $attachments[ $name ] ) ) {
+			$attachments[] = $path;
+		} else {
+			$attachments[ $name ] = $path;
+		}
 
 		return $attachments;
+	}
+
+	/**
+	 * Translatable file name for the attached PDF, e.g. "gift-card.pdf".
+	 *
+	 * @return string
+	 */
+	private static function attachment_name() {
+		/* translators: File name of the gift card PDF attached to the email, without ".pdf". Use only letters, numbers and hyphens. */
+		$base = sanitize_file_name( _x( 'gift-card', 'PDF attachment file name', 'beltoft-gift-cards-pro' ) );
+
+		return ( '' !== $base ? $base : 'gift-card' ) . '.pdf';
 	}
 
 	/**

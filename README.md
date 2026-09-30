@@ -2,7 +2,7 @@
 
 Premium add-on for [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards/): PDF gift cards, scheduled delivery, gifting any product, store credit, bulk generation, and more.
 
-- Stable version: 1.5.12
+- Stable version: 1.5.13
 - Requires: WordPress 5.8+, PHP 7.4+, WooCommerce 6.0+ (tested up to WordPress 7.1)
 - Requires: Beltoft Gift Cards for WooCommerce (free) 1.6.0+
 - Author: beltoft.net
@@ -75,6 +75,11 @@ Turn on "Enable Store Credit" and "Auto-Create on Refund" under Pro Settings. Wh
 Filters: `bgcw_pro_pdf_designs` (add or change PDF designs), `bgcw_pro_pdf_redeem_text` (change the redeem text on the PDF), `bgcw_pro_product_is_giftable` (decide in code which products can be given as a gift).
 
 ## Changelog
+
+### 1.5.13
+
+- Changed: The gift card PDF attached to the email is now named "gift-card.pdf" (translated into the site language, e.g. "cartao-presente.pdf" in Portuguese) instead of a random file name. Requires WordPress 6.2 or newer.
+- Fixed: Portuguese (pt_PT) translation: old "Smart Gift Cards" name replaced, wrong license warnings and required free plugin version corrected, a garbled "gifting not available" message fixed, and consistent formal wording and terminology throughout.
 
 ### 1.5.12
 

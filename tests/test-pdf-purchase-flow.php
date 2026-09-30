@@ -79,6 +79,6 @@ foreach ( $cards as $gc ) {
 $delivery = array_values( array_filter( $captured, function ( $m ) use ( $recipient ) { $to = is_array( $m['to'] ) ? $m['to'][0] : $m['to']; return $to === $recipient; } ) );
 bgcwp_assert_eq( 2, count( $delivery ), 'two delivery emails sent to recipient' );
 foreach ( $delivery as $m ) {
-	bgcwp_assert( 1 === count( $m['attachments'] ?? [] ) && file_exists( $m['attachments'][0] ), 'delivery email has one PDF attached' );
+	bgcwp_assert( 1 === count( $m['attachments'] ?? [] ) && file_exists( (string) reset( $m['attachments'] ) ), 'delivery email has one PDF attached' );
 	bgcwp_assert( false !== strpos( $m['message'], __( 'Your gift card is attached to this email as a PDF. Print it or show the code at checkout.', 'beltoft-gift-cards-pro' ) ), 'delivery email uses the pdf notice' );
 }

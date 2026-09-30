@@ -27,7 +27,8 @@ do_action( 'bgcw_gift_card_created', $id, null );
 bgcwp_assert( is_array( $captured ), 'delivery email was sent through wp_mail' );
 if ( is_array( $captured ) ) {
 	$att = $captured['attachments'] ?? [];
-	bgcwp_assert( 1 === count( $att ) && file_exists( $att[0] ) && '.pdf' === substr( $att[0], -4 ), 'exactly one PDF attachment' );
+	bgcwp_assert( 1 === count( $att ) && file_exists( (string) reset( $att ) ) && '.pdf' === substr( (string) reset( $att ), -4 ), 'exactly one PDF attachment' );
+	bgcwp_assert_eq( [ sanitize_file_name( _x( 'gift-card', 'PDF attachment file name', 'beltoft-gift-cards-pro' ) ) . '.pdf' ], array_keys( $att ), 'wp_mail receives the translated display name' );
 	bgcwp_assert( false !== strpos( $captured['message'], __( 'Your gift card is attached to this email as a PDF. Print it or show the code at checkout.', 'beltoft-gift-cards-pro' ) ), 'neutral pdf notice body used' );
 	bgcwp_assert( false !== strpos( $captured['message'], Repository::find( $id )->code ), 'code still present in email body' );
 	bgcwp_assert_eq( 'flow@example.test', is_array( $captured['to'] ) ? $captured['to'][0] : $captured['to'], 'sent to recipient' );

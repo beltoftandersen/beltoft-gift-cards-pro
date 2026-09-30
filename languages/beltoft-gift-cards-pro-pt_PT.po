@@ -1,16 +1,15 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Smart Gift Cards for WooCommerce - Pro 1.0.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/beltoft-gift-"
-"cards-pro\n"
-"POT-Creation-Date: 2026-09-24T16:44:15+00:00\n"
-"PO-Revision-Date: 2026-02-20 00:00+0000\n"
+"Project-Id-Version: Beltoft Gift Cards for WooCommerce - Pro 1.5.13\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/beltoft-gift-cards-pro\n"
 "Last-Translator: beltoft.net <support@beltoft.net>\n"
 "Language-Team: Portuguese (Portugal)\n"
-"Language: pt_PT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-09-24T16:44:15+00:00\n"
+"PO-Revision-Date: 2026-02-20 00:00+0000\n"
+"Language: pt_PT\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: beltoft-gift-cards-pro\n"
@@ -27,14 +26,8 @@ msgstr "https://beltoft.net/beltoft-gift-cards-pro"
 
 #. Description of the plugin
 #: beltoft-gift-cards-pro.php
-msgid ""
-"Premium add-on for Beltoft Gift Cards for WooCommerce — scheduled delivery, "
-"PDF gift cards, store credit, bulk generation, BOGO promotions, and "
-"analytics. Requires the free core plugin."
-msgstr ""
-"Extensão premium para o Smart Gift Cards for WooCommerce — entrega agendada, "
-"temas de e-mail, crédito de loja, geração em massa, promoções BOGO e "
-"análises. Requer o plugin gratuito."
+msgid "Premium add-on for Beltoft Gift Cards for WooCommerce — scheduled delivery, PDF gift cards, store credit, bulk generation, BOGO promotions, and analytics. Requires the free core plugin."
+msgstr "Extensão premium para o Beltoft Gift Cards for WooCommerce — entrega agendada, cartões-presente em PDF, crédito de loja, geração em massa, promoções BOGO e análises. Requer o plugin gratuito."
 
 #. Author of the plugin
 #: beltoft-gift-cards-pro.php
@@ -46,29 +39,18 @@ msgstr "beltoft.net"
 msgid "https://beltoft.net"
 msgstr "https://beltoft.net"
 
-#: beltoft-gift-cards-pro.php:50 beltoft-gift-cards-pro.php:90
-msgid ""
-"Beltoft Gift Cards for WooCommerce - Pro requires the free \"Beltoft Gift "
-"Cards for WooCommerce\" plugin to be installed and activated."
-msgstr ""
-"O Smart Gift Cards for WooCommerce - Pro requer que o plugin gratuito "
-"\"Smart Gift Cards for WooCommerce\" esteja instalado e ativo."
+#: beltoft-gift-cards-pro.php:50
+#: beltoft-gift-cards-pro.php:90
+msgid "Beltoft Gift Cards for WooCommerce - Pro requires the free \"Beltoft Gift Cards for WooCommerce\" plugin to be installed and activated."
+msgstr "O Beltoft Gift Cards for WooCommerce - Pro requer que o plugin gratuito \"Beltoft Gift Cards for WooCommerce\" esteja instalado e ativo."
 
 #: beltoft-gift-cards-pro.php:80
-msgid ""
-"Beltoft Gift Cards for WooCommerce - Pro requires WooCommerce to be "
-"installed and activated."
-msgstr ""
-"O Smart Gift Cards for WooCommerce - Pro requer que o WooCommerce esteja "
-"instalado e ativo."
+msgid "Beltoft Gift Cards for WooCommerce - Pro requires WooCommerce to be installed and activated."
+msgstr "O Beltoft Gift Cards for WooCommerce - Pro requer que o WooCommerce esteja instalado e ativo."
 
 #: beltoft-gift-cards-pro.php:100
-msgid ""
-"Beltoft Gift Cards for WooCommerce - Pro requires version 1.6.0 or higher of "
-"the free plugin. Please update."
-msgstr ""
-"Beltoft Gift Cards for WooCommerce - Pro requer a versão 1.5.0 ou superior "
-"do plugin gratuito. Por favor atualize."
+msgid "Beltoft Gift Cards for WooCommerce - Pro requires version 1.6.0 or higher of the free plugin. Please update."
+msgstr "O Beltoft Gift Cards for WooCommerce - Pro requer a versão 1.6.0 ou superior do plugin gratuito. Por favor, atualize."
 
 #: beltoft-gift-cards-pro.php:115
 msgid "Settings"
@@ -78,7 +60,8 @@ msgstr "Definições"
 msgid "Activating..."
 msgstr "A ativar..."
 
-#: src/Admin/SettingsPage.php:53 src/Admin/SettingsPage.php:542
+#: src/Admin/SettingsPage.php:53
+#: src/Admin/SettingsPage.php:542
 msgid "Activate"
 msgstr "Ativar"
 
@@ -90,7 +73,8 @@ msgstr "Falha na ativação."
 msgid "Deactivating..."
 msgstr "A desativar..."
 
-#: src/Admin/SettingsPage.php:56 src/Admin/SettingsPage.php:538
+#: src/Admin/SettingsPage.php:56
+#: src/Admin/SettingsPage.php:538
 msgid "Deactivate"
 msgstr "Desativar"
 
@@ -112,7 +96,7 @@ msgstr "Definições Pro"
 
 #: src/Admin/SettingsPage.php:72
 msgid "Bulk & CSV"
-msgstr "Massa e CSV"
+msgstr "Em massa e CSV"
 
 #: src/Admin/SettingsPage.php:73
 msgid "BOGO Rules"
@@ -128,46 +112,31 @@ msgstr "Entrega Agendada"
 
 #: src/Admin/SettingsPage.php:94
 msgid "Allow customers to schedule gift card delivery for a future date."
-msgstr ""
-"Permitir que os clientes agendem a entrega do cartão-presente para uma data "
-"futura."
+msgstr "Permitir que os clientes agendem a entrega do cartão-presente para uma data futura."
 
 #: src/Admin/SettingsPage.php:101
 msgid "Enable Scheduled Delivery"
 msgstr "Ativar Entrega Agendada"
 
 #: src/Admin/SettingsPage.php:103
-msgid ""
-"Allow customers to pick a future delivery date when purchasing a gift card."
-msgstr ""
-"Permitir que os clientes escolham uma data de entrega futura ao comprar um "
-"cartão-presente."
+msgid "Allow customers to pick a future delivery date when purchasing a gift card."
+msgstr "Permitir que os clientes escolham uma data de entrega futura ao comprar um cartão-presente."
 
 #: src/Admin/SettingsPage.php:109
 msgid "PDF Gift Cards"
-msgstr "Cartões presente em PDF"
+msgstr "Cartões-presente em PDF"
 
 #: src/Admin/SettingsPage.php:111
-msgid ""
-"Deliver the gift card as a designed PDF attached to the email. Customers see "
-"a live preview of the card on the product page and can download it from My "
-"Account."
-msgstr ""
-"Entregue o cartão presente como um PDF com design, anexado ao e-mail. Os "
-"clientes veem uma pré-visualização do cartão na página do produto e podem "
-"descarregá-lo em A Minha Conta."
+msgid "Deliver the gift card as a designed PDF attached to the email. Customers see a live preview of the card on the product page and can download it from My Account."
+msgstr "Entregue o cartão-presente como um PDF com design, anexado ao e-mail. Os clientes veem uma pré-visualização do cartão na página do produto e podem descarregá-lo em A Minha Conta."
 
 #: src/Admin/SettingsPage.php:118
 msgid "Enable PDF Gift Cards"
-msgstr "Ativar cartões presente em PDF"
+msgstr "Ativar cartões-presente em PDF"
 
 #: src/Admin/SettingsPage.php:120
-msgid ""
-"Attach the PDF to the delivery email and show the live card preview on gift "
-"card products."
-msgstr ""
-"Anexar o PDF ao e-mail de entrega e mostrar a pré-visualização do cartão nos "
-"produtos de cartão presente."
+msgid "Attach the PDF to the delivery email and show the live card preview on gift card products."
+msgstr "Anexar o PDF ao e-mail de entrega e mostrar a pré-visualização do cartão nos produtos de cartão-presente."
 
 #: src/Admin/SettingsPage.php:125
 msgid "Logo on the card"
@@ -178,29 +147,21 @@ msgid "Give as a Gift"
 msgstr "Oferecer como presente"
 
 #: src/Admin/SettingsPage.php:136
-msgid ""
-"Let customers buy any product as a gift. The recipient receives a gift card "
-"locked to that product and chooses when to redeem it. Enable it per product "
-"with the \"Can be given as a gift\" checkbox, or for whole categories here."
-msgstr ""
-"Permita que os clientes comprem qualquer produto como presente. O "
-"destinatário recebe um cartão presente associado a esse produto e escolhe "
-"quando o resgatar. Ative por produto com a opção \"Pode ser oferecido como "
-"presente\", ou para categorias inteiras aqui."
+msgid "Let customers buy any product as a gift. The recipient receives a gift card locked to that product and chooses when to redeem it. Enable it per product with the \"Can be given as a gift\" checkbox, or for whole categories here."
+msgstr "Permita que os clientes comprem qualquer produto como presente. O destinatário recebe um cartão-presente associado a esse produto e escolhe quando o resgatar. Ative por produto com a opção \"Pode ser oferecido como presente\", ou para categorias inteiras aqui."
 
 #: src/Admin/SettingsPage.php:142
 msgid "Giftable categories"
 msgstr "Categorias que podem ser oferecidas"
 
-#: src/Admin/SettingsPage.php:151 src/StoreCredit/CreditManager.php:39
+#: src/Admin/SettingsPage.php:151
+#: src/StoreCredit/CreditManager.php:39
 msgid "Store Credit"
 msgstr "Crédito de Loja"
 
 #: src/Admin/SettingsPage.php:153
 msgid "Issue gift cards as store credit for refunds and account balances."
-msgstr ""
-"Emitir cartões-presente como crédito de loja para reembolsos e saldos de "
-"conta."
+msgstr "Emitir cartões-presente como crédito de loja para reembolsos e saldos de conta."
 
 #: src/Admin/SettingsPage.php:160
 msgid "Enable Store Credit"
@@ -208,19 +169,15 @@ msgstr "Ativar Crédito de Loja"
 
 #: src/Admin/SettingsPage.php:162
 msgid "Enable store credit functionality backed by gift cards."
-msgstr ""
-"Ativar funcionalidade de crédito de loja suportada por cartões-presente."
+msgstr "Ativar funcionalidade de crédito de loja suportada por cartões-presente."
 
 #: src/Admin/SettingsPage.php:167
 msgid "Auto-Create on Refund"
 msgstr "Criar Automaticamente ao Reembolsar"
 
 #: src/Admin/SettingsPage.php:169
-msgid ""
-"Automatically create a store credit gift card when an order is refunded."
-msgstr ""
-"Criar automaticamente um cartão-presente de crédito de loja quando uma "
-"encomenda é reembolsada."
+msgid "Automatically create a store credit gift card when an order is refunded."
+msgstr "Criar automaticamente um cartão-presente de crédito de loja quando uma encomenda é reembolsada."
 
 #: src/Admin/SettingsPage.php:175
 msgid "BOGO Promotions"
@@ -244,9 +201,7 @@ msgstr "Análises"
 
 #: src/Admin/SettingsPage.php:194
 msgid "Gift card usage reports delivered to your inbox on a schedule."
-msgstr ""
-"Relatórios de utilização de cartões-presente entregues na sua caixa de "
-"entrada de forma agendada."
+msgstr "Relatórios de utilização de cartões-presente entregues na sua caixa de entrada de forma agendada."
 
 #: src/Admin/SettingsPage.php:201
 msgid "Enable Analytics"
@@ -277,11 +232,8 @@ msgid "Report Recipients"
 msgstr "Destinatários do Relatório"
 
 #: src/Admin/SettingsPage.php:236
-msgid ""
-"Comma-separated email addresses. Leave blank to use the site admin email."
-msgstr ""
-"Endereços de e-mail separados por vírgulas. Deixe em branco para utilizar o "
-"e-mail do administrador."
+msgid "Comma-separated email addresses. Leave blank to use the site admin email."
+msgstr "Endereços de e-mail separados por vírgulas. Deixe em branco para utilizar o e-mail do administrador."
 
 #: src/Admin/SettingsPage.php:239
 msgid "Day of Week"
@@ -324,12 +276,8 @@ msgid "Day of Month"
 msgstr "Dia do Mês"
 
 #: src/Admin/SettingsPage.php:281
-msgid ""
-"Used for monthly reports. Limited to 28 to ensure consistent delivery across "
-"all months."
-msgstr ""
-"Utilizado para relatórios mensais. Limitado a 28 para garantir entrega "
-"consistente em todos os meses."
+msgid "Used for monthly reports. Limited to 28 to ensure consistent delivery across all months."
+msgstr "Utilizado para relatórios mensais. Limitado a 28 para garantir entrega consistente em todos os meses."
 
 #: src/Admin/SettingsPage.php:284
 msgid "Time of Day"
@@ -356,20 +304,12 @@ msgstr "Eliminar todos os dados do plugin Pro ao desinstalar."
 #. translators: %s: license tab URL
 #: src/Admin/SettingsPage.php:337
 #, php-format
-msgid ""
-"An active license is required for Pro Settings. <a href=\"%s\">Enter your "
-"license key</a> to enable these features."
-msgstr ""
-"É necessária uma licença ativa para as Definições Pro. <a "
-"href=\"%s\">Introduza a sua chave de licença</a> para ativar estas "
-"funcionalidades."
+msgid "An active license is required for Pro Settings. <a href=\"%s\">Enter your license key</a> to enable these features."
+msgstr "É necessária uma licença ativa para as Definições Pro. <a href=\"%s\">Introduza a sua chave de licença</a> para ativar estas funcionalidades."
 
 #: src/Admin/SettingsPage.php:379
-msgid ""
-"Hold Ctrl or Cmd to select several. Gift card products are never giftable."
-msgstr ""
-"Mantenha Ctrl ou Cmd premido para selecionar várias. Produtos de cartão "
-"presente nunca podem ser oferecidos."
+msgid "Hold Ctrl or Cmd to select several. Gift card products are never giftable."
+msgstr "Mantenha Ctrl ou Cmd premido para selecionar várias. Produtos de cartão-presente nunca podem ser oferecidos."
 
 #: src/Admin/SettingsPage.php:395
 msgid "Choose logo"
@@ -380,30 +320,20 @@ msgid "Remove"
 msgstr "Remover"
 
 #: src/Admin/SettingsPage.php:397
-msgid ""
-"Shown at the top of the card. PNG or JPG, at least 400px wide. Without a "
-"logo the store name is printed instead."
-msgstr ""
-"Aparece no topo do cartão. PNG ou JPG com pelo menos 400px de largura. Sem "
-"logótipo, é impresso o nome da loja."
+msgid "Shown at the top of the card. PNG or JPG, at least 400px wide. Without a logo the store name is printed instead."
+msgstr "Aparece no topo do cartão. PNG ou JPG com pelo menos 400px de largura. Sem logótipo, é impresso o nome da loja."
 
 #: src/Admin/SettingsPage.php:409
 msgid "Card design"
 msgstr "Design do cartão"
 
 #: src/Admin/SettingsPage.php:410
-msgid ""
-"Change the heading or main color and save, then download a sample to see the "
-"result. Saving a change regenerates stored PDFs the next time they are sent "
-"or downloaded."
-msgstr ""
-"Altere o título ou a cor principal e guarde; depois descarregue um exemplo "
-"para ver o resultado. Ao guardar uma alteração, os PDF guardados são "
-"regenerados na próxima vez que forem enviados ou descarregados."
+msgid "Change the heading or main color and save, then download a sample to see the result. Saving a change regenerates stored PDFs the next time they are sent or downloaded."
+msgstr "Altere o título ou a cor principal e guarde; depois descarregue um exemplo para ver o resultado. Ao guardar uma alteração, os PDF guardados são regenerados na próxima vez que forem enviados ou descarregados."
 
 #: src/Admin/SettingsPage.php:426
 msgid "Heading"
-msgstr "Cabeçalho"
+msgstr "Título"
 
 #: src/Admin/SettingsPage.php:434
 msgid "Main color"
@@ -418,51 +348,43 @@ msgid "Card text"
 msgstr "Texto do cartão"
 
 #: src/Admin/SettingsPage.php:450
-msgid ""
-"Leave blank for the defaults. {store} and {product} are replaced "
-"automatically. Translations for the defaults come from the plugin language "
-"files."
-msgstr ""
-"Deixe em branco para usar os textos padrão. {store} e {product} são "
-"substituídos automaticamente. As traduções dos textos padrão vêm dos "
-"ficheiros de idioma do plugin."
+msgid "Leave blank for the defaults. {store} and {product} are replaced automatically. Translations for the defaults come from the plugin language files."
+msgstr "Deixe em branco para usar os textos padrão. {store} e {product} são substituídos automaticamente. As traduções dos textos padrão vêm dos ficheiros de idioma do plugin."
 
 #: src/Admin/SettingsPage.php:453
 msgid "Text on value cards"
 msgstr "Texto nos cartões de valor"
 
-#: src/Admin/SettingsPage.php:454 src/Pdf/CardRenderer.php:76
-msgid ""
-"Congratulations! You have received a gift card to spend at {store}. We hope "
-"you enjoy it!"
-msgstr ""
-"Parabéns! Recebeste um cartão presente para usufruir na loja {store}. "
-"Esperamos que seja útil!"
+#: src/Admin/SettingsPage.php:454
+#: src/Pdf/CardRenderer.php:76
+msgid "Congratulations! You have received a gift card to spend at {store}. We hope you enjoy it!"
+msgstr "Parabéns! Recebeu um cartão-presente para utilizar na loja {store}. Esperamos que goste!"
 
 #: src/Admin/SettingsPage.php:457
 msgid "Heading on product gift cards"
-msgstr "Título nos cartões presente de produto"
+msgstr "Título nos cartões-presente de produto"
 
-#: src/Admin/SettingsPage.php:458 src/Pdf/CardRenderer.php:78
+#: src/Admin/SettingsPage.php:458
+#: src/Pdf/CardRenderer.php:78
 msgid "Surprise! A gift just for you!"
-msgstr "Surpresa! Um presente só para ti!"
+msgstr "Surpresa! Um presente só para si!"
 
 #: src/Admin/SettingsPage.php:461
 msgid "Text on product gift cards"
-msgstr "Texto nos cartões presente de produto"
+msgstr "Texto nos cartões-presente de produto"
 
-#: src/Admin/SettingsPage.php:462 src/Pdf/CardRenderer.php:77
-msgid ""
-"Congratulations! You have received {product} as a gift from {store}. We hope "
-"you enjoy it!"
-msgstr ""
-"Parabéns! Recebeste {product} como presente da {store}. Esperamos que gostes!"
+#: src/Admin/SettingsPage.php:462
+#: src/Pdf/CardRenderer.php:77
+msgid "Congratulations! You have received {product} as a gift from {store}. We hope you enjoy it!"
+msgstr "Parabéns! Recebeu {product} como presente da {store}. Esperamos que goste!"
 
-#: src/Admin/SettingsPage.php:481 src/Admin/SettingsPage.php:516
+#: src/Admin/SettingsPage.php:481
+#: src/Admin/SettingsPage.php:516
 msgid "License Key"
 msgstr "Chave de Licença"
 
-#: src/Admin/SettingsPage.php:485 src/Admin/SettingsPage.php:672
+#: src/Admin/SettingsPage.php:485
+#: src/Admin/SettingsPage.php:672
 msgid "Active"
 msgstr "Ativo"
 
@@ -551,12 +473,8 @@ msgid "Source"
 msgstr "Origem"
 
 #: src/Admin/SettingsPage.php:636
-msgid ""
-"Paid offline counts as a paid card at redemption; promotion and compensation "
-"count as free."
-msgstr ""
-"Pago fora da loja conta como cartão pago na utilização; promoção e "
-"compensação contam como grátis."
+msgid "Paid offline counts as a paid card at redemption; promotion and compensation count as free."
+msgstr "Pago fora da loja conta como cartão pago na utilização; promoção e compensação contam como grátis."
 
 #: src/Admin/SettingsPage.php:640
 msgid "Code Prefix (optional)"
@@ -608,7 +526,7 @@ msgstr "Resgatado"
 
 #: src/Admin/SettingsPage.php:679
 msgid "Download CSV"
-msgstr "Transferir CSV"
+msgstr "Descarregar CSV"
 
 #: src/Admin/SettingsPage.php:684
 msgid "Import Gift Cards (CSV)"
@@ -678,7 +596,8 @@ msgstr "Qtd Mín"
 msgid "Uses"
 msgstr "Utilizações"
 
-#: src/Admin/SettingsPage.php:764 src/Analytics/ReportGenerator.php:161
+#: src/Admin/SettingsPage.php:764
+#: src/Analytics/ReportGenerator.php:161
 msgid "Status"
 msgstr "Estado"
 
@@ -762,7 +681,8 @@ msgstr "Valor Inicial"
 msgid "Balance"
 msgstr "Saldo"
 
-#: src/Analytics/ReportGenerator.php:162 src/Pdf/CardRenderer.php:36
+#: src/Analytics/ReportGenerator.php:162
+#: src/Pdf/CardRenderer.php:36
 msgid "Recipient"
 msgstr "Destinatário"
 
@@ -778,8 +698,10 @@ msgstr "Expira"
 msgid "Transactions Count"
 msgstr "Número de Transações"
 
-#: src/Bogo/BogoManager.php:26 src/Bogo/BogoManager.php:57
-#: src/Licensing/License.php:439 src/Licensing/License.php:462
+#: src/Bogo/BogoManager.php:26
+#: src/Bogo/BogoManager.php:57
+#: src/Licensing/License.php:439
+#: src/Licensing/License.php:462
 msgid "Permission denied."
 msgstr "Permissão negada."
 
@@ -807,8 +729,10 @@ msgstr "Cartão-presente bónus da promoção: %s"
 msgid "BOGO bonus from rule: %s"
 msgstr "Bónus BOGO da regra: %s"
 
-#: src/BulkGeneration/CsvHandler.php:39 src/BulkGeneration/CsvHandler.php:115
-#: src/BulkGeneration/Generator.php:29 src/BulkGeneration/Generator.php:150
+#: src/BulkGeneration/CsvHandler.php:39
+#: src/BulkGeneration/CsvHandler.php:115
+#: src/BulkGeneration/Generator.php:29
+#: src/BulkGeneration/Generator.php:150
 msgid "You do not have permission to perform this action."
 msgstr "Não tem permissão para realizar esta ação."
 
@@ -896,18 +820,15 @@ msgstr "Este produto não pode ser oferecido como presente."
 
 #: src/Gifting/AddToCartHandler.php:84
 msgid "This product has no price, so it cannot be given as a gift."
-msgstr ""
-"Este produto não tem preço, por isso não pode ser oferecido como presente."
+msgstr "Este produto não tem preço, por isso não pode ser oferecido como presente."
 
 #: src/Gifting/AddToCartHandler.php:90
 msgid "Gifting is not available right now. Please try again later."
-msgstr ""
-"De momento não é possível oferecer presentes. Tente novamente mais tarde.Não "
-"foi possível criar o PDF do cartão presente. Tente novamente mais tarde."
+msgstr "De momento não é possível oferecer presentes. Tente novamente mais tarde."
 
 #: src/Gifting/Carrier.php:62
 msgid "Gift card"
-msgstr "Cartão presente"
+msgstr "Cartão-presente"
 
 #. translators: %s: product name
 #: src/Gifting/CartDisplay.php:40
@@ -920,13 +841,8 @@ msgid "Can be given as a gift"
 msgstr "Pode ser oferecido como presente"
 
 #: src/Gifting/Giftable.php:84
-msgid ""
-"Shows a \"Give as a gift\" option on the product page. The buyer pays now "
-"and the recipient gets a gift card locked to this product."
-msgstr ""
-"Mostra a opção \"Oferecer como presente\" na página do produto. O comprador "
-"paga agora e o destinatário recebe um cartão presente associado a este "
-"produto."
+msgid "Shows a \"Give as a gift\" option on the product page. The buyer pays now and the recipient gets a gift card locked to this product."
+msgstr "Mostra a opção \"Oferecer como presente\" na página do produto. O comprador paga agora e o destinatário recebe um cartão-presente associado a este produto."
 
 #: src/Gifting/GiftForm.php:43
 msgid "Give as a gift"
@@ -935,20 +851,12 @@ msgstr "Oferecer como presente"
 #. translators: %s: formatted price
 #: src/Gifting/GiftForm.php:50
 #, php-format
-msgid ""
-"You pay %s now. The recipient gets a gift card for this product by email and "
-"chooses when to use it."
-msgstr ""
-"Paga %s agora. O destinatário recebe por e-mail um cartão presente para este "
-"produto e escolhe quando o utilizar."
+msgid "You pay %s now. The recipient gets a gift card for this product by email and chooses when to use it."
+msgstr "Paga %s agora. O destinatário recebe por e-mail um cartão-presente para este produto e escolhe quando o utilizar."
 
 #: src/Gifting/GiftForm.php:54
-msgid ""
-"The card is worth the lowest option price; the recipient pays any difference "
-"when choosing a more expensive option."
-msgstr ""
-"O cartão vale o preço da opção mais barata; o destinatário paga a diferença "
-"se escolher uma opção mais cara."
+msgid "The card is worth the lowest option price; the recipient pays any difference when choosing a more expensive option."
+msgstr "O cartão vale o preço da opção mais barata; o destinatário paga a diferença se escolher uma opção mais cara."
 
 #: src/Gifting/GiftForm.php:61
 msgid "Recipient Name"
@@ -966,7 +874,8 @@ msgstr "obrigatório"
 msgid "Personal Message (optional)"
 msgstr "Mensagem pessoal (opcional)"
 
-#: src/Licensing/License.php:64 src/Licensing/License.php:444
+#: src/Licensing/License.php:64
+#: src/Licensing/License.php:444
 msgid "Please enter a license key."
 msgstr "Introduza uma chave de licença."
 
@@ -982,7 +891,8 @@ msgstr "Chave de licença não encontrada. Verifique e tente novamente."
 msgid "License endpoint unavailable. Please try again in a moment."
 msgstr "Serviço de licenças indisponível. Tente novamente dentro de momentos."
 
-#: src/Licensing/License.php:124 src/Licensing/License.php:133
+#: src/Licensing/License.php:124
+#: src/Licensing/License.php:133
 msgid "License activation failed."
 msgstr "Falha na ativação da licença."
 
@@ -995,12 +905,8 @@ msgid "No license key to deactivate."
 msgstr "Não há chave de licença para desativar."
 
 #: src/Licensing/License.php:214
-msgid ""
-"License deactivated locally. Remote deactivation could not be confirmed "
-"right now."
-msgstr ""
-"Licença desativada localmente. Não foi possível confirmar a desativação no "
-"servidor neste momento."
+msgid "License deactivated locally. Remote deactivation could not be confirmed right now."
+msgstr "Licença desativada localmente. Não foi possível confirmar a desativação no servidor neste momento."
 
 #: src/Licensing/License.php:215
 msgid "License deactivated successfully."
@@ -1009,72 +915,48 @@ msgstr "Licença desativada com sucesso."
 #. translators: %s: license settings page URL
 #: src/Licensing/License.php:363
 #, php-format
-msgid ""
-"Gift Cards Pro: Please <a href=\"%s\">enter your license key</a> to enable "
-"Pro features."
-msgstr ""
-"Smart Gift Cards Pro: <a href=\"%s\">Introduza a sua chave de licença</a> "
-"para ativar as funcionalidades Pro."
+msgid "Gift Cards Pro: Please <a href=\"%s\">enter your license key</a> to enable Pro features."
+msgstr "Gift Cards Pro: <a href=\"%s\">introduza a sua chave de licença</a> para ativar as funcionalidades Pro."
 
 #. translators: %s: license settings page URL
 #: src/Licensing/License.php:378
 #, php-format
-msgid ""
-"Gift Cards Pro: License is not activated. <a href=\"%s\">Activate your "
-"license</a> to enable Pro features and updates."
-msgstr ""
-"Smart Gift Cards Pro: <a href=\"%s\">Introduza a sua chave de licença</a> "
-"para ativar as funcionalidades Pro."
+msgid "Gift Cards Pro: License is not activated. <a href=\"%s\">Activate your license</a> to enable Pro features and updates."
+msgstr "Gift Cards Pro: a licença não está ativada. <a href=\"%s\">Ative a sua licença</a> para ativar as funcionalidades Pro e as atualizações."
 
 #. translators: %s: license settings page URL
 #: src/Licensing/License.php:393
 #, php-format
-msgid ""
-"Gift Cards Pro: License inactive. <a href=\"%s\">Renew your license</a> to "
-"receive updates."
-msgstr ""
-"Smart Gift Cards Pro: <a href=\"%s\">Introduza a sua chave de licença</a> "
-"para ativar as funcionalidades Pro."
+msgid "Gift Cards Pro: License inactive. <a href=\"%s\">Renew your license</a> to receive updates."
+msgstr "Gift Cards Pro: licença inativa. <a href=\"%s\">Renove a sua licença</a> para receber atualizações."
 
 #. translators: %s: license settings page URL
 #: src/Licensing/License.php:408
 #, php-format
-msgid ""
-"Gift Cards Pro: License is not activated on this domain. <a "
-"href=\"%s\">Deactivate your old domain</a> and reactivate here."
-msgstr ""
-"Gift Cards Pro: a licença não está ativada neste domínio. <a "
-"href=\"%s\">Desative o domínio antigo</a> e reative aqui."
+msgid "Gift Cards Pro: License is not activated on this domain. <a href=\"%s\">Deactivate your old domain</a> and reactivate here."
+msgstr "Gift Cards Pro: a licença não está ativada neste domínio. <a href=\"%s\">Desative o domínio antigo</a> e reative aqui."
 
 #. translators: %s: license settings page URL
 #: src/Licensing/License.php:423
 #, php-format
-msgid ""
-"Gift Cards Pro: License key not found. Please <a href=\"%s\">check your "
-"license key</a>."
-msgstr ""
-"Smart Gift Cards Pro: <a href=\"%s\">Introduza a sua chave de licença</a> "
-"para ativar as funcionalidades Pro."
+msgid "Gift Cards Pro: License key not found. Please <a href=\"%s\">check your license key</a>."
+msgstr "Gift Cards Pro: chave de licença não encontrada. <a href=\"%s\">Verifique a sua chave de licença</a>."
 
 #: src/Licensing/Updater.php:127
 msgid "A valid license key is required to download updates."
-msgstr ""
-"É necessária uma chave de licença válida para descarregar atualizações."
+msgstr "É necessária uma chave de licença válida para descarregar atualizações."
 
 #: src/Licensing/Updater.php:148
 msgid "Download failed."
-msgstr "Falha na transferência."
+msgstr "Falha ao descarregar."
 
 #: src/Licensing/Updater.php:170
 msgid "Could not connect to license server to download the update."
-msgstr ""
-"Não foi possível ligar ao servidor de licenças para descarregar a "
-"atualização."
+msgstr "Não foi possível ligar ao servidor de licenças para descarregar a atualização."
 
 #: src/Licensing/Updater.php:177
 msgid "Could not retrieve download URL from license server."
-msgstr ""
-"Não foi possível obter o endereço de transferência do servidor de licenças."
+msgstr "Não foi possível obter o endereço de descarga do servidor de licenças."
 
 #: src/Pdf/CardRenderer.php:37
 msgid "Sender"
@@ -1084,9 +966,7 @@ msgstr "Remetente"
 #: src/Pdf/CardRenderer.php:70
 #, php-format
 msgid "Enter the code at checkout on %s, or show this card in store."
-msgstr ""
-"Introduza o código na finalização da compra em %s, ou mostre este cartão na "
-"loja."
+msgstr "Introduza o código na finalização da compra em %s, ou mostre este cartão na loja."
 
 #: src/Pdf/CardRenderer.php:137
 msgid "No expiry date"
@@ -1104,26 +984,25 @@ msgstr "Clássico"
 
 #: src/Pdf/Designs.php:29
 msgid "Surprise! A gift card just for you!"
-msgstr "Surpresa! Um cartão presente só para ti!"
+msgstr "Surpresa! Um cartão-presente só para si!"
 
-#: src/Pdf/Download.php:76
+#: src/Pdf/Download.php:79
 msgid "Download PDF"
 msgstr "Descarregar PDF"
 
-#: src/Pdf/Download.php:93
+#: src/Pdf/Download.php:96
 msgid "This download link is not valid."
 msgstr "Esta ligação de descarga não é válida."
 
-#: src/Pdf/Download.php:98
+#: src/Pdf/Download.php:101
 msgid "You do not have access to this gift card."
-msgstr "Não tem acesso a este cartão presente."
+msgstr "Não tem acesso a este cartão-presente."
 
-#: src/Pdf/Download.php:103
+#: src/Pdf/Download.php:106
 msgid "The gift card PDF could not be created. Please try again later."
-msgstr ""
-"Não foi possível criar o PDF do cartão presente. Tente novamente mais tarde."
+msgstr "Não foi possível criar o PDF do cartão-presente. Tente novamente mais tarde."
 
-#: src/Pdf/Download.php:114
+#: src/Pdf/Download.php:117
 msgid "You do not have permission to do this."
 msgstr "Não tem permissão para fazer isto."
 
@@ -1131,7 +1010,8 @@ msgstr "Não tem permissão para fazer isto."
 msgid "Could not create the PDF storage folder."
 msgstr "Não foi possível criar a pasta de armazenamento dos PDF."
 
-#: src/Pdf/PdfGenerator.php:182 src/Pdf/PdfGenerator.php:229
+#: src/Pdf/PdfGenerator.php:182
+#: src/Pdf/PdfGenerator.php:229
 msgid "Could not write the PDF file."
 msgstr "Não foi possível gravar o ficheiro PDF."
 
@@ -1149,56 +1029,53 @@ msgstr "Pré-visualizar o seu cartão"
 
 #: src/Pdf/ProductPreview.php:82
 msgid "The recipient gets it as a PDF by email once the order is paid."
-msgstr ""
-"O destinatário recebe-o em PDF por e-mail assim que a encomenda for paga."
+msgstr "O destinatário recebe-o em PDF por e-mail assim que a encomenda for paga."
 
 #: src/Pdf/ProductPreview.php:84
 msgid "Gift card preview"
-msgstr "Pré-visualização do cartão presente"
+msgstr "Pré-visualização do cartão-presente"
 
 #: src/Pdf/ProductPreview.php:87
 msgid "Close preview"
 msgstr "Fechar pré-visualização"
 
 #: src/Pdf/ProductPreview.php:96
-msgid ""
-"This is how the PDF will look. The code is added when the order is paid."
-msgstr ""
-"É assim que o PDF ficará. O código é adicionado quando a encomenda é paga."
+msgid "This is how the PDF will look. The code is added when the order is paid."
+msgstr "É assim que o PDF ficará. O código é adicionado quando a encomenda é paga."
 
 #: src/Pdf/ProductPreview.php:140
 msgid "Design"
 msgstr "Modelo"
 
-#: src/Plugin.php:114
+#: src/Plugin.php:117
 msgid "Generation failed."
 msgstr "Falha na geração."
 
-#: src/Plugin.php:115
+#: src/Plugin.php:118
 msgid "Request failed."
 msgstr "O pedido falhou."
 
-#: src/Plugin.php:116
+#: src/Plugin.php:119
 msgid "Please select a CSV file."
 msgstr "Selecione um ficheiro CSV."
 
-#: src/Plugin.php:117
+#: src/Plugin.php:120
 msgid "Importing..."
 msgstr "A importar..."
 
-#: src/Plugin.php:118
+#: src/Plugin.php:121
 msgid "Import failed."
 msgstr "Falha na importação."
 
-#: src/Plugin.php:119
+#: src/Plugin.php:122
 msgid "Save failed."
 msgstr "Falha ao guardar."
 
-#: src/Plugin.php:120
+#: src/Plugin.php:123
 msgid "Delete this rule?"
 msgstr "Eliminar esta regra?"
 
-#: src/Plugin.php:155
+#: src/Plugin.php:158
 msgid "Add gift to cart"
 msgstr "Adicionar presente ao carrinho"
 
@@ -1241,7 +1118,7 @@ msgstr "Crédito de loja emitido do reembolso da encomenda #%d"
 #: templates/emails/pdf-notice.php:24
 #, php-format
 msgid "%s sent you a gift card."
-msgstr "%s enviou-lhe um cartão presente."
+msgstr "%s enviou-lhe um cartão-presente."
 
 #. translators: %s: product name
 #: templates/emails/pdf-notice.php:41
@@ -1250,16 +1127,12 @@ msgid "Your gift: %s"
 msgstr "O seu presente: %s"
 
 #: templates/emails/pdf-notice.php:49
-msgid ""
-"Your gift card is attached to this email as a PDF. Print it or show the code "
-"at checkout."
-msgstr ""
-"O seu cartão presente está anexado a este e-mail em PDF. Imprima-o ou mostre "
-"o código na finalização da compra."
+msgid "Your gift card is attached to this email as a PDF. Print it or show the code at checkout."
+msgstr "O seu cartão-presente está anexado a este e-mail em PDF. Imprima-o ou mostre o código na finalização da compra."
 
 #: templates/emails/pdf-notice.php:52
 msgid "Gift card code"
-msgstr "Código do cartão presente"
+msgstr "Código do cartão-presente"
 
 #: templates/emails/pdf-notice.php:60
 msgid "Redeem your gift"
@@ -1291,128 +1164,10 @@ msgstr "Oferta"
 #: templates/pdf/_card.php:86
 #, php-format
 msgid "Visit us at %s"
-msgstr "Visita-nos em %s"
+msgstr "Visite-nos em %s"
 
-#~ msgid "You"
-#~ msgstr "Você"
-
-#~ msgid "Card designs"
-#~ msgstr "Designs do cartão"
-
-#~ msgid "Your message will appear here."
-#~ msgstr "A sua mensagem aparecerá aqui."
-
-#~ msgid "Birthday"
-#~ msgstr "Aniversário"
-
-#~ msgid "Happy birthday"
-#~ msgstr "Feliz aniversário"
-
-#~ msgid "Celebration"
-#~ msgstr "Celebração"
-
-#~ msgid "Congratulations"
-#~ msgstr "Parabéns"
-
-#~ msgid ""
-#~ "Smart Gift Cards for WooCommerce - Pro requires version 1.2.0 or higher "
-#~ "of the free plugin. Please update."
-#~ msgstr ""
-#~ "O Smart Gift Cards for WooCommerce - Pro requer a versão 1.2.0 ou "
-#~ "superior do plugin gratuito. Atualize por favor."
-
-#~ msgid "Email Themes"
-#~ msgstr "Temas de E-mail"
-
-#~ msgid "Offer themed email designs for gift card delivery emails."
-#~ msgstr ""
-#~ "Oferecer designs temáticos para os e-mails de entrega de cartões-presente."
-
-#~ msgid "Enable Email Themes"
-#~ msgstr "Ativar Temas de E-mail"
-
-#~ msgid "Allow customers to choose a themed design for the gift card email."
-#~ msgstr ""
-#~ "Permitir que os clientes escolham um design temático para o e-mail do "
-#~ "cartão-presente."
-
-#~ msgid "Default Theme"
-#~ msgstr "Tema Predefinido"
-
-#~ msgid "Thank You"
-#~ msgstr "Obrigado"
-
-#~ msgid "Holiday"
-#~ msgstr "Feriado"
-
-#~ msgid "Theme Customization"
-#~ msgstr "Personalização de Temas"
-
-#~ msgid ""
-#~ "Customize the heading text and accent color for each email theme. Leave "
-#~ "fields blank to use the defaults."
-#~ msgstr ""
-#~ "Personalize o texto do cabeçalho e a cor de destaque para cada tema de e-"
-#~ "mail. Deixe os campos em branco para usar os valores predefinidos."
-
-#~ msgid "Accent Color"
-#~ msgstr "Cor de Destaque"
-
-#~ msgid "Lifetime"
-#~ msgstr "Vitalícia"
-
-#~ msgid "Currency"
-#~ msgstr "Moeda"
-
-#~ msgid "This license key has been revoked."
-#~ msgstr "Esta chave de licença foi revogada."
-
-#~ msgid "This license key has expired."
-#~ msgstr "Esta chave de licença expirou."
-
-#, php-format
-#~ msgid ""
-#~ "Smart Gift Cards Pro: Your license has expired. Pro features will be "
-#~ "disabled in %d day(s)."
-#~ msgstr ""
-#~ "Smart Gift Cards Pro: A sua licença expirou. As funcionalidades Pro serão "
-#~ "desativadas em %d dia(s)."
-
-#~ msgid ""
-#~ "Smart Gift Cards Pro: Your license has expired. Pro features are disabled."
-#~ msgstr ""
-#~ "Smart Gift Cards Pro: A sua licença expirou. As funcionalidades Pro estão "
-#~ "desativadas."
-
-#, php-format
-#~ msgid "Amount: %s"
-#~ msgstr "Valor: %s"
-
-#, php-format
-#~ msgid "Code: %s"
-#~ msgstr "Código: %s"
-
-#, php-format
-#~ msgid "Shop now: %s"
-#~ msgstr "Comprar agora: %s"
-
-#~ msgid ""
-#~ "Click the link above to apply your gift card automatically, or enter the "
-#~ "code at checkout in the coupon/gift card field."
-#~ msgstr ""
-#~ "Clique no link acima para aplicar o seu cartão-presente automaticamente, "
-#~ "ou introduza o código no checkout, no campo de cupão/cartão-presente."
-
-#~ msgid ""
-#~ "Click \"Shop Now\" to apply your gift card automatically, or enter the "
-#~ "code at checkout in the coupon/gift card field."
-#~ msgstr ""
-#~ "Clique em \"Comprar Agora\" para aplicar o seu cartão-presente "
-#~ "automaticamente, ou introduza o código no checkout, no campo de cupão/"
-#~ "cartão-presente."
-
-#~ msgid "Thank You!"
-#~ msgstr "Obrigado!"
-
-#~ msgid "Happy Holidays!"
-#~ msgstr "Boas Festas!"
+#. translators: File name of the gift card PDF attached to the email, without ".pdf". Use only letters, numbers and hyphens.
+#: src/Pdf/EmailAttachment.php:94
+msgctxt "PDF attachment file name"
+msgid "gift-card"
+msgstr "cartao-presente"

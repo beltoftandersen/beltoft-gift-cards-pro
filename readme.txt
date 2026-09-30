@@ -5,7 +5,7 @@ Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
 WC requires at least: 6.0
-Stable tag: 1.5.12
+Stable tag: 1.5.13
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,10 @@ Turn on "Enable Store Credit" and "Auto-Create on Refund" under Pro Settings. Wh
 Filters: `bgcw_pro_pdf_designs` (add or change PDF designs), `bgcw_pro_pdf_redeem_text` (change the redeem text on the PDF), `bgcw_pro_product_is_giftable` (decide in code which products can be given as a gift).
 
 == Changelog ==
+
+= 1.5.13 =
+* Changed: The gift card PDF attached to the email is now named "gift-card.pdf" (translated into the site language, e.g. "cartao-presente.pdf" in Portuguese) instead of a random file name. Requires WordPress 6.2 or newer.
+* Fixed: Portuguese (pt_PT) translation: old "Smart Gift Cards" name replaced, wrong license warnings and required free plugin version corrected, a garbled "gifting not available" message fixed, and consistent formal wording and terminology throughout.
 
 = 1.5.12 =
 * Improved: Readme rewritten in plain language. It now explains that store credit on refund is off by default, that customers pick the delivery hour as well as the date, and what happens when the license expires.

@@ -21,8 +21,23 @@ $opts['pdf_enabled'] = '1';
 update_option( 'bgcw_pro_options', $opts );
 Options::invalidate_cache();
 
+switch_to_locale( 'en_US' );
 $att = apply_filters( 'woocommerce_email_attachments', [], 'bgcw_gift_card_delivery', $gc, $email );
-bgcwp_assert( 1 === count( $att ) && '.pdf' === substr( $att[0], -4 ) && file_exists( $att[0] ), 'PDF attached to delivery email' );
+restore_previous_locale();
+$path = reset( $att );
+bgcwp_assert( 1 === count( $att ) && '.pdf' === substr( $path, -4 ) && file_exists( $path ), 'PDF attached to delivery email' );
+bgcwp_assert_eq( [ 'gift-card.pdf' ], array_keys( $att ), 'attachment shown to the customer as gift-card.pdf' );
+bgcwp_assert( 1 === preg_match( '/^\d+-[A-Za-z0-9]{16}\.pdf$/', basename( $path ) ), 'stored file keeps its unguessable name' );
+
+// The attachment name follows the site language.
+switch_to_locale( 'pt_PT' );
+$att_pt = apply_filters( 'woocommerce_email_attachments', [], 'bgcw_gift_card_delivery', $gc, $email );
+restore_previous_locale();
+bgcwp_assert_eq( [ 'cartao-presente.pdf' ], array_keys( $att_pt ), 'pt_PT attachment named cartao-presente.pdf' );
+
+// Another plugin already attached a file under the same name: ours is still added.
+$att_dup = apply_filters( 'woocommerce_email_attachments', [ 'gift-card.pdf' => '/tmp/other.pdf' ], 'bgcw_gift_card_delivery', $gc, $email );
+bgcwp_assert( 2 === count( $att_dup ) && '/tmp/other.pdf' === $att_dup['gift-card.pdf'] && in_array( $path, $att_dup, true ), 'existing same-named attachment kept, ours appended' );
 bgcwp_assert_eq( [], apply_filters( 'woocommerce_email_attachments', [], 'customer_completed_order', null, null ), 'other emails untouched' );
 bgcwp_assert_eq( [ 'x.txt' ], apply_filters( 'woocommerce_email_attachments', [ 'x.txt' ], 'customer_completed_order', null, null ), 'existing attachments preserved' );
 
