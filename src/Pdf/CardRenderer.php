@@ -53,10 +53,10 @@ class CardRenderer {
 		$logo_url  = '';
 
 		if ( $logo_id > 0 ) {
-			$path = get_attached_file( $logo_id );
-			if ( $path && file_exists( $path ) ) {
-				$logo_path = $path;
-				$logo_url  = (string) wp_get_attachment_url( $logo_id );
+			// Pro's own copy, so the logo survives offloading of the Media Library original.
+			$logo_path = Logo::path();
+			if ( '' !== $logo_path ) {
+				$logo_url = (string) wp_get_attachment_url( $logo_id );
 			}
 		}
 

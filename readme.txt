@@ -5,7 +5,7 @@ Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
 WC requires at least: 6.0
-Stable tag: 1.5.13
+Stable tag: 1.5.14
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -73,11 +73,17 @@ One gift card per row. Only an `amount` column is required. You can also add `re
 = How does store credit on refund work? =
 Turn on "Enable Store Credit" and "Auto-Create on Refund" under Pro Settings. When an order paid with a gift card is refunded, the customer gets a new gift card for that amount instead of the money going back on the original card. It is off by default.
 
+= Does the PDF logo work with Amazon S3 or other offload tools? =
+Yes. Pro keeps its own copy of the logo when you choose it, so the logo stays on the cards even after the original is moved off the server. Choose the logo while the image is still on the server; if it is already gone, the settings page will tell you.
+
 == For Developers ==
 
 Filters: `bgcw_pro_pdf_designs` (add or change PDF designs), `bgcw_pro_pdf_redeem_text` (change the redeem text on the PDF), `bgcw_pro_product_is_giftable` (decide in code which products can be given as a gift).
 
 == Changelog ==
+
+= 1.5.14 =
+* Fixed: The logo on PDF gift cards now keeps working when an offload tool (Amazon S3 and similar) removes the image from the server. Pro keeps its own copy of the logo, made when you choose it. If the image is already gone from the server when you choose it, the settings page tells you instead of silently printing cards without a logo.
 
 = 1.5.13 =
 * Changed: The gift card PDF attached to the email is now named "gift-card.pdf" (translated into the site language, e.g. "cartao-presente.pdf" in Portuguese) instead of a random file name. Requires WordPress 6.2 or newer.

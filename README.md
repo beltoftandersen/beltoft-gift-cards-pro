@@ -2,7 +2,7 @@
 
 Premium add-on for [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards/): PDF gift cards, scheduled delivery, gifting any product, store credit, bulk generation, and more.
 
-- Stable version: 1.5.13
+- Stable version: 1.5.14
 - Requires: WordPress 5.8+, PHP 7.4+, WooCommerce 6.0+ (tested up to WordPress 7.1)
 - Requires: Beltoft Gift Cards for WooCommerce (free) 1.6.0+
 - Author: beltoft.net
@@ -70,11 +70,18 @@ One gift card per row. Only an `amount` column is required. You can also add `re
 **How does store credit on refund work?**
 Turn on "Enable Store Credit" and "Auto-Create on Refund" under Pro Settings. When an order paid with a gift card is refunded, the customer gets a new gift card for that amount instead of the money going back on the original card. It is off by default.
 
+**Does the PDF logo work with Amazon S3 or other offload tools?**
+Yes. Pro keeps its own copy of the logo when you choose it, so the logo stays on the cards even after the original is moved off the server. Choose the logo while the image is still on the server; if it is already gone, the settings page will tell you.
+
 ## For Developers
 
 Filters: `bgcw_pro_pdf_designs` (add or change PDF designs), `bgcw_pro_pdf_redeem_text` (change the redeem text on the PDF), `bgcw_pro_product_is_giftable` (decide in code which products can be given as a gift).
 
 ## Changelog
+
+### 1.5.14
+
+- Fixed: The logo on PDF gift cards now keeps working when an offload tool (Amazon S3 and similar) removes the image from the server. Pro keeps its own copy of the logo, made when you choose it. If the image is already gone from the server when you choose it, the settings page tells you instead of silently printing cards without a logo.
 
 ### 1.5.13
 

@@ -194,8 +194,21 @@ class Options {
 		if ( isset( $input['pdf_logo_id'] ) ) {
 			$logo = absint( $input['pdf_logo_id'] );
 			$logo = $logo > 0 ? (string) $logo : '';
-			if ( $logo !== (string) ( $clean['pdf_logo_id'] ?? '' ) ) {
-				$design_changed = true;
+			$current = (string) ( $clean['pdf_logo_id'] ?? '' );
+			if ( $logo !== $current ) {
+				// Keep Pro's own copy of the logo so offloaded originals (S3 etc.) still print.
+				$stored = '' === $logo ? true : \BgcwPro\Pdf\Logo::store( (int) $logo );
+				if ( is_wp_error( $stored ) ) {
+					if ( function_exists( 'add_settings_error' ) ) {
+						add_settings_error( self::OPTION, $stored->get_error_code(), $stored->get_error_message() );
+					}
+					$logo = $current;
+				} else {
+					if ( '' === $logo ) {
+						\BgcwPro\Pdf\Logo::delete();
+					}
+					$design_changed = true;
+				}
 			}
 			$clean['pdf_logo_id'] = $logo;
 		}

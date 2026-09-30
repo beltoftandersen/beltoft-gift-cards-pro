@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Beltoft Gift Cards for WooCommerce - Pro 1.5.13\n"
+"Project-Id-Version: Beltoft Gift Cards for WooCommerce - Pro 1.5.14\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/beltoft-gift-cards-pro\n"
 "Last-Translator: beltoft.net <support@beltoft.net>\n"
 "Language-Team: Portuguese (Portugal)\n"
@@ -61,7 +61,7 @@ msgid "Activating..."
 msgstr "A ativar..."
 
 #: src/Admin/SettingsPage.php:53
-#: src/Admin/SettingsPage.php:542
+#: src/Admin/SettingsPage.php:545
 msgid "Activate"
 msgstr "Ativar"
 
@@ -74,7 +74,7 @@ msgid "Deactivating..."
 msgstr "A desativar..."
 
 #: src/Admin/SettingsPage.php:56
-#: src/Admin/SettingsPage.php:538
+#: src/Admin/SettingsPage.php:541
 msgid "Deactivate"
 msgstr "Desativar"
 
@@ -323,297 +323,297 @@ msgstr "Remover"
 msgid "Shown at the top of the card. PNG or JPG, at least 400px wide. Without a logo the store name is printed instead."
 msgstr "Aparece no topo do cartão. PNG ou JPG com pelo menos 400px de largura. Sem logótipo, é impresso o nome da loja."
 
-#: src/Admin/SettingsPage.php:409
+#: src/Admin/SettingsPage.php:412
 msgid "Card design"
 msgstr "Design do cartão"
 
-#: src/Admin/SettingsPage.php:410
+#: src/Admin/SettingsPage.php:413
 msgid "Change the heading or main color and save, then download a sample to see the result. Saving a change regenerates stored PDFs the next time they are sent or downloaded."
 msgstr "Altere o título ou a cor principal e guarde; depois descarregue um exemplo para ver o resultado. Ao guardar uma alteração, os PDF guardados são regenerados na próxima vez que forem enviados ou descarregados."
 
-#: src/Admin/SettingsPage.php:426
+#: src/Admin/SettingsPage.php:429
 msgid "Heading"
 msgstr "Título"
 
-#: src/Admin/SettingsPage.php:434
+#: src/Admin/SettingsPage.php:437
 msgid "Main color"
 msgstr "Cor principal"
 
-#: src/Admin/SettingsPage.php:443
+#: src/Admin/SettingsPage.php:446
 msgid "Download sample PDF"
 msgstr "Descarregar PDF de exemplo"
 
-#: src/Admin/SettingsPage.php:449
+#: src/Admin/SettingsPage.php:452
 msgid "Card text"
 msgstr "Texto do cartão"
 
-#: src/Admin/SettingsPage.php:450
+#: src/Admin/SettingsPage.php:453
 msgid "Leave blank for the defaults. {store} and {product} are replaced automatically. Translations for the defaults come from the plugin language files."
 msgstr "Deixe em branco para usar os textos padrão. {store} e {product} são substituídos automaticamente. As traduções dos textos padrão vêm dos ficheiros de idioma do plugin."
 
-#: src/Admin/SettingsPage.php:453
+#: src/Admin/SettingsPage.php:456
 msgid "Text on value cards"
 msgstr "Texto nos cartões de valor"
 
-#: src/Admin/SettingsPage.php:454
+#: src/Admin/SettingsPage.php:457
 #: src/Pdf/CardRenderer.php:76
 msgid "Congratulations! You have received a gift card to spend at {store}. We hope you enjoy it!"
 msgstr "Parabéns! Recebeu um cartão-presente para utilizar na loja {store}. Esperamos que goste!"
 
-#: src/Admin/SettingsPage.php:457
+#: src/Admin/SettingsPage.php:460
 msgid "Heading on product gift cards"
 msgstr "Título nos cartões-presente de produto"
 
-#: src/Admin/SettingsPage.php:458
+#: src/Admin/SettingsPage.php:461
 #: src/Pdf/CardRenderer.php:78
 msgid "Surprise! A gift just for you!"
 msgstr "Surpresa! Um presente só para si!"
 
-#: src/Admin/SettingsPage.php:461
+#: src/Admin/SettingsPage.php:464
 msgid "Text on product gift cards"
 msgstr "Texto nos cartões-presente de produto"
 
-#: src/Admin/SettingsPage.php:462
+#: src/Admin/SettingsPage.php:465
 #: src/Pdf/CardRenderer.php:77
 msgid "Congratulations! You have received {product} as a gift from {store}. We hope you enjoy it!"
 msgstr "Parabéns! Recebeu {product} como presente da {store}. Esperamos que goste!"
 
-#: src/Admin/SettingsPage.php:481
-#: src/Admin/SettingsPage.php:516
+#: src/Admin/SettingsPage.php:484
+#: src/Admin/SettingsPage.php:519
 msgid "License Key"
 msgstr "Chave de Licença"
 
-#: src/Admin/SettingsPage.php:485
-#: src/Admin/SettingsPage.php:672
+#: src/Admin/SettingsPage.php:488
+#: src/Admin/SettingsPage.php:675
 msgid "Active"
 msgstr "Ativo"
 
 #. translators: %s: license expiration date
-#: src/Admin/SettingsPage.php:491
+#: src/Admin/SettingsPage.php:494
 #, php-format
 msgid "Expires: %s"
 msgstr "Expira: %s"
 
-#: src/Admin/SettingsPage.php:497
+#: src/Admin/SettingsPage.php:500
 msgid "Managed by active subscription"
 msgstr "Gerido por subscrição ativa"
 
-#: src/Admin/SettingsPage.php:500
+#: src/Admin/SettingsPage.php:503
 msgid "Inactive"
 msgstr "Inativo"
 
-#: src/Admin/SettingsPage.php:501
+#: src/Admin/SettingsPage.php:504
 msgid "Renew to receive updates"
 msgstr "Renove para receber atualizações"
 
-#: src/Admin/SettingsPage.php:503
+#: src/Admin/SettingsPage.php:506
 msgid "Domain Mismatch"
 msgstr "Domínio não corresponde"
 
-#: src/Admin/SettingsPage.php:504
+#: src/Admin/SettingsPage.php:507
 msgid "Deactivate your old domain and reactivate here"
 msgstr "Desative o domínio antigo e reative aqui"
 
-#: src/Admin/SettingsPage.php:506
+#: src/Admin/SettingsPage.php:509
 msgid "Invalid Key"
 msgstr "Chave inválida"
 
-#: src/Admin/SettingsPage.php:507
+#: src/Admin/SettingsPage.php:510
 msgid "Please check and re-enter your license key"
 msgstr "Verifique e volte a introduzir a sua chave de licença"
 
-#: src/Admin/SettingsPage.php:509
+#: src/Admin/SettingsPage.php:512
 msgid "Not Activated"
 msgstr "Não ativada"
 
-#: src/Admin/SettingsPage.php:534
+#: src/Admin/SettingsPage.php:537
 msgid "Enter your license key"
 msgstr "Introduza a sua chave de licença"
 
-#: src/Admin/SettingsPage.php:559
+#: src/Admin/SettingsPage.php:562
 msgid "Activations: Unlimited"
 msgstr "Ativações: ilimitadas"
 
 #. translators: %d: maximum number of site activations
-#: src/Admin/SettingsPage.php:563
+#: src/Admin/SettingsPage.php:566
 #, php-format
 msgid "Activations: Up to %d sites"
 msgstr "Ativações: até %d sites"
 
 #. translators: 1: new version number, 2: current version number
-#: src/Admin/SettingsPage.php:580
+#: src/Admin/SettingsPage.php:583
 #, php-format
 msgid "Update: Version %1$s available (you have %2$s)"
 msgstr "Atualização: versão %1$s disponível (tem a %2$s)"
 
 #. translators: %s: date and time of last license check
-#: src/Admin/SettingsPage.php:593
+#: src/Admin/SettingsPage.php:596
 #, php-format
 msgid "Last checked: %s"
 msgstr "Última verificação: %s"
 
-#: src/Admin/SettingsPage.php:612
+#: src/Admin/SettingsPage.php:615
 msgid "Bulk generation and CSV tools require an active license."
 msgstr "As ferramentas de geração em massa e CSV requerem uma licença ativa."
 
-#: src/Admin/SettingsPage.php:618
+#: src/Admin/SettingsPage.php:621
 msgid "Bulk Generate Gift Cards"
 msgstr "Gerar Cartões-presente em Massa"
 
-#: src/Admin/SettingsPage.php:621
+#: src/Admin/SettingsPage.php:624
 msgid "Quantity"
 msgstr "Quantidade"
 
-#: src/Admin/SettingsPage.php:625
+#: src/Admin/SettingsPage.php:628
 msgid "Amount"
 msgstr "Valor"
 
-#: src/Admin/SettingsPage.php:629
+#: src/Admin/SettingsPage.php:632
 msgid "Source"
 msgstr "Origem"
 
-#: src/Admin/SettingsPage.php:636
+#: src/Admin/SettingsPage.php:639
 msgid "Paid offline counts as a paid card at redemption; promotion and compensation count as free."
 msgstr "Pago fora da loja conta como cartão pago na utilização; promoção e compensação contam como grátis."
 
-#: src/Admin/SettingsPage.php:640
+#: src/Admin/SettingsPage.php:643
 msgid "Code Prefix (optional)"
 msgstr "Prefixo do Código (opcional)"
 
-#: src/Admin/SettingsPage.php:644
+#: src/Admin/SettingsPage.php:647
 msgid "Expiry (days)"
 msgstr "Validade (dias)"
 
-#: src/Admin/SettingsPage.php:648
+#: src/Admin/SettingsPage.php:651
 msgid "Recipient Name (optional)"
 msgstr "Nome do Destinatário (opcional)"
 
-#: src/Admin/SettingsPage.php:652
+#: src/Admin/SettingsPage.php:655
 msgid "Recipient Email (optional)"
 msgstr "E-mail do Destinatário (opcional)"
 
-#: src/Admin/SettingsPage.php:657
+#: src/Admin/SettingsPage.php:660
 msgid "Generate Gift Cards"
 msgstr "Gerar Cartões-presente"
 
-#: src/Admin/SettingsPage.php:661
+#: src/Admin/SettingsPage.php:664
 msgid "Preparing generation..."
 msgstr "A preparar geração..."
 
-#: src/Admin/SettingsPage.php:667
+#: src/Admin/SettingsPage.php:670
 msgid "Export Gift Cards (CSV)"
 msgstr "Exportar Cartões-presente (CSV)"
 
-#: src/Admin/SettingsPage.php:669
+#: src/Admin/SettingsPage.php:672
 msgid "Filter by status"
 msgstr "Filtrar por estado"
 
-#: src/Admin/SettingsPage.php:671
+#: src/Admin/SettingsPage.php:674
 msgid "All statuses"
 msgstr "Todos os estados"
 
-#: src/Admin/SettingsPage.php:673
+#: src/Admin/SettingsPage.php:676
 msgid "Disabled"
 msgstr "Desativado"
 
-#: src/Admin/SettingsPage.php:674
+#: src/Admin/SettingsPage.php:677
 msgid "Expired"
 msgstr "Expirado"
 
-#: src/Admin/SettingsPage.php:675
+#: src/Admin/SettingsPage.php:678
 msgid "Redeemed"
 msgstr "Resgatado"
 
-#: src/Admin/SettingsPage.php:679
+#: src/Admin/SettingsPage.php:682
 msgid "Download CSV"
 msgstr "Descarregar CSV"
 
-#: src/Admin/SettingsPage.php:684
+#: src/Admin/SettingsPage.php:687
 msgid "Import Gift Cards (CSV)"
 msgstr "Importar Cartões-presente (CSV)"
 
-#: src/Admin/SettingsPage.php:689
+#: src/Admin/SettingsPage.php:692
 msgid "Import CSV"
 msgstr "Importar CSV"
 
-#: src/Admin/SettingsPage.php:707
+#: src/Admin/SettingsPage.php:710
 msgid "BOGO promotions require an active license."
 msgstr "As promoções BOGO requerem uma licença ativa."
 
-#: src/Admin/SettingsPage.php:716
+#: src/Admin/SettingsPage.php:719
 msgid "Add Rule"
 msgstr "Adicionar Regra"
 
-#: src/Admin/SettingsPage.php:723
+#: src/Admin/SettingsPage.php:726
 msgid "Rule Name"
 msgstr "Nome da Regra"
 
-#: src/Admin/SettingsPage.php:727
+#: src/Admin/SettingsPage.php:730
 msgid "Buy Amount"
 msgstr "Valor de Compra"
 
-#: src/Admin/SettingsPage.php:731
+#: src/Admin/SettingsPage.php:734
 msgid "Get Amount"
 msgstr "Valor do Bónus"
 
-#: src/Admin/SettingsPage.php:735
+#: src/Admin/SettingsPage.php:738
 msgid "Minimum Quantity"
 msgstr "Quantidade Mínima"
 
-#: src/Admin/SettingsPage.php:739
+#: src/Admin/SettingsPage.php:742
 msgid "Maximum Uses (0 = unlimited)"
 msgstr "Utilizações Máximas (0 = ilimitado)"
 
-#: src/Admin/SettingsPage.php:743
+#: src/Admin/SettingsPage.php:746
 msgid "Starts At (optional)"
 msgstr "Início (opcional)"
 
-#: src/Admin/SettingsPage.php:747
+#: src/Admin/SettingsPage.php:750
 msgid "Ends At (optional)"
 msgstr "Fim (opcional)"
 
-#: src/Admin/SettingsPage.php:752
+#: src/Admin/SettingsPage.php:755
 msgid "Save Rule"
 msgstr "Guardar Regra"
 
-#: src/Admin/SettingsPage.php:759
+#: src/Admin/SettingsPage.php:762
 msgid "Name"
 msgstr "Nome"
 
-#: src/Admin/SettingsPage.php:760
+#: src/Admin/SettingsPage.php:763
 msgid "Buy"
 msgstr "Compra"
 
-#: src/Admin/SettingsPage.php:761
+#: src/Admin/SettingsPage.php:764
 msgid "Get"
 msgstr "Bónus"
 
-#: src/Admin/SettingsPage.php:762
+#: src/Admin/SettingsPage.php:765
 msgid "Min Qty"
 msgstr "Qtd Mín"
 
-#: src/Admin/SettingsPage.php:763
+#: src/Admin/SettingsPage.php:766
 msgid "Uses"
 msgstr "Utilizações"
 
-#: src/Admin/SettingsPage.php:764
+#: src/Admin/SettingsPage.php:767
 #: src/Analytics/ReportGenerator.php:161
 msgid "Status"
 msgstr "Estado"
 
-#: src/Admin/SettingsPage.php:765
+#: src/Admin/SettingsPage.php:768
 msgid "Actions"
 msgstr "Ações"
 
-#: src/Admin/SettingsPage.php:771
+#: src/Admin/SettingsPage.php:774
 msgid "No BOGO rules yet."
 msgstr "Ainda não existem regras BOGO."
 
-#: src/Admin/SettingsPage.php:792
+#: src/Admin/SettingsPage.php:795
 msgid "Delete"
 msgstr "Eliminar"
 
-#: src/Admin/SettingsPage.php:816
+#: src/Admin/SettingsPage.php:819
 msgid "Activate your license"
 msgstr "Ative a sua licença"
 
@@ -1171,3 +1171,19 @@ msgstr "Visite-nos em %s"
 msgctxt "PDF attachment file name"
 msgid "gift-card"
 msgstr "cartao-presente"
+
+#: src/Admin/SettingsPage.php:399
+msgid "The logo file is not on this server, so PDFs are printed without it. It may have been moved to external storage such as Amazon S3. Keep a copy on the server or pause offloading, then choose the logo again."
+msgstr "O ficheiro do logótipo não está neste servidor, por isso os PDF são gerados sem ele. Pode ter sido movido para um armazenamento externo, como o Amazon S3. Mantenha uma cópia no servidor ou pause a transferência para o armazenamento externo e volte a escolher o logótipo."
+
+#: src/Pdf/Logo.php:44
+msgid "The logo was not saved because its file is not on this server. It may have been moved to external storage such as Amazon S3. Keep a copy on the server or pause offloading, then choose the logo again."
+msgstr "O logótipo não foi guardado porque o ficheiro não está neste servidor. Pode ter sido movido para um armazenamento externo, como o Amazon S3. Mantenha uma cópia no servidor ou pause a transferência para o armazenamento externo e volte a escolher o logótipo."
+
+#: src/Pdf/Logo.php:52
+msgid "The logo must be a PNG, JPG, GIF or WebP image."
+msgstr "O logótipo tem de ser uma imagem PNG, JPG, GIF ou WebP."
+
+#: src/Pdf/Logo.php:64
+msgid "Could not save a copy of the logo."
+msgstr "Não foi possível guardar uma cópia do logótipo."

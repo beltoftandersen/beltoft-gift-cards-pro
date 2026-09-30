@@ -395,6 +395,9 @@ class SettingsPage {
 			<button type="button" class="button" id="bgcw_pro_pdf_logo_pick"><?php esc_html_e( 'Choose logo', 'beltoft-gift-cards-pro' ); ?></button>
 			<button type="button" class="button-link-delete" id="bgcw_pro_pdf_logo_remove"<?php echo $src ? '' : ' hidden'; ?>><?php esc_html_e( 'Remove', 'beltoft-gift-cards-pro' ); ?></button>
 			<p class="description"><?php esc_html_e( 'Shown at the top of the card. PNG or JPG, at least 400px wide. Without a logo the store name is printed instead.', 'beltoft-gift-cards-pro' ); ?></p>
+			<?php if ( $logo_id && '' === \BgcwPro\Pdf\Logo::path() ) : ?>
+				<p class="description bgcw-pro-logo-field__warning"><strong><?php esc_html_e( 'The logo file is not on this server, so PDFs are printed without it. It may have been moved to external storage such as Amazon S3. Keep a copy on the server or pause offloading, then choose the logo again.', 'beltoft-gift-cards-pro' ); ?></strong></p>
+			<?php endif; ?>
 		</div>
 		<?php
 	}

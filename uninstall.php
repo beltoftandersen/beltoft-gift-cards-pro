@@ -38,6 +38,7 @@ if ( ! empty( $bgcw_pro_license_key ) ) {
 delete_option( 'bgcw_pro_options' );
 delete_option( 'bgcw_pro_version' );
 delete_option( 'bgcw_pro_db_version' );
+delete_option( 'bgcw_pro_pdf_logo' );
 
 // Drop custom tables.
 global $wpdb;
