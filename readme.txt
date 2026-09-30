@@ -5,7 +5,7 @@ Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
 WC requires at least: 6.0
-Stable tag: 1.5.14
+Stable tag: 1.5.15
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -81,6 +81,9 @@ Yes. Pro keeps its own copy of the logo when you choose it, so the logo stays on
 Filters: `bgcw_pro_pdf_designs` (add or change PDF designs), `bgcw_pro_pdf_redeem_text` (change the redeem text on the PDF), `bgcw_pro_product_is_giftable` (decide in code which products can be given as a gift).
 
 == Changelog ==
+
+= 1.5.15 =
+* Fixed: A gift card PDF generated while the logo copy was being refreshed could come out without the logo. The copy is now replaced in one step.
 
 = 1.5.14 =
 * Fixed: The logo on PDF gift cards now keeps working when an offload tool (Amazon S3 and similar) removes the image from the server. Pro keeps its own copy of the logo, made when you choose it. If the image is already gone from the server when you choose it, the settings page tells you instead of silently printing cards without a logo.

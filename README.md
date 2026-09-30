@@ -2,7 +2,7 @@
 
 Premium add-on for [Beltoft Gift Cards for WooCommerce](https://wordpress.org/plugins/beltoft-gift-cards/): PDF gift cards, scheduled delivery, gifting any product, store credit, bulk generation, and more.
 
-- Stable version: 1.5.14
+- Stable version: 1.5.15
 - Requires: WordPress 5.8+, PHP 7.4+, WooCommerce 6.0+ (tested up to WordPress 7.1)
 - Requires: Beltoft Gift Cards for WooCommerce (free) 1.6.0+
 - Author: beltoft.net
@@ -78,6 +78,10 @@ Yes. Pro keeps its own copy of the logo when you choose it, so the logo stays on
 Filters: `bgcw_pro_pdf_designs` (add or change PDF designs), `bgcw_pro_pdf_redeem_text` (change the redeem text on the PDF), `bgcw_pro_product_is_giftable` (decide in code which products can be given as a gift).
 
 ## Changelog
+
+### 1.5.15
+
+- Fixed: A gift card PDF generated while the logo copy was being refreshed could come out without the logo. The copy is now replaced in one step.
 
 ### 1.5.14
 

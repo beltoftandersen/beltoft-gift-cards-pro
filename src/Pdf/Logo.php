@@ -60,7 +60,11 @@ class Logo {
 
 		$file = 'logo-' . $attachment_id . '.' . self::TYPES[ $mime ];
 		$path = $dir . '/' . $file;
-		if ( ! copy( $source, $path ) ) {
+		// Write to a temp name and rename, so a PDF rendering at the same time never reads a half-written file.
+		$tmp = $path . '.' . wp_generate_password( 8, false, false ) . '.tmp';
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.rename_rename -- Atomic replace of a file in the Pro uploads folder.
+		if ( ! copy( $source, $tmp ) || ! rename( $tmp, $path ) ) {
+			wp_delete_file( $tmp );
 			return new \WP_Error( 'bgcw_pro_logo_write', __( 'Could not save a copy of the logo.', 'beltoft-gift-cards-pro' ) );
 		}
 
